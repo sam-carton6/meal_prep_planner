@@ -1,0 +1,41 @@
+# Copied to `.gitignore` at setup; Claude adds the lines for the project's stack below.
+
+# --- Secrets: never commit these ---
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+*.p12
+*.p8
+*.mobileprovision
+*.keystore
+secrets/
+credentials*.json
+service-account*.json
+
+# --- Private data: real user data, exports, backups ---
+data/private/
+*.sqlite
+*.sqlite3
+*.db
+backups/
+
+# --- Computer junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# --- Editors and tools ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.claude/settings.local.json
+.worktrees/
+
+# --- Stack (Claude fills in at setup) ---
+# Web (Node/Vite): node_modules/  dist/  .wrangler/
+# iOS (Xcode):     build/  DerivedData/  xcuserdata/  *.xcuserstate  .swiftpm/
