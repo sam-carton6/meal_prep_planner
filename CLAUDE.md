@@ -12,7 +12,7 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
 - **Kind:** not decided yet. The brief leans native SwiftUI on the iPhone (Apple Health only works natively), which
   needs Sam's MacBook and Xcode. Decide with Sam before any code.
 - **Live:** nothing yet. Planned: Sam's iPhone, installed from Xcode.
-- **Repo:** GitHub `sam-carton6/meal_prep_planner` (public today). Main copy on the tower:
+- **Repo:** GitHub `sam-carton6/meal_prep_planner` (public on purpose: no sensitive data; Sam, 20 Oct 2026). Keep it that way unless he says otherwise. Main copy on the tower:
   `D:\Users\Sam\Documents\Projects\Meal Prep Planner`; once it's an iOS app, the work happens on the Mac and the tower
   pulls.
 
