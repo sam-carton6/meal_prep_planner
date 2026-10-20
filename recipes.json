@@ -1,0 +1,62 @@
+{
+  "notes": "Calories and protein are estimates from USDA values for raw ingredients. Amounts are as cooked by the user.",
+  "recipes": [
+    {
+      "id": "mexican-chicken-vegetables",
+      "name": "Mexican Chicken & Vegetables",
+      "logged": "2026-10-18",
+      "portions": 8,
+      "serve_with": "rice (cooked separately)",
+      "ingredients": [
+        { "name": "Chicken thighs, boneless skinless, raw", "amount": 3.15, "unit": "lb", "calories": 1730, "protein_g": 280 },
+        { "name": "Black beans, canned", "amount": 1, "unit": "can (15 oz)", "calories": 350, "protein_g": 22 },
+        { "name": "Chipotle peppers in adobo", "amount": 1, "unit": "can (7 oz)", "calories": 150, "protein_g": 3 },
+        { "name": "Carrots", "amount": 5, "unit": "medium", "calories": 125, "protein_g": 3 },
+        { "name": "Peas", "amount": 1, "unit": "cup", "calories": 115, "protein_g": 8 },
+        { "name": "Diced tomatoes, canned", "amount": 1, "unit": "can (14 oz)", "calories": 80, "protein_g": 4 },
+        { "name": "White onion", "amount": 1, "unit": "whole", "calories": 60, "protein_g": 1.5 },
+        { "name": "Bell peppers", "amount": 2, "unit": "whole", "calories": 60, "protein_g": 2 },
+        { "name": "Spinach", "amount": 5, "unit": "oz", "calories": 35, "protein_g": 4 },
+        { "name": "Chicken broth", "amount": 2, "unit": "cup", "calories": 25, "protein_g": 2 },
+        { "name": "Garlic", "amount": 0.5, "unit": "head", "calories": 25, "protein_g": 1 },
+        { "name": "Seasonings", "amount": null, "unit": "to taste", "calories": 0, "protein_g": 0 }
+      ],
+      "totals": { "calories": 2755, "protein_g": 330 },
+      "per_portion": { "calories": 345, "protein_g": 41 }
+    },
+    {
+      "id": "sweet-potato-beef-chili",
+      "name": "Sweet Potato Beef Chili",
+      "logged": "2026-10-18",
+      "portions": 8,
+      "serve_with": "nothing (eaten on its own)",
+      "notes": "Beef fat not drained.",
+      "ingredients": [
+        { "name": "Ground beef 85/15, raw", "amount": 3, "unit": "lb", "calories": 2940, "protein_g": 253 },
+        { "name": "Sweet potatoes, orange", "amount": 1.75, "unit": "lb", "calories": 685, "protein_g": 12 },
+        { "name": "Dark red kidney beans, canned", "amount": 1, "unit": "can (15 oz)", "calories": 315, "protein_g": 22 },
+        { "name": "Great northern beans, canned", "amount": 1, "unit": "can (15 oz)", "calories": 315, "protein_g": 22 },
+        { "name": "Crushed tomatoes, canned", "amount": 1, "unit": "can (20 oz)", "calories": 200, "protein_g": 10 },
+        { "name": "Diced tomatoes, canned", "amount": 1, "unit": "can (14 oz)", "calories": 80, "protein_g": 4 },
+        { "name": "Sweet onion", "amount": 1, "unit": "whole", "calories": 60, "protein_g": 1.5 },
+        { "name": "Bell peppers", "amount": 2, "unit": "whole", "calories": 60, "protein_g": 2 },
+        { "name": "Chicken broth", "amount": 2, "unit": "cup", "calories": 25, "protein_g": 2 },
+        { "name": "Garlic", "amount": 0.5, "unit": "head", "calories": 25, "protein_g": 1 }
+      ],
+      "optional": [
+        { "name": "Shredded cheddar", "amount": 1, "unit": "cup", "calories": 450, "protein_g": 25 }
+      ],
+      "totals": { "calories": 4705, "protein_g": 330 },
+      "cooked_weight_g": 5060,
+      "per_portion": { "calories": 590, "protein_g": 41, "weight_g": 630 }
+    }
+  ],
+  "sides": [
+    {
+      "id": "white-rice",
+      "name": "White rice, long grain",
+      "batch": { "amount": 4, "unit": "cup dry", "calories": 2740, "protein_g": 52, "yield_cups_cooked": 12 },
+      "per_cup_cooked": { "calories": 205, "protein_g": 4 }
+    }
+  ]
+}
