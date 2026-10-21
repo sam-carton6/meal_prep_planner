@@ -12,7 +12,8 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
 - **Kind:** a PWA, a web app added to the iPhone home screen that works offline (Sam, 20 Oct 2026). Native iOS is
   set aside for now because of Apple's $99/yr account or 7-day reinstalls. It may come later on the MacBook, so keep
   the data model and export format portable (Apple Health needs native).
-- **Live:** nothing yet. Hosting not picked (GitHub Pages or Cloudflare Pages); ask before creating anything.
+- **Live:** nothing yet. Hosting: Cloudflare Pages (Sam, 20 Oct 2026): `staging` gets a test link, `main` the real one. Not
+  set up yet; ask before creating the project.
 - **Repo:** GitHub `sam-carton6/meal_prep_planner` (public on purpose: no sensitive data; Sam, 20 Oct 2026). Keep it that way unless he says otherwise. Main copy on the tower:
   `D:\Users\Sam\Documents\Projects\Meal Prep Planner`.
 

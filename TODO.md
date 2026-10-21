@@ -7,12 +7,12 @@ under *Ideas (later)*; ask before building one.
 
 **Live on `main`:** nothing yet: just the brief and `recipes.json`.
 **On `staging`, not live yet:** notes only: platform decided (PWA) and v1 choices recorded in CLAUDE.md.
-**Next up:** Sam confirms the big-picture walkthrough and picks hosting, then step 1: a bare installable app that
-searches the bundled USDA ingredients.
+**Next up:** Sam is sending his own idea of how the app should work; settle that before step 1 (a bare installable app that
+searches the bundled USDA ingredients). Hosting: Cloudflare Pages.
 
 ## To do
 
-- Pick hosting with Sam (GitHub Pages or Cloudflare Pages) and the web toolkit; fill in CLAUDE.md *Stack* and
+- Set up Cloudflare Pages (ask first) and pick the web toolkit; fill in CLAUDE.md *Stack* and
   *Checking work*.
 - Step 1: bundle USDA SR Legacy + Foundation Foods (download script, trimmed file) and a search screen; installable
   on the phone.
