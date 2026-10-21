@@ -6,24 +6,27 @@ under *Ideas (later)*; ask before building one.
 ## Where things stand (keep this current, a few lines)
 
 **Live on `main`:** nothing yet: just the brief and `recipes.json`.
-**On `staging`, not live yet:** notes only: platform decided (PWA) and v1 choices recorded in CLAUDE.md.
-**Next up:** Sam is sending his own idea of how the app should work; settle that before step 1 (a bare installable app that
-searches the bundled USDA ingredients). Hosting: Cloudflare Pages.
+**On `staging`, not live yet:** notes only: the plan (PWA, calendar-centred v1) is in PROJECT_BRIEF.md and CLAUDE.md.
+**Next up:** step 1, the USDA ingredient database + a bare installable app with search (in progress).
 
 ## To do
 
-- Set up Cloudflare Pages (ask first) and pick the web toolkit; fill in CLAUDE.md *Stack* and
-  *Checking work*.
-- Step 1: bundle USDA SR Legacy + Foundation Foods (download script, trimmed file) and a search screen; installable
-  on the phone.
-- Build version 1 one feature at a time, in the brief's order (ingredient database → recipes → portions → scaling →
-  sides → grocery list → import `recipes.json`), each testable on the phone.
+Version 1, in the brief's order, each step testable on the phone:
+1. Ingredient database + search (USDA SR Legacy + Foundation built in).
+2. Recipes that scale from the main ingredient's weight; portions from the protein target; cooked weight.
+3. Starches and meals (dish + starch per container).
+4. Calendar: breakfast/lunch/dinner/snacks, daily totals, weekly averages.
+5. Fridge/freezer stock and "what to cook when".
+6. Grocery list for the planning period.
+7. Import `recipes.json`; start "My foods" with Sam's usual takeout (ask him which places).
+
+Also: set up Cloudflare Pages (ask Sam first), then fill the links into CLAUDE.md and README.
 
 ## Ideas (later)
 
-From the brief, don't build yet but don't design them out: daily food log, meal planning calendar, branded foods via
-the USDA FoodData Central API, Apple Health (write calories eaten, read calories burned and bodyweight), a separate
-workout app sharing data through Apple Health (needs a native app).
+Don't build yet, but don't design them out: prep-ahead list (chop vegetables early), branded foods via the USDA
+FoodData Central API, a real iOS app (Capacitor wrap or native; needs Apple's $99/yr account) for Apple Health, a
+separate workout app sharing data with this one.
 
 ## What's new at the next merge
 

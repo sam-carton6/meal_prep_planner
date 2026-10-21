@@ -1,7 +1,8 @@
 # Meal Prep Planner — notes for Claude
 
-Sam's personal recipe, meal prep and calorie tracking app, for his own use first; the end goal is an iPhone app that
-replaces commercial apps he isn't happy with. Sam's general rules are in `~/.claude/CLAUDE.md` (master copy:
+Sam's personal calorie tracker + meal prep planner, for his own use first: a calendar of what he'll eat
+(breakfast, lunch, dinner, snacks) planned ahead as meal prep, which drives recipes, portions, cook days and shopping.
+Replaces commercial apps he isn't happy with. Sam's general rules are in `~/.claude/CLAUDE.md` (master copy:
 `Projects/_Project Kit/global-CLAUDE.md`); this file adds what's specific to this project and wins where they differ.
 
 Notes: [PROJECT_BRIEF.md](PROJECT_BRIEF.md) (what to build: version 1, later, how Sam wants to work; read it before
@@ -22,10 +23,13 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
 Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sam, 20 Oct 2026).
 
 ## Checking work
-<Fill in with the first build step: run the tests and build, try it in the PC browser, then on the phone.>
+`npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser, then on the
+phone (staging link once Cloudflare Pages is set up).
 
 ## Stack
-Web (PWA). The exact toolkit gets proposed with the first build step.
+Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
+IndexedDB), Vitest (tests). USDA data is built once by `scripts/build-usda.mjs` into `public/data/usda-foods.json`
+(committed); the raw USDA downloads go in `data/raw/` (ignored).
 
 ## Data
 - `recipes.json` = Sam's existing recipes, the import source for version 1.
@@ -38,6 +42,8 @@ Web (PWA). The exact toolkit gets proposed with the first build step.
 - Plan before coding: propose the architecture and data model and ask first (brief, Oct 2026).
 - Agree on the big picture in plain language first; ask detail questions (e.g. optional add-ons, rice yield) when
   that feature gets built (Sam, 20 Oct 2026).
+- The calendar is the core of version 1, not "later" (Sam, 20 Oct 2026). Calories judged mainly as a weekly
+  average. "My foods" (takeout, treats) is one growing list of custom foods with an optional place.
 - Agreed 20 Oct 2026: bundle USDA SR Legacy + Foundation Foods in the app; imported recipes are recalculated from
   USDA with a side-by-side check; a *Recipe* (template) is separate from a *Batch* (one actual cook); US units with
   grams alongside; grocery list has checkboxes, hides pantry staples, groups by aisle.
