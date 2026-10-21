@@ -2,6 +2,9 @@
 {
   "name": "meal-prep-planner",
   "compatibility_date": "2026-10-20",
+  // Lets `staging` get its own test link: staging-meal-prep-planner.samcarton6.workers.dev
+  // (Cloudflare's preview command: npx wrangler versions upload --preview-alias staging)
+  "preview_urls": true,
   "assets": {
     "directory": "./dist/",
     "not_found_handling": "single-page-application"

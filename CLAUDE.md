@@ -15,7 +15,8 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
   the data model and export format portable (Apple Health needs native).
 - **Live:** https://meal-prep-planner.samcarton6.workers.dev (from `main`). Cloudflare Workers serving the built
   files (settings in `wrangler.jsonc`), connected to GitHub with its own build token. Pushes to `staging` get a
-  preview link: `staging-meal-prep-planner.samcarton6.workers.dev` (Cloudflare lists it under the deployment).
+  preview link `staging-meal-prep-planner.samcarton6.workers.dev`, made by the dashboard's Preview command
+  `npx wrangler versions upload --preview-alias staging` (Cloudflare's default `wrangler preview` needs extra config).
 - **Repo:** GitHub `sam-carton6/meal_prep_planner` (public on purpose: no sensitive data; Sam, 20 Oct 2026). Keep it that way unless he says otherwise. Main copy on the tower:
   `D:\Users\Sam\Documents\Projects\Meal Prep Planner`.
 
