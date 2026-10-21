@@ -199,7 +199,7 @@ export function buildImport(file: OldFile, foodList: Food[], now = new Date().to
       id: newId(),
       name: s.name,
       kind: 'starch',
-      items: [{ ...item, unit: item.unit }],
+      items: [{ ...item, name: /dry/.test(s.batch.unit) ? `${item.name} (dry)` : item.name }],
       mainItemId: item.id,
       yieldAmount: s.batch.yield_cups_cooked,
       yieldUnit: 'cup cooked',
