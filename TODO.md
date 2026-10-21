@@ -6,9 +6,9 @@ under *Ideas (later)*; ask before building one.
 ## Where things stand (keep this current, a few lines)
 
 **Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
-Not hosted yet: Sam is connecting Cloudflare.
+Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 **On `staging`, not live yet:** nothing beyond notes.
-**Next up:** Sam connects the repo in Cloudflare (Workers) so he can try it on his phone, then step 2 (recipes that scale).
+**Next up:** Sam installs it on his phone and tries search offline, then step 2 (recipes that scale).
 
 ## To do
 
@@ -20,7 +20,6 @@ Version 1, in the brief's order, each step testable on the phone:
 6. Grocery list for the planning period.
 7. Import `recipes.json`; start "My foods" with Sam's usual takeout (ask him which places).
 
-Also: once Cloudflare is connected, fill the links into CLAUDE.md and README.
 At import (step 7): USDA has two chicken thigh values (Foundation 149 kcal/100 g vs SR Legacy ~121, which Sam's
 saved recipe matches); ask Sam which to use.
 

@@ -20,8 +20,9 @@ Rebuilding the ingredient list (only when USDA publishes a new release): see the
 
 ## Where it runs
 
-- `main` = the version Sam is happy with (planned: Cloudflare Pages, installed on his iPhone)
-- `staging` = work in progress
+- `main` = the version Sam is happy with: https://meal-prep-planner.samcarton6.workers.dev (Cloudflare; on the
+  iPhone: Safari → Share → Add to Home Screen)
+- `staging` = work in progress, with a Cloudflare preview link per push
 
 ## Notes
 
