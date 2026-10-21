@@ -33,6 +33,29 @@ const N = {
 };
 const WANTED = new Set(Object.values(N));
 
+// Trimming (agreed with Sam, 20 Oct 2026): drop groups he won't cook with, drop brand-name products (generic
+// versions stay; his own takeout and treats go in "My foods"), and merge duplicates.
+const EXCLUDED_GROUPS = new Set([
+  'Baby Foods',
+  'Fast Foods',
+  'Restaurant Foods',
+  'American Indian/Alaska Native Foods',
+]);
+// USDA writes brand names in capitals ("QUAKER", "KRAFT VELVEETA"); these capitalised words are not brands.
+const NOT_BRANDS = new Set(['USDA', "USDA'", 'USA', 'NFS', 'NFSMI', 'BBQ', 'DHA', 'UHT']);
+const MIXED_CASE_BRANDS = /^(Pillsbury|Kraft|Kellogg|Quaker|Nabisco|Keebler|Archway|Martha White|Mission|Heinz|Gardenburger|Morningstar|Boca|Worthington|Loma Linda)\b/;
+function isBranded(name) {
+  if (MIXED_CASE_BRANDS.test(name)) return true;
+  return (name.match(/\b[A-Z][A-Z'&-]{2,}\b/g) ?? []).some((w) => !NOT_BRANDS.has(w));
+}
+
+// Names that differ only by salt or a government-program tag are the same food for our purposes
+// (we don't track sodium), e.g. "Carrots, cooked, boiled, drained, with salt" / "..., without salt".
+const PROGRAM_TAG = /\s*\(Includes foods for USDA's Food Distribution Program\)/i;
+const SALT = /,\s*(with|without) (added )?salt\b/gi;
+const cleanName = (name) => name.replace(PROGRAM_TAG, '').replace(SALT, '').replace(/\s+/g, ' ').trim();
+const dedupeKey = (name) => cleanName(name).toLowerCase();
+
 function readCsv(dir, name) {
   // Each zip unpacks into a dated subfolder, e.g. FoodData_Central_sr_legacy_food_csv_2018-04/
   const sub = readdirSync(dir).find((d) => d.startsWith('FoodData_Central'));
@@ -71,9 +94,10 @@ function groupId(name) {
   return groupIndex.get(name);
 }
 
-const foods = [];
+const candidates = [];
 const sources = [];
 let skipped = 0;
+let trimmed = 0;
 
 for (const src of SOURCES) {
   const dir = join(RAW, src.dir);
@@ -89,10 +113,16 @@ for (const src of SOURCES) {
   const kept = new Map(); // fdc_id -> food
   for (const r of readCsv(dir, 'food')) {
     if (r.data_type !== src.dataType) continue;
+    const group = categories.get(r.food_category_id) ?? 'Other';
+    const name = r.description.trim();
+    if (EXCLUDED_GROUPS.has(group) || isBranded(name)) {
+      trimmed++;
+      continue;
+    }
     kept.set(r.fdc_id, {
       id: Number(r.fdc_id),
-      name: r.description.trim(),
-      group: groupId(categories.get(r.food_category_id) ?? 'Other'),
+      name: name.replace(PROGRAM_TAG, ''),
+      group: groupId(group),
       src: src.key,
       n: {},
       portions: [],
@@ -132,8 +162,30 @@ for (const src of SOURCES) {
     const out = { id: f.id, name: f.name, g: f.group, s: f.src, k: round1(kcal), p: round1(protein), c: round1(carbs), f: round1(fat) };
     if (n[N.fiber] !== undefined) out.fb = round1(n[N.fiber]);
     if (f.portions.length) out.por = f.portions;
-    foods.push(out);
+    candidates.push(out);
   }
+}
+
+// Merge duplicates: keep one entry per cleaned name. Foundation (newer lab data) beats SR Legacy; otherwise
+// the plainest name wins (no salt/program tag). Household portions from all copies are pooled.
+const byKey = new Map();
+for (const f of candidates) {
+  const key = dedupeKey(f.name);
+  (byKey.get(key) ?? byKey.set(key, []).get(key)).push(f);
+}
+const foods = [];
+let merged = 0;
+for (const copies of byKey.values()) {
+  copies.sort((a, b) => (a.s === 'fd' ? 0 : 1) - (b.s === 'fd' ? 0 : 1) || a.name.length - b.name.length);
+  const keep = { ...copies[0] };
+  if (copies.length > 1) {
+    merged += copies.length - 1;
+    keep.name = cleanName(keep.name);
+    const por = [...(keep.por ?? [])];
+    for (const c of copies.slice(1)) for (const p of c.por ?? []) if (!por.some(([l]) => l === p[0])) por.push(p);
+    if (por.length) keep.por = por;
+  }
+  foods.push(keep);
 }
 
 foods.sort((a, b) => a.name.localeCompare(b.name));
@@ -141,4 +193,7 @@ foods.sort((a, b) => a.name.localeCompare(b.name));
 mkdirSync('public/data', { recursive: true });
 const json = JSON.stringify({ built: new Date().toISOString().slice(0, 10), sources, groups, foods });
 writeFileSync(OUT, json);
-console.log(`Wrote ${OUT}: ${foods.length} foods (${skipped} skipped with no nutrition), ${(json.length / 1e6).toFixed(2)} MB`);
+console.log(
+  `Wrote ${OUT}: ${foods.length} foods, ${(json.length / 1e6).toFixed(2)} MB ` +
+    `(trimmed ${trimmed} by group/brand, merged ${merged} duplicates, skipped ${skipped} with no nutrition)`,
+);

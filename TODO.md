@@ -6,9 +6,9 @@ under *Ideas (later)*; ask before building one.
 ## Where things stand (keep this current, a few lines)
 
 **Live on `main`:** nothing yet: just the brief and `recipes.json`.
-**On `staging`, not live yet:** step 1: the app shell (installable, works offline) with search over 8,221 USDA
-ingredients and a detail page (per 100 g, oz, lb and USDA household portions). Tested in the PC browser only.
-**Next up:** set up Cloudflare Pages so Sam can try it on his phone (needs his OK), then step 2 (recipes that scale).
+**On `staging`, not live yet:** step 1: the app shell (installable, works offline) with search over 6,291 USDA
+ingredients (trimmed and de-duplicated) and a detail page (per 100 g, oz, lb and USDA household portions). Tested in the PC browser only.
+**Next up:** Sam connects the repo in Cloudflare (Workers) so he can try it on his phone, then step 2 (recipes that scale).
 
 ## To do
 
@@ -20,7 +20,7 @@ Version 1, in the brief's order, each step testable on the phone:
 6. Grocery list for the planning period.
 7. Import `recipes.json`; start "My foods" with Sam's usual takeout (ask him which places).
 
-Also: set up Cloudflare Pages (ask Sam first), then fill the links into CLAUDE.md and README.
+Also: once Cloudflare is connected, fill the links into CLAUDE.md and README.
 At import (step 7): USDA has two chicken thigh values (Foundation 149 kcal/100 g vs SR Legacy ~121, which Sam's
 saved recipe matches); ask Sam which to use.
 
@@ -33,4 +33,5 @@ separate workout app sharing data with this one.
 ## What's new at the next merge
 
 - Search the built-in USDA ingredient list (works offline) and see calories and protein per 100 g, per oz/lb and
-  per household portion ("1 medium carrot").
+  per household portion ("1 medium carrot"). About 6,300 ingredients, without duplicates, baby food, fast food
+  or brand names.

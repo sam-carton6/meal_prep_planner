@@ -1,0 +1,9 @@
+// Cloudflare Workers settings: serves the built app (dist/) as static files, no server code.
+{
+  "name": "meal-prep-planner",
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./dist/",
+    "not_found_handling": "single-page-application"
+  }
+}

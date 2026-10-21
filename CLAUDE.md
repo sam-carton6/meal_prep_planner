@@ -13,8 +13,9 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
 - **Kind:** a PWA, a web app added to the iPhone home screen that works offline (Sam, 20 Oct 2026). Native iOS is
   set aside for now because of Apple's $99/yr account or 7-day reinstalls. It may come later on the MacBook, so keep
   the data model and export format portable (Apple Health needs native).
-- **Live:** nothing yet. Hosting: Cloudflare Pages (Sam, 20 Oct 2026): `staging` gets a test link, `main` the real one. Not
-  set up yet; ask before creating the project.
+- **Live:** nothing yet. Hosting: Cloudflare Workers serving the built files (Cloudflare folded Pages into Workers;
+  settings in `wrangler.jsonc`). Connected to GitHub: `main` = the real link, `staging` = preview link. Not set up
+  yet (Sam connects it in the dashboard).
 - **Repo:** GitHub `sam-carton6/meal_prep_planner` (public on purpose: no sensitive data; Sam, 20 Oct 2026). Keep it that way unless he says otherwise. Main copy on the tower:
   `D:\Users\Sam\Documents\Projects\Meal Prep Planner`.
 
@@ -29,7 +30,8 @@ phone (staging link once Cloudflare Pages is set up).
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
 IndexedDB), Vitest (tests). USDA data is built once by `scripts/build-usda.mjs` into `public/data/usda-foods.json`
-(committed); the raw USDA downloads go in `data/raw/` (ignored).
+(committed); the raw USDA downloads go in `data/raw/` (ignored). The script trims the list: no baby food, fast food,
+restaurant, American Indian/Alaska Native or brand-name items, and duplicates merged (Sam, 20 Oct 2026).
 
 ## Data
 - `recipes.json` = Sam's existing recipes, the import source for version 1.
