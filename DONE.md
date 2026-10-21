@@ -2,6 +2,10 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-10-20 — step 1: ingredient search (230edd9)
+- Installable offline web app with search over 8,221 USDA ingredients (SR Legacy + Foundation) and a detail page.
+  Data built by `scripts/build-usda.mjs`. Tested in the PC browser (mobile size), not yet on the phone.
+
 ### 2026-10-20 — platform and v1 choices decided
 - Chose a PWA over native iOS; agreed USDA bundling, recipe vs batch, units, import and grocery list choices.
   Recorded in CLAUDE.md.
