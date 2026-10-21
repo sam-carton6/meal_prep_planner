@@ -3,7 +3,8 @@
 A personal recipe, meal prep and calorie tracking app: log batch recipes, split them into portions, and see
 calories and protein per portion, planned on a calendar. A web app (PWA) installed to the iPhone home screen.
 
-**Status:** step 1 of version 1 — searchable USDA ingredient list, works offline. The plan is in
+**Status:** version 1 rough pass on `staging` (calendar, recipes, batches, grocery list); `main` has the ingredient
+search. The plan is in
 [PROJECT_BRIEF.md](PROJECT_BRIEF.md).
 
 ## Run it

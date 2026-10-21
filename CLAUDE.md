@@ -24,8 +24,9 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
 Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sam, 20 Oct 2026).
 
 ## Checking work
-`npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser, then on the
-phone (staging link once Cloudflare Pages is set up).
+`npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
+then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`
+(tested); screens in `src/ui/`.
 
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
@@ -35,6 +36,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
 
 ## Data
 - `recipes.json` = Sam's existing recipes, the import source for version 1.
+- The data model is documented at the top of `src/model.ts`; stored on the phone with Dexie (`src/db.ts`, change
+  the layout only by adding a new `db.version(n)`). Backup = More → Backup (whole database as JSON).
 - Storage is local on the device, with export to a file so data is never locked in (brief). Keep the data model
   (ingredients, recipes, recipe items, portions, sides, log entries) clean and documented: the later food log and a
   separate workout app build on it.

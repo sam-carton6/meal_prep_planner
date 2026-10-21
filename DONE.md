@@ -2,6 +2,10 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-10-20 — rough pass on version 1 (cd5fb5f, 3cb3200, 3021ce2)
+- Data model (`src/model.ts`), units and recipe maths, calendar/grocery maths, recipes.json import, all with tests
+  (29). Screens: Plan, Cook, Recipes, Shop, More. On staging, not on the phone yet.
+
 ### 2026-10-20 — ingredient list trimmed; Cloudflare config (ef42dcd)
 - 8,221 → 6,291 foods: dropped baby food, fast food, restaurant, American Indian/Alaska Native and brand-name
   entries; merged duplicates (Foundation preferred). Added `wrangler.jsonc` for Cloudflare Workers.

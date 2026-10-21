@@ -7,21 +7,30 @@ under *Ideas (later)*; ask before building one.
 
 **Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
 Hosted at https://meal-prep-planner.samcarton6.workers.dev.
-**On `staging`, not live yet:** nothing beyond notes.
-**Next up:** Sam installs it on his phone and tries search offline, then step 2 (recipes that scale).
+**On `staging`, not live yet:** a rough pass on all of version 1 (20 Oct 2026, night): Plan (calendar), Cook
+(batches, stock, cook list), Recipes, Shop (grocery list), More (ingredients, My foods, targets, backup, import).
+Tested in the PC browser at phone size: import, scaling a batch, starch suggestion, calendar, grocery list.
+**Next up:** Sam tries the staging preview link on his phone and answers *Check with Sam* below; then polish.
+
+## Check with Sam (decisions made during the rough pass)
+
+- Chicken thigh: import uses USDA SR Legacy (121 kcal/100 g, matches his old numbers); USDA Foundation says 149.
+- Canned beans: USDA "solids and liquid" vs drained differ a lot (great northern: 485 kcal per can vs his 315).
+  Which does he count? Fix the match in `src/import-recipes.ts` or edit the recipe.
+- "Bell peppers" taken as red, "whole" as USDA medium (119 g); sweet onion and garlic head sizes worked out from
+  his old calories.
+- Starch suggestion aims at 700 kcal per container (More → Targets). Week average counts only days with something
+  on them.
+- Ticking a calendar entry as eaten takes a container from the fridge first, then the freezer.
+- Imported batches start with 0 in fridge/freezer: he should set how many chili/chicken containers he has.
 
 ## To do
 
-Version 1, in the brief's order, each step testable on the phone:
-2. Recipes that scale from the main ingredient's weight; portions from the protein target; cooked weight.
-3. Starches and meals (dish + starch per container).
-4. Calendar: breakfast/lunch/dinner/snacks, daily totals, weekly averages.
-5. Fridge/freezer stock and "what to cook when".
-6. Grocery list for the planning period.
-7. Import `recipes.json`; start "My foods" with Sam's usual takeout (ask him which places).
-
-At import (step 7): USDA has two chicken thigh values (Foundation 149 kcal/100 g vs SR Legacy ~121, which Sam's
-saved recipe matches); ask Sam which to use.
+- Try on the phone (staging link): backup via the share sheet, ticking meals eaten, copy breakfast/snacks,
+  My foods, quick add, "other size…" (can sizes). None of these were tried yet.
+- Rough edges: changing the bought weight in a batch resets hand-edited lines; calendar entries can only be
+  removed and re-added, not edited; no undo.
+- Start "My foods" with Sam's usual takeout (ask him which places).
 
 ## Ideas (later)
 
@@ -31,4 +40,8 @@ separate workout app sharing data with this one.
 
 ## What's new at the next merge
 
-- 
+- Plan your meals on a weekly calendar (breakfast, lunch, dinner, snacks) with day totals and a week average.
+- Recipes that scale from what you bought, containers from your protein target, weight per container.
+- Rice/pasta per container, and how much to cook for the containers you've planned.
+- Fridge/freezer counts, a cook list, and one grocery list by aisle with tick boxes.
+- My foods (takeout, treats), targets, backup to a file, and your recipes.json imported.
