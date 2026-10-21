@@ -5,9 +5,9 @@ under *Ideas (later)*; ask before building one.
 
 ## Where things stand (keep this current, a few lines)
 
-**Live on `main`:** nothing yet: just the brief and `recipes.json`.
-**On `staging`, not live yet:** step 1: the app shell (installable, works offline) with search over 6,291 USDA
-ingredients (trimmed and de-duplicated) and a detail page (per 100 g, oz, lb and USDA household portions). Tested in the PC browser only.
+**Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
+Not hosted yet: Sam is connecting Cloudflare.
+**On `staging`, not live yet:** nothing beyond notes.
 **Next up:** Sam connects the repo in Cloudflare (Workers) so he can try it on his phone, then step 2 (recipes that scale).
 
 ## To do
@@ -32,6 +32,4 @@ separate workout app sharing data with this one.
 
 ## What's new at the next merge
 
-- Search the built-in USDA ingredient list (works offline) and see calories and protein per 100 g, per oz/lb and
-  per household portion ("1 medium carrot"). About 6,300 ingredients, without duplicates, baby food, fast food
-  or brand names.
+- 
