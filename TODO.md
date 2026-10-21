@@ -6,13 +6,13 @@ under *Ideas (later)*; ask before building one.
 ## Where things stand (keep this current, a few lines)
 
 **Live on `main`:** nothing yet: just the brief and `recipes.json`.
-**On `staging`, not live yet:** notes only: the plan (PWA, calendar-centred v1) is in PROJECT_BRIEF.md and CLAUDE.md.
-**Next up:** step 1, the USDA ingredient database + a bare installable app with search (in progress).
+**On `staging`, not live yet:** step 1: the app shell (installable, works offline) with search over 8,221 USDA
+ingredients and a detail page (per 100 g, oz, lb and USDA household portions). Tested in the PC browser only.
+**Next up:** set up Cloudflare Pages so Sam can try it on his phone (needs his OK), then step 2 (recipes that scale).
 
 ## To do
 
 Version 1, in the brief's order, each step testable on the phone:
-1. Ingredient database + search (USDA SR Legacy + Foundation built in).
 2. Recipes that scale from the main ingredient's weight; portions from the protein target; cooked weight.
 3. Starches and meals (dish + starch per container).
 4. Calendar: breakfast/lunch/dinner/snacks, daily totals, weekly averages.
@@ -21,6 +21,8 @@ Version 1, in the brief's order, each step testable on the phone:
 7. Import `recipes.json`; start "My foods" with Sam's usual takeout (ask him which places).
 
 Also: set up Cloudflare Pages (ask Sam first), then fill the links into CLAUDE.md and README.
+At import (step 7): USDA has two chicken thigh values (Foundation 149 kcal/100 g vs SR Legacy ~121, which Sam's
+saved recipe matches); ask Sam which to use.
 
 ## Ideas (later)
 
@@ -30,4 +32,5 @@ separate workout app sharing data with this one.
 
 ## What's new at the next merge
 
-- 
+- Search the built-in USDA ingredient list (works offline) and see calories and protein per 100 g, per oz/lb and
+  per household portion ("1 medium carrot").

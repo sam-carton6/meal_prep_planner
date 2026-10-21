@@ -1,0 +1,76 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1d2420;
+  --muted: #66716b;
+  --line: #e3e8e5;
+  --accent: #2f6f4f;
+  --field: #f2f5f3;
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121614;
+    --fg: #e7ece9;
+    --muted: #9aa59f;
+    --line: #2a322e;
+    --accent: #7cc4a0;
+    --field: #1d2421;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); }
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
+}
+header {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  padding: 12px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+h1 { font-size: 1.5rem; margin: 4px 0 10px; }
+.detail-title { font-size: 1.2rem; margin-bottom: 4px; }
+input[type='search'] {
+  width: 100%;
+  font-size: 17px; /* 16px+ stops iPhone zooming in */
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--field);
+  color: var(--fg);
+}
+.note { color: var(--muted); }
+.error { color: #c0392b; }
+.results { list-style: none; margin: 0; padding: 0; }
+.results button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.name { display: block; }
+.meta { display: block; font-size: 0.85rem; color: var(--muted); margin: 2px 0 0; }
+.back {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 1rem;
+  padding: 4px 0;
+  cursor: pointer;
+}
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
+th, td { text-align: right; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+td:not(:first-child) { white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 600; }

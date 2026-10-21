@@ -39,3 +39,11 @@ desktop.ini
 # --- Stack (Claude fills in at setup) ---
 # Web (Node/Vite): node_modules/  dist/  .wrangler/
 # iOS (Xcode):     build/  DerivedData/  xcuserdata/  *.xcuserstate  .swiftpm/
+
+# Web (Node/Vite)
+node_modules/
+dist/
+dev-dist/
+.wrangler/
+# Raw USDA downloads (rebuilt by scripts/build-usda.mjs; the trimmed output in public/data/ is committed)
+data/raw/
