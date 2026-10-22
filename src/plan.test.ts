@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Batch, CalendarEntry, RecipeItem } from './model';
-import { addDays, groceryList, portionsUsed, weekAverage, weekStart } from './plan';
+import { addDays, addMonths, groceryList, monthWeeks, portionsUsed, weekAverage, weekStart } from './plan';
 import { G_PER } from './units';
 
 const ids = new Map<string, number>();
@@ -21,6 +21,15 @@ describe('dates', () => {
     expect(weekStart('2026-10-19')).toBe('2026-10-19');
     expect(weekStart('2026-10-25')).toBe('2026-10-19'); // Sunday
     expect(addDays('2026-10-30', 3)).toBe('2026-11-02');
+  });
+
+  it('builds a Monday-first month grid', () => {
+    const oct = monthWeeks('2026-10-21'); // Oct 1, 2026 is a Thursday
+    expect(oct[0][0]).toBe('2026-09-28');
+    expect(oct.at(-1)!.at(-1)).toBe('2026-11-01');
+    expect(oct).toHaveLength(5);
+    expect(monthWeeks('2027-02-10')).toHaveLength(4); // Feb 2027 starts on a Monday
+    expect(addMonths('2026-12-01', 1)).toBe('2027-01-01');
   });
 });
 

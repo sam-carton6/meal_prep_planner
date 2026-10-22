@@ -1,4 +1,4 @@
-// Plan tab: the calendar. A week at a time; each day has breakfast, lunch, dinner and snacks.
+// Plan tab: the calendar. Week view (each day: breakfast, lunch, dinner, snacks) or a month overview.
 // Entries are meal prep containers (a batch portion, optionally with starch) or any food; each keeps a copy of
 // its nutrition. Ticking an entry as eaten takes a container out of the fridge (or freezer).
 
@@ -7,38 +7,95 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, getSettings } from '../db';
 import type { Batch, CalendarEntry, Nutrition, Recipe, Slot } from '../model';
 import { DEFAULT_SETTINGS, newId, SLOTS } from '../model';
-import { addDays, dayLabel, isoDate, portionsUsed, sumEntries, weekAverage, weekDays, weekStart } from '../plan';
+import {
+  addDays,
+  addMonths,
+  dayLabel,
+  isoDate,
+  monthLabel,
+  monthStart,
+  monthWeeks,
+  portionsUsed,
+  sumEntries,
+  weekAverage,
+  weekDays,
+  weekStart,
+} from '../plan';
 import { add, batchSummary, perYieldUnit, starchToReach, times } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { customAsPicked, FoodPicker, Macros, Num, r0, Sheet, useUnitsFor, type PickedFood } from './shared';
 
 const SLOT_NAMES: Record<Slot, string> = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snacks' };
 
+type View = 'week' | 'month';
+
 export function PlanTab() {
   const today = isoDate(new Date());
-  const [start, setStart] = useState(weekStart(today));
-  const days = weekDays(start);
-  const entries = useLiveQuery(() => db.calendar.where('date').between(days[0], days[6], true, true).toArray(), [start]) ?? [];
-  const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
+  const [view, setView] = useState<View>(() => {
+    try {
+      return (localStorage.getItem('planView') as View) || 'week';
+    } catch {
+      return 'week';
+    }
+  });
+  const [start, setStart] = useState(weekStart(today)); // week view: its Monday
+  const [month, setMonth] = useState(monthStart(today)); // month view: its 1st
   const [adding, setAdding] = useState<{ date: string; slot: Slot } | null>(null);
   const [copying, setCopying] = useState(false);
-  const week = weekAverage(entries);
+  const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
+
+  const weeks = monthWeeks(month);
+  const days = weekDays(start);
+  const [from, to] = view === 'week' ? [days[0], days[6]] : [weeks[0][0], weeks[weeks.length - 1][6]];
+  const entries = useLiveQuery(() => db.calendar.where('date').between(from, to, true, true).toArray(), [from, to]) ?? [];
+
+  const switchView = (v: View) => {
+    setView(v);
+    if (v === 'month') setMonth(monthStart(start));
+    try {
+      localStorage.setItem('planView', v);
+    } catch {
+      /* private mode: fine */
+    }
+  };
+  const openWeek = (d: string) => {
+    setStart(weekStart(d));
+    switchView('week');
+  };
+
+  // Average over what's shown: the week, or this month's days (not the grid's spill-over days).
+  const shown = view === 'week' ? entries : entries.filter((e) => e.date.startsWith(month.slice(0, 7)));
+  const avg = weekAverage(shown);
+  const avgClass = !avg.days ? '' : avg.perDay.kcal < settings.dayKcalMin || avg.perDay.kcal > settings.dayKcalMax ? 'off' : 'ok';
+  const step = (n: number) => (view === 'week' ? setStart(addDays(start, 7 * n)) : setMonth(addMonths(month, n)));
 
   return (
-    <main>
+    <main className="wide">
       <header>
-        <div className="row spread">
-          <button className="link" onClick={() => setStart(addDays(start, -7))}>‹ Prev</button>
-          <h1 className="week-title">{dayLabel(days[0])} – {dayLabel(days[6])}</h1>
-          <button className="link" onClick={() => setStart(addDays(start, 7))}>Next ›</button>
+        <div className="seg">
+          <button className={view === 'week' ? 'on' : ''} onClick={() => switchView('week')}>
+            Week
+          </button>
+          <button className={view === 'month' ? 'on' : ''} onClick={() => switchView('month')}>
+            Month
+          </button>
         </div>
-        <div className={`week-avg ${!week.days ? '' : week.perDay.kcal < settings.dayKcalMin || week.perDay.kcal > settings.dayKcalMax ? 'off' : 'ok'}`}>
-          Week average ({week.days} day{week.days === 1 ? '' : 's'} planned): <Macros short n={week.perDay} /> per day · target{' '}
-          {r0(settings.dayKcalMin)}–{r0(settings.dayKcalMax)}
+        <div className="row spread">
+          <button className="link" onClick={() => step(-1)}>‹ Prev</button>
+          <h1 className="week-title">{view === 'week' ? `${dayLabel(days[0])} – ${dayLabel(days[6])}` : monthLabel(month)}</h1>
+          <button className="link" onClick={() => step(1)}>Next ›</button>
+        </div>
+        <div className={`week-avg ${avgClass}`}>
+          {view === 'week' ? 'Week' : 'Month'} average ({avg.days} day{avg.days === 1 ? '' : 's'} planned):{' '}
+          <Macros short n={avg.perDay} /> per day · target {r0(settings.dayKcalMin)}–{r0(settings.dayKcalMax)}
         </div>
       </header>
 
-      {days.map((d) => {
+      {view === 'month' && (
+        <MonthGrid weeks={weeks} month={month} today={today} entries={entries} settings={settings} onPickDay={openWeek} />
+      )}
+
+      {view === 'week' && <div className="week-grid">{days.map((d) => {
         const dayEntries = entries.filter((e) => e.date === d);
         const t = sumEntries(dayEntries);
         return (
@@ -64,13 +121,58 @@ export function PlanTab() {
             ))}
           </section>
         );
-      })}
+      })}</div>}
 
-      <button onClick={() => setCopying(true)}>Copy a day's breakfast & snacks to other days…</button>
+      {view === 'week' && <button onClick={() => setCopying(true)}>Copy a day's breakfast & snacks to other days…</button>}
 
       {adding && <AddEntry date={adding.date} slot={adding.slot} onClose={() => setAdding(null)} />}
       {copying && <CopyRoutine days={days} onClose={() => setCopying(false)} />}
     </main>
+  );
+}
+
+/** Month overview: each day's calories and its lunch/dinner. Tap a day to plan that week. */
+function MonthGrid({ weeks, month, today, entries, settings, onPickDay }: {
+  weeks: string[][];
+  month: string;
+  today: string;
+  entries: CalendarEntry[];
+  settings: typeof DEFAULT_SETTINGS;
+  onPickDay: (d: string) => void;
+}) {
+  const inMonth = month.slice(0, 7);
+  return (
+    <div className="month">
+      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
+        <div key={d} className="month-dow">{d}</div>
+      ))}
+      {weeks.flat().map((d) => {
+        const dayEntries = entries.filter((e) => e.date === d);
+        const t = sumEntries(dayEntries);
+        const meals = dayEntries.filter((e) => e.slot === 'lunch' || e.slot === 'dinner');
+        const level = t.kcal < settings.dayKcalMin ? 'low' : t.kcal > settings.dayKcalMax ? 'high' : 'ok';
+        return (
+          <button
+            key={d}
+            className={`month-day ${d.startsWith(inMonth) ? '' : 'other'} ${d === today ? 'today' : ''}`}
+            onClick={() => onPickDay(d)}
+          >
+            <span className="month-num">{Number(d.slice(8))}</span>
+            {dayEntries.length > 0 && (
+              <>
+                <span className={`month-kcal ${level}`}>{r0(t.kcal)}</span>
+                <span className="month-p">{r0(t.protein)} g</span>
+                <span className="month-meals">
+                  {meals.map((e) => (
+                    <span key={e.id}>{e.label.split(' + ')[0]}</span>
+                  ))}
+                </span>
+              </>
+            )}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

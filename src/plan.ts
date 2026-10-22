@@ -33,6 +33,29 @@ export function weekStart(s: string): string {
 
 export const weekDays = (start: string) => Array.from({ length: 7 }, (_, i) => addDays(start, i));
 
+/** First day of the month containing `s`. */
+export const monthStart = (s: string) => `${s.slice(0, 7)}-01`;
+
+/** Same day-of-month n months later, clamped to the 1st (we only use it on month starts). */
+export function addMonths(s: string, n: number): string {
+  const d = parseDate(monthStart(s));
+  d.setMonth(d.getMonth() + n);
+  return isoDate(d);
+}
+
+/** Whole weeks (Monday first) covering the month that contains `s`, for a month grid. */
+export function monthWeeks(s: string): string[][] {
+  const first = monthStart(s);
+  const next = addMonths(first, 1);
+  const weeks: string[][] = [];
+  for (let w = weekStart(first); w < next; w = addDays(w, 7)) weeks.push(weekDays(w));
+  return weeks;
+}
+
+export function monthLabel(s: string): string {
+  return parseDate(s).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+}
+
 export function dayLabel(s: string): string {
   return parseDate(s).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
 }
