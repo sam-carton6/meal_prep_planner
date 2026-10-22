@@ -10,14 +10,16 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 **On `staging`, not live yet:** a rough pass on all of version 1 (20 Oct 2026, night): Plan (calendar), Cook
 (batches, stock, cook list), Recipes, Shop (grocery list), More (ingredients, My foods, targets, backup, import).
 Tested in the PC browser at phone size: import, scaling a batch, starch suggestion, calendar, grocery list.
-Plus (21 Oct): calendar week/month toggle, and a wide layout on the PC (week = 7 columns, month grid).
+Plus (21 Oct): calendar week/month toggle, wide PC layout; Drained/whole-can switch on cans; saved pots for
+weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPhone 17 width (402 px).
 **Next up:** Sam tries https://staging-meal-prep-planner.samcarton6.workers.dev on his phone and answers *Check with Sam* below; then polish.
 
 ## Check with Sam (decisions made during the rough pass)
 
 - Chicken thigh: import uses USDA SR Legacy (121 kcal/100 g, matches his old numbers); USDA Foundation says 149.
-- Canned beans: USDA "solids and liquid" vs drained differ a lot (great northern: 485 kcal per can vs his 315).
-  Which does he count? Fix the match in `src/import-recipes.ts` or edit the recipe.
+- Canned beans: now a Drained switch per can (Sam usually drains; chili used whole cans). Drained can ≈ 60% of the
+  can's weight (estimate). Great northern *whole can* still looks high (485 kcal): USDA has no "solids and liquid"
+  entry for it, so it uses the plain "canned" one. Check against the can's label.
 - "Bell peppers" taken as red, "whole" as USDA medium (119 g); sweet onion and garlic head sizes worked out from
   his old calories.
 - Starch suggestion aims at 700 kcal per container (More → Targets). Week average counts only days with something
@@ -33,7 +35,8 @@ Plus (21 Oct): calendar week/month toggle, and a wide layout on the PC (week = 7
   removed and re-added, not edited; no undo.
 - Later, maybe: find out why Cloudflare's automatic staging builds never ran (settings look right), so
   `npm run staging` isn't needed.
-- Start "My foods" with Sam's usual takeout (ask him which places).
+- Start "My foods" with Sam's usual takeout (ask him which places). Breakfast: Naked Mass chocolate shake, ~150 g
+  per breakfast with his old scoop; Sam adds it from the label (serving 333 g = 4 scoops) and will weigh a scoop.
 - Only the calendar uses the PC's width so far; the other screens are still a phone-width column on the PC.
 
 ## Ideas (later)

@@ -186,10 +186,12 @@ export function askCustomUnit(): UnitOption | null {
   return grams && grams > 0 ? { unit: label.trim(), gramsPerUnit: grams } : null;
 }
 
-export function FoodPicker({ onPick, onClose, title = 'Add ingredient' }: {
+export function FoodPicker({ onPick, onClose, title = 'Add ingredient', inline = false }: {
   onPick: (p: PickedFood) => void;
   onClose: () => void;
   title?: string;
+  /** Show inside the current page instead of as its own full-screen page. */
+  inline?: boolean;
 }) {
   const { index, foods } = useFoods();
   const custom = useLiveQuery(() => db.customFoods.toArray(), []) ?? [];
@@ -197,11 +199,11 @@ export function FoodPicker({ onPick, onClose, title = 'Add ingredient' }: {
   const customIndex = useMemo(() => buildIndex(custom), [custom]);
   const usdaHits = useMemo(() => search(index, q, 40), [index, q]);
   const customHits = useMemo(() => (q.trim() ? search(customIndex, q, 10) : custom.slice(0, 10)), [customIndex, custom, q]);
-  return (
-    <Sheet title={title} onClose={onClose}>
+  const body = (
+    <>
       <input
         type="search"
-        autoFocus
+        autoFocus={!inline}
         placeholder="Search ingredients and My foods"
         value={q}
         onChange={(e) => setQ(e.target.value)}
@@ -232,6 +234,7 @@ export function FoodPicker({ onPick, onClose, title = 'Add ingredient' }: {
           </li>
         ))}
       </ul>
-    </Sheet>
+    </>
   );
+  return inline ? body : <Sheet title={title} onClose={onClose}>{body}</Sheet>;
 }

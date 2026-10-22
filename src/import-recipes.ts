@@ -6,6 +6,7 @@ import { newId } from './model';
 import { totals } from './recipe-math';
 import { gramsFromLabel, G_PER, unitOptions } from './units';
 import type { Food } from './usda';
+import { withDrainOptions } from './cans';
 
 interface OldIngredient {
   name: string;
@@ -62,6 +63,9 @@ export const USDA_MATCH: Record<string, number | null> = {
   'White rice, long grain': 168877, // dry
 };
 
+/** Cans Sam drained in his old recipes (he usually drains, but used whole cans in the chili; 21 Oct 2026). */
+const DRAINED_IN_OLD = new Set(['mexican-chicken-vegetables:Black beans, canned']);
+
 export interface ImportLine {
   name: string;
   matched: string; // USDA name or "My foods" / "note"
@@ -81,7 +85,7 @@ export interface ImportResult {
 
 const UNIT_WORDS: Record<string, string[]> = { whole: ['medium', 'whole'], medium: ['medium'], head: ['head'] };
 
-function toItem(ing: OldIngredient, foods: Map<number, Food>, customFoods: CustomFood[], optional = false) {
+function toItem(ing: OldIngredient, foods: Map<number, Food>, customFoods: CustomFood[], optional = false, drained = false) {
   const base = { id: newId(), name: ing.name, amount: ing.amount, unit: ing.unit, scaling: 'scale' as const, optional };
   const old = { kcal: ing.calories, protein: ing.protein_g };
 
@@ -122,7 +126,8 @@ function toItem(ing: OldIngredient, foods: Map<number, Food>, customFoods: Custo
   if (food) {
     item = { ...base, food: { kind: 'usda', id: food.id }, per100g: food.per100g, group: food.group, gramsPerUnit: 0 };
     item.gramsPerUnit = weightOf(food.per100g.kcal);
-    matched = food.name;
+    item = withDrainOptions(item, [...foods.values()], drained);
+    matched = item.drained ? `${item.drain!.drained.foodName} (drained, ~${item.gramsPerUnit} g per can)` : food.name;
   } else {
     // Not in USDA: keep Sam's numbers as a "My foods" entry.
     const gramsPerUnit = gramsFromLabel(ing.unit) ?? 100;
@@ -155,7 +160,7 @@ export function buildImport(file: OldFile, foodList: Food[], now = new Date().to
     const lines: ImportLine[] = [];
     const items: RecipeItem[] = [];
     for (const ing of r.ingredients) {
-      const { item, line } = toItem(ing, foods, out.customFoods);
+      const { item, line } = toItem(ing, foods, out.customFoods, false, DRAINED_IN_OLD.has(`${r.id}:${ing.name}`));
       items.push(item);
       lines.push(line);
     }

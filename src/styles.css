@@ -204,3 +204,13 @@ table.compare td { font-size: 0.8rem; vertical-align: top; }
   .tabs { justify-content: center; }
   .tabs button { flex: 0 1 140px; }
 }
+
+/* ---- Labelled fields: label above its box, two per row (fits an iPhone 17 at 402 px) ---- */
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; margin: 8px 0 2px; align-items: end; }
+.fields label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; color: var(--muted); }
+.fields input.num, .fields select, .fields input { width: 100%; text-align: left; }
+.fields button { margin: 0; }
+label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; }
+.recent { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 10px; }
+.recent .note { width: 100%; }
+.recent button { margin: 0; text-align: left; font-size: 0.85rem; }

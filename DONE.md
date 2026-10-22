@@ -2,6 +2,11 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-10-21 — calendar month view, drained cans, pots, recent breakfasts
+- Week/month toggle and a wide PC layout (4798132). Drained/whole-can switch (`src/cans.ts`, tested), saved pots
+  with empty weights, "Containers on hand" always editable, recent entries per slot, inline food search, labelled
+  two-column fields for the iPhone 17.
+
 ### 2026-10-20 — rough pass on version 1 (cd5fb5f, 3cb3200, 3021ce2)
 - Data model (`src/model.ts`), units and recipe maths, calendar/grocery maths, recipes.json import, all with tests
   (29). Screens: Plan, Cook, Recipes, Shop, More. On staging, not on the phone yet.

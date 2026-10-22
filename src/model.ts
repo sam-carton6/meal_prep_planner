@@ -43,6 +43,24 @@ export interface RecipeItem {
   scaling: 'scale' | 'fixed';
   /** Optional add-ons (e.g. cheddar on chili) are listed but not counted in the batch totals. */
   optional?: boolean;
+  /** Canned goods: the whole-can and drained versions (see cans.ts); `drained` says which one is in use. */
+  drain?: { whole: ItemVariant; drained: ItemVariant };
+  drained?: boolean;
+}
+
+/** One version of an ingredient (e.g. a can of beans drained), swapped in by a toggle. */
+export interface ItemVariant {
+  food: FoodRef;
+  foodName?: string;
+  per100g: Nutrition;
+  gramsPerUnit: number;
+}
+
+/** A pot or container with its empty weight, for "weigh the pot". */
+export interface Pot {
+  id: string;
+  name: string;
+  grams: number;
 }
 
 export interface Recipe {
@@ -123,6 +141,9 @@ export interface Settings {
   dayKcalMax: number; // 3000
   /** USDA ids / custom ids of things always in the pantry; hidden from grocery lists. */
   pantryStaples: string[];
+  /** Saved pots/containers and their empty weights; the last one used is picked first next time. */
+  pots: Pot[];
+  lastPotId?: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -134,6 +155,7 @@ export const DEFAULT_SETTINGS: Settings = {
   dayKcalMin: 2000,
   dayKcalMax: 3000,
   pantryStaples: [],
+  pots: [],
 };
 
 /** Grocery list tick marks, per list (keyed by its date range). */

@@ -29,7 +29,7 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 ## Checking work
 `npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
 then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`
-(tested); screens in `src/ui/`.
+(tested); screens in `src/ui/`. Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in

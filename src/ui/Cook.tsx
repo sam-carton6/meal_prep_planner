@@ -152,8 +152,6 @@ export function CookTab() {
 
 export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?: Recipe; onClose: () => void }) {
   const [b, setB] = useState(batch);
-  const [potTotal, setPotTotal] = useState<number | null>(null);
-  const [pot, setPot] = useState<number | null>(null);
   const [starchId, setStarchId] = useState('');
   const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   const starches = useLiveQuery(() => db.recipes.where('kind').equals('starch').toArray(), []) ?? [];
@@ -237,26 +235,16 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
         )}
       </div>
 
-      {!isStarch && (
-        <div className="card">
-          <div>
-            <b>Weigh the pot</b> (optional): weight per container
-          </div>
-          <div className="row">
-            Pot + food <Num value={potTotal} onChange={setPotTotal} placeholder="g" /> − empty pot{' '}
-            <Num value={pot} onChange={setPot} placeholder="g" />
-            <button
-              disabled={!potTotal}
-              onClick={() => setB({ ...b, cookedWeightG: (potTotal ?? 0) - (pot ?? 0) })}
-            >
-              Set
-            </button>
-          </div>
-          <div className="row">
-            Cooked food weight <Num value={b.cookedWeightG} onChange={(n) => setB({ ...b, cookedWeightG: n ?? undefined })} /> g
-          </div>
-        </div>
-      )}
+      <PotWeigher
+        cookedWeightG={b.cookedWeightG}
+        onChange={(g) => setB({ ...b, cookedWeightG: g })}
+        hint={isStarch ? 'cooked weight, for nutrition per 100 g cooked' : 'weight per container'}
+      />
+      {isStarch && b.cookedWeightG ? (
+        <p className="note">
+          Cooked: <Macros short n={times(s.total, 100 / b.cookedWeightG)} /> per 100 g
+        </p>
+      ) : null}
 
       {!isStarch && (
         <div className="card">
@@ -276,10 +264,22 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
         </div>
       )}
 
-      {b.status === 'cooked' && (
-        <div className="card row">
-          🧊 Fridge <Num value={b.fridge} onChange={(n) => setB({ ...b, fridge: Math.max(0, Math.round(n ?? 0)) })} />
-          ❄️ Freezer <Num value={b.freezer} onChange={(n) => setB({ ...b, freezer: Math.max(0, Math.round(n ?? 0)) })} />
+      {!isStarch && (
+        <div className="card">
+          <div>
+            <b>Containers on hand</b>
+            {b.status === 'planned' && <span className="note"> (plan it now, or set it after cooking)</span>}
+          </div>
+          <div className="fields">
+            <label>
+              🧊 Fridge
+              <Num value={b.fridge} onChange={(n) => setB({ ...b, fridge: Math.max(0, Math.round(n ?? 0)) })} />
+            </label>
+            <label>
+              ❄️ Freezer
+              <Num value={b.freezer} onChange={(n) => setB({ ...b, freezer: Math.max(0, Math.round(n ?? 0)) })} />
+            </label>
+          </div>
         </div>
       )}
 
@@ -291,7 +291,9 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
           Save
         </button>
         {b.status === 'planned' && (
-          <button onClick={() => save({ status: 'cooked', fridge: b.fridge || b.portions })}>Mark cooked</button>
+          <button onClick={() => save({ status: 'cooked', fridge: b.fridge + b.freezer ? b.fridge : b.portions })}>
+            Mark cooked
+          </button>
         )}
         {!isNew && (
           <button
@@ -326,6 +328,100 @@ function StarchHint({ dishKcal, dishProtein, starch, aim, containers }: {
       <div className="note">
         For all {containers}: cook{' '}
         {cook.filter((i) => i.amount !== null).map((i) => `${fmtAmount(Math.round(i.amount! * 4) / 4)} ${i.unit} ${i.name}`).join(', ')}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Weigh the pot: pick a saved pot (its empty weight is remembered), weigh pot + food, get the food's weight.
+ * Pots live in settings; the last one used is picked first next time.
+ */
+function PotWeigher({ cookedWeightG, onChange, hint }: {
+  cookedWeightG?: number;
+  onChange: (g: number | undefined) => void;
+  hint: string;
+}) {
+  const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
+  const [potId, setPotId] = useState<string | null>(null);
+  const [total, setTotal] = useState<number | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newGrams, setNewGrams] = useState<number | null>(null);
+
+  const chosenId = potId ?? settings.lastPotId ?? '';
+  const pot = settings.pots.find((p) => p.id === chosenId);
+  const apply = async (t: number | null, p = pot) => {
+    setTotal(t);
+    if (t !== null && t > 0) {
+      onChange(Math.max(0, t - (p?.grams ?? 0)));
+      if (p && p.id !== settings.lastPotId) await db.settings.put({ ...(await getSettings()), lastPotId: p.id });
+    }
+  };
+  const savePot = async () => {
+    if (!newName.trim() || !newGrams) return;
+    const s = await getSettings();
+    const p = { id: newId(), name: newName.trim(), grams: newGrams };
+    await db.settings.put({ ...s, pots: [...s.pots, p], lastPotId: p.id });
+    setPotId(p.id);
+    setAdding(false);
+    setNewName('');
+    setNewGrams(null);
+    if (total) onChange(Math.max(0, total - p.grams));
+  };
+
+  return (
+    <div className="card">
+      <div>
+        <b>Weigh the pot</b> <span className="note">(optional: {hint})</span>
+      </div>
+      <div className="fields">
+        <label>
+          Pot or container
+          <select
+            value={chosenId}
+            onChange={(e) => {
+              if (e.target.value === '__new') return setAdding(true);
+              setPotId(e.target.value);
+              const p = settings.pots.find((x) => x.id === e.target.value);
+              if (total) apply(total, p);
+            }}
+          >
+            <option value="">None</option>
+            {settings.pots.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name} ({r0(p.grams)} g)
+              </option>
+            ))}
+            <option value="__new">+ Save a new pot…</option>
+          </select>
+        </label>
+        <label>
+          {pot ? 'Pot + food (g)' : 'Food (g)'}
+          <Num value={total} onChange={(t) => apply(t)} placeholder="g" />
+        </label>
+      </div>
+      {adding && (
+        <div className="fields">
+          <label>
+            Pot name
+            <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="e.g. Big Dutch oven" />
+          </label>
+          <label>
+            Empty weight (g)
+            <Num value={newGrams} onChange={setNewGrams} placeholder="g" />
+          </label>
+          <button className="primary" disabled={!newName.trim() || !newGrams} onClick={savePot}>
+            Save pot
+          </button>
+          <button onClick={() => setAdding(false)}>Cancel</button>
+        </div>
+      )}
+      <div className="fields">
+        <label>
+          Cooked food weight (g)
+          <Num value={cookedWeightG} onChange={(g) => onChange(g ?? undefined)} placeholder="g" />
+        </label>
       </div>
     </div>
   );

@@ -223,6 +223,7 @@ function AddEntry({ date, slot, onClose }: { date: string; slot: Slot; onClose: 
   };
   return (
     <Sheet title={`${SLOT_NAMES[slot]} · ${dayLabel(date)}`} onClose={onClose}>
+      <Recent slot={slot} onSave={save} />
       <div className="seg">
         {(['prep', 'food', 'quick'] as Mode[]).map((m) => (
           <button key={m} className={mode === m ? 'on' : ''} onClick={() => setMode(m)}>
@@ -238,6 +239,29 @@ function AddEntry({ date, slot, onClose }: { date: string; slot: Slot; onClose: 
 }
 
 type SaveFn = (e: Omit<CalendarEntry, 'id' | 'date' | 'slot' | 'eaten'>) => Promise<void>;
+
+/** One-tap repeats: what was in this slot before (breakfast and snacks are usually the same). */
+function Recent({ slot, onSave }: { slot: Slot; onSave: SaveFn }) {
+  const recent = useLiveQuery(async () => {
+    const all = await db.calendar.orderBy('date').reverse().filter((e) => e.slot === slot).limit(60).toArray();
+    const seen = new Set<string>();
+    return all.filter((e) => (seen.has(e.label) ? false : (seen.add(e.label), true))).slice(0, 6);
+  }, [slot]);
+  if (!recent?.length) return null;
+  return (
+    <div className="recent">
+      <div className="note">Recent {SLOT_NAMES[slot].toLowerCase()}</div>
+      {recent.map((e) => (
+        <button key={e.id} onClick={() => onSave({ label: e.label, nutrition: e.nutrition, source: e.source })}>
+          {e.label}
+          <span className="chip-n">
+            {r0(e.nutrition.kcal)} kcal · {r0(e.nutrition.protein)} g
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function AddPrep({ onSave }: { onSave: SaveFn }) {
   const batches = useLiveQuery(() => db.batches.toArray(), []) ?? [];
@@ -328,7 +352,7 @@ function AddFood({ onSave, onCancel }: { onSave: SaveFn; onCancel: () => void })
   const [amount, setAmount] = useState<number | null>(1);
   const [unitName, setUnitName] = useState<string>('');
   if (!picked) {
-    return <FoodPicker title="Pick a food" onClose={onCancel} onPick={(p) => { setPicked(p); setUnitName(p.units[0].unit); }} />;
+    return <FoodPicker inline title="Pick a food" onClose={onCancel} onPick={(p) => { setPicked(p); setUnitName(p.units[0].unit); }} />;
   }
   return <FoodAmount picked={picked} amount={amount} setAmount={setAmount} unitName={unitName} setUnitName={setUnitName} onSave={onSave} onBack={() => setPicked(null)} />;
 }

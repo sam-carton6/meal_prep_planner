@@ -4,7 +4,8 @@ import { useState } from 'react';
 import type { RecipeItem } from '../model';
 import { itemGrams, itemNutrition } from '../recipe-math';
 import { fmtWeight } from '../units';
-import { askCustomUnit, FoodPicker, itemFromPicked, Num, r0, useUnitsFor } from './shared';
+import { setDrained, withDrainOptions } from '../cans';
+import { askCustomUnit, FoodPicker, itemFromPicked, Num, r0, useFoods, useUnitsFor } from './shared';
 
 export function ItemRow({
   item,
@@ -22,8 +23,12 @@ export function ItemRow({
   showScaling?: boolean;
 }) {
   const units = useUnitsFor(item);
+  const { foods } = useFoods();
   const n = itemNutrition(item);
   const [open, setOpen] = useState(false);
+  const [changing, setChanging] = useState(false);
+  // Cans of beans etc.: offer whole can vs drained when USDA has both.
+  const canItem = item.drain ? item : foods && /^can/i.test(item.unit) ? withDrainOptions(item, foods) : item;
   return (
     <div className={`item ${item.optional ? 'optional' : ''}`}>
       <div className="item-top">
@@ -64,6 +69,16 @@ export function ItemRow({
               <option value="__custom">other size…</option>
             </select>
             <span className="note">{fmtWeight(itemGrams(item))}</span>
+            {canItem.drain && (
+              <label className="drain">
+                <input
+                  type="checkbox"
+                  checked={!!item.drained}
+                  onChange={(e) => onChange(setDrained(canItem, e.target.checked))}
+                />{' '}
+                Drained
+              </label>
+            )}
           </>
         )}
       </div>
@@ -90,12 +105,34 @@ export function ItemRow({
             />{' '}
             Optional add-on (not in totals)
           </label>
+          {item.amount !== null && <button onClick={() => setChanging(true)}>Change food (keep amount)…</button>}
           {onRemove && (
             <button className="danger" onClick={onRemove}>
               Remove
             </button>
           )}
         </div>
+      )}
+      {changing && (
+        <FoodPicker
+          title={`Replace ${item.name}`}
+          onClose={() => setChanging(false)}
+          onPick={(p) => {
+            // Keep the amount; keep the unit if the new food has it, else fall back to its first sensible unit.
+            const fresh = itemFromPicked(p);
+            const same = p.units.find((u) => u.unit === item.unit);
+            onChange({
+              ...fresh,
+              id: item.id,
+              name: item.name,
+              amount: item.amount,
+              scaling: item.scaling,
+              optional: item.optional,
+              ...(same ? { unit: same.unit, gramsPerUnit: same.gramsPerUnit } : {}),
+            });
+            setChanging(false);
+          }}
+        />
       )}
     </div>
   );
