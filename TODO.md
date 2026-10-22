@@ -36,7 +36,8 @@ weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPh
 - Later, maybe: find out why Cloudflare's automatic staging builds never ran (settings look right), so
   `npm run staging` isn't needed.
 - Start "My foods" with Sam's usual takeout (ask him which places). Breakfast: Naked Mass chocolate shake, ~150 g
-  per breakfast with his old scoop; Sam adds it from the label (serving 333 g = 4 scoops) and will weigh a scoop.
+  per breakfast. Label: 333 g (about 7 scoops) = 1,360 kcal, 50 g protein, 251 g carbs, 15 g fat; 150 g ≈ 613 kcal,
+  22.5 g protein. Sam adds it in My foods and will send his old scoop's weight.
 - Only the calendar uses the PC's width so far; the other screens are still a phone-width column on the PC.
 
 ## Ideas (later)
