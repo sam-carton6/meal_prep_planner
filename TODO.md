@@ -10,7 +10,7 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 **On `staging`, not live yet:** a rough pass on all of version 1 (20 Oct 2026, night): Plan (calendar), Cook
 (batches, stock, cook list), Recipes, Shop (grocery list), More (ingredients, My foods, targets, backup, import).
 Tested in the PC browser at phone size: import, scaling a batch, starch suggestion, calendar, grocery list.
-**Next up:** Sam tries the staging preview link on his phone and answers *Check with Sam* below; then polish.
+**Next up:** Sam tries https://staging-meal-prep-planner.samcarton6.workers.dev on his phone and answers *Check with Sam* below; then polish.
 
 ## Check with Sam (decisions made during the rough pass)
 
@@ -30,6 +30,8 @@ Tested in the PC browser at phone size: import, scaling a batch, starch suggesti
   My foods, quick add, "other size…" (can sizes). None of these were tried yet.
 - Rough edges: changing the bought weight in a batch resets hand-edited lines; calendar entries can only be
   removed and re-added, not edited; no undo.
+- Later, maybe: find out why Cloudflare's automatic staging builds never ran (settings look right), so
+  `npm run staging` isn't needed.
 - Start "My foods" with Sam's usual takeout (ask him which places).
 
 ## Ideas (later)

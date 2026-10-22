@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "usda": "node scripts/build-usda.mjs",
-    "icons": "node scripts/make-icons.mjs"
+    "icons": "node scripts/make-icons.mjs",
+    "staging": "npm run build && wrangler versions upload --preview-alias staging",
+    "dev:phone": "vite --host"
   },
   "dependencies": {
     "dexie": "^4.4.6",
