@@ -1,11 +1,17 @@
+---
+modules: [software]
+status: active
+summary: A recipe, meal prep and calorie tracking web app for the iPhone home screen.
+runs: cloudflare
+live: https://meal-prep-planner.samcarton6.workers.dev
+showcase: no
+---
 # Meal Prep Planner
 
 A personal recipe, meal prep and calorie tracking app: log batch recipes, split them into portions, and see
 calories and protein per portion, planned on a calendar. A web app (PWA) installed to the iPhone home screen.
 
-**Status:** version 1 rough pass on `staging` (calendar, recipes, batches, grocery list); `main` has the ingredient
-search. The plan is in
-[PROJECT_BRIEF.md](PROJECT_BRIEF.md).
+The plan is in [PROJECT_BRIEF.md](PROJECT_BRIEF.md).
 
 ## Run it
 
