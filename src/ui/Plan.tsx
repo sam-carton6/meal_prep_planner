@@ -835,7 +835,8 @@ function CopyRoutine({ days, onClose }: { days: string[]; onClose: () => void })
         className="primary"
         disabled={!source.length}
         onClick={async () => {
-          const rows = to.filter((d) => d !== from).flatMap((d) => source.map((e) => ({ ...e, id: newId(), date: d, eaten: false })));
+          const fresh = (e: CalendarEntry): CalendarEntry['source'] => (e.source.kind === 'dish' ? (({ batchId: _b, ...rest }) => rest)(e.source) : e.source);
+          const rows = to.filter((d) => d !== from).flatMap((d) => source.map((e) => ({ ...e, id: newId(), date: d, eaten: false, source: fresh(e) })));
           await db.calendar.bulkAdd(rows);
           onClose();
         }}

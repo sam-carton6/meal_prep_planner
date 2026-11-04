@@ -7,20 +7,41 @@ under *Ideas (later)*; ask before building one.
 
 **Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
 Hosted at https://meal-prep-planner.samcarton6.workers.dev.
-**On `staging`, not live yet:** a rough pass on all of version 1 (20 Oct 2026, night): Plan (calendar), Cook
-(batches, stock, cook list), Recipes, Shop (grocery list), More (ingredients, My foods, targets, backup, import).
-Tested in the PC browser at phone size: import, scaling a batch, starch suggestion, calendar, grocery list.
-Plus (21 Oct): calendar week/month toggle, wide PC layout; Drained/whole-can switch on cans; saved pots for
-weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPhone 17 width (402 px).
-**Next up (3 Nov):** Sam tried it: works but fiddly. Rework around a *meal bank* dragged onto the calendar, with
-cooking and shopping worked out from the plan. Agreed: tap card → tap slots on the phone (drag on PC), Sam sets
-cook days, mockup first: https://staging-meal-prep-planner.samcarton6.workers.dev/mockup.html (fake data).
-Verdict (3 Nov): mockup "feels way better". Build a hybrid: the mockup's
-meal bank + paint-in calendar, inside the existing app keeping its bottom tab bar and its breadth (Cook, Recipes,
-Shop, More). Next chat: confirm "bar at the bottom" = the tab bar, then estimate and build. Recipes/foods come in via
-[RECIPE-IMPORT.md](RECIPE-IMPORT.md) (claude.ai prompt → JSON → import).
+**On `staging`, not live yet:** version 1 (Oct 2026) plus the *hybrid* built 4 Nov 2026 (night, cloud session).
 
-## Check with Sam (decisions made during the rough pass)
+**4 Nov summary, in plain words.**
+- *Done:* (1) Plan tab: meal bank of cards from your real recipes and foods, tweak − / + on a card, tap a card then
+  tap slots (or drag on the PC), tap a meal to change/eat/remove it, ○ to mark eaten. "+ cook" on a day sets a
+  cook day; the app shows what it makes, who it feeds, spare containers, what to freeze, and warns about meals with
+  no cook day. (2) More → Import recipes & foods (file or pasted claude.ai reply), with a review where you can fix
+  any USDA match; fixes are remembered. (3) My foods with extra units (scoop = 55 g). (4) More → Look up a
+  packaged food (Open Food Facts, name or barcode number). (5) Cook, Recipes, Shop and More use the PC's width.
+- *Tested:* 63 automatic tests pass; the build passes; every screen driven in a browser at iPhone 17 size
+  (402 × 874) and PC size (1440 × 900) with your imported recipes; the database upgrade tested with data saved by
+  the previous version (planned meals, eaten meals, stock and My foods all survived).
+- *Not tested:* on your actual iPhone (tapping, scrolling the meal bank, the file picker for import); Open Food
+  Facts for real (the cloud machine couldn't reach it, so it's tested against sample replies only); the staging
+  link (not updated: run `npm run staging` on the PC once these commits are on GitHub).
+- *Pushing:* GitHub refused the cloud session's pushes (no access for this session), so the commits may not be on
+  GitHub yet. If `git log origin/staging` on the PC doesn't show "Wide-screen layouts…", they didn't arrive.
+- *For you to decide:* see the 4 Nov items under *Check with Sam* below.
+
+## Check with Sam (decisions made during the rough pass and the 4 Nov build)
+
+- (4 Nov) Freezer rule: containers eaten **more than 4 days** after the cook day are marked ❄️ freeze. Right number?
+- (4 Nov) "Mark cooked" on a cook day now fills in fridge/freezer by itself from the plan (eaten ones taken off,
+  ❄️ ones in the freezer). Change them on the batch if they're wrong.
+- (4 Nov) Spare containers (e.g. for your girlfriend) are just shown as "spare"; there's no way to plan them for
+  someone else. Fine, or do you want a "not me" slot that doesn't count in your calories?
+- (4 Nov) The meal bank makes a card for every dish + every starch. With many recipes the strip gets long; a
+  filter (Meals / Foods) or hiding cards could come later. Tell me if it's too much.
+- (4 Nov) Import: a recipe or food with the same name as one in the app defaults to **Replace** (past batches keep
+  their own amounts). "Keep both" and "Skip" are in the same box.
+- (4 Nov) Import matching will get some wrong (e.g. "Rice, white, long grain, dry" → parboiled rice; "chicken
+  broth" → bouillon cubes). Tap *change* once and the app remembers it.
+- (4 Nov) Open Food Facts: a label serving like "4 scoops (333 g)" adds a "scoop" unit (83 g) by itself. Your own
+  scoop is 55 g, so edit it in My foods if you use the looked-up version instead of the imported one.
+- (4 Nov) Shop's dates start today, so a cook day earlier this week that's still "planned" isn't on the list.
 
 - Chicken thigh: import uses USDA SR Legacy (121 kcal/100 g, matches his old numbers); USDA Foundation says 149.
 - Canned beans: now a Drained switch per can (Sam usually drains; chili used whole cans). Drained can ≈ 60% of the
@@ -35,16 +56,18 @@ Shop, More). Next chat: confirm "bar at the bottom" = the tab bar, then estimate
 
 ## To do
 
-- Try on the phone (staging link): backup via the share sheet, ticking meals eaten, copy breakfast/snacks,
-  My foods, quick add, "other size…" (can sizes). None of these were tried yet.
-- Rough edges: changing the bought weight in a batch resets hand-edited lines; calendar entries can only be
-  removed and re-added, not edited; no undo.
+- Try on the phone (staging link): the meal bank (tap card → tap slots → Done), − / + on cards, cook days, tapping
+  a meal, Import (file picker and paste), Look up a packaged food; plus the older backup via the share sheet, copy
+  breakfast/snacks, quick add, "other size…" (can sizes). None of these were tried on the phone yet.
+- Rough edges: changing the bought weight in a batch resets hand-edited lines; on the phone a meal can't be moved
+  to another day (remove and place again; the PC can drag it); Undo only covers the meals placed in the current
+  round.
 - Later, maybe: find out why Cloudflare's automatic staging builds never ran (settings look right), so
   `npm run staging` isn't needed.
 - Start "My foods" with Sam's usual takeout (ask him which places). Breakfast: Naked Mass chocolate shake, ~150 g
-  per breakfast; his scoop = 55 g (so ~3 scoops; label says 333 g ≈ 7 scoops). Label: 333 g (about 7 scoops) = 1,360 kcal, 50 g protein, 251 g carbs, 15 g fat; 150 g ≈ 613 kcal,
+  per breakfast; his scoop = 55 g (so ~3 scoops; label says 333 g ≈ 7 scoops). Easiest now: the RECIPE-IMPORT.md
+  example already has it with the 55 g scoop (More → Import), or My foods → + Add a food → Other units. Label: 333 g (about 7 scoops) = 1,360 kcal, 50 g protein, 251 g carbs, 15 g fat; 150 g ≈ 613 kcal,
   22.5 g protein. Sam adds it in My foods and will send his old scoop's weight.
-- Only the calendar uses the PC's width so far; the other screens are still a phone-width column on the PC.
 
 ## Ideas (later)
 
@@ -61,6 +84,10 @@ separate workout app sharing data with this one.
 
 - Plan your meals on a calendar (breakfast, lunch, dinner, snacks): week or month view, day totals, averages.
   On the PC the week shows as 7 columns.
+- A meal bank: tap a meal, then tap the days you'll eat it (drag on the PC); tweak servings, rice and scoops on the
+  card. Set cook days and see what each one makes, what's spare, what to freeze and what's missing.
+- Import recipes and foods from a claude.ai chat (More → Import); look up packaged foods by name or barcode.
+- My foods in your own units (scoops...). Every tab uses the PC's width.
 - Recipes that scale from what you bought, containers from your protein target, weight per container.
 - Rice/pasta per container, and how much to cook for the containers you've planned.
 - Fridge/freezer counts, a cook list, and one grocery list by aisle with tick boxes.

@@ -2,6 +2,22 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — wide layouts for the other tabs (f59d539)
+- Cook (two columns), Recipes (dishes | starches), Shop (aisles in up to three columns), More (tile grid) at ≥ 900 px.
+
+### 2026-11-04 — Open Food Facts lookup (486134f)
+- More → Look up a packaged food: name or barcode number, label per 100 g / per serving, save picked ones to My
+  foods (auto "scoop"-style unit from the label serving). `src/off.ts` tested against sample replies (the site
+  wasn't reachable from the cloud machine).
+
+### 2026-11-04 — import recipes & foods in the app (d70c0a1)
+- More → Import recipes & foods: RECIPE-IMPORT.md format from a file or a pasted reply; USDA matching (learned
+  fixes → known names → search), review with "change", Replace/Keep both/Skip for same names, foods into My foods.
+  `src/import-file.ts` tested with the real USDA list. Search: whole words beat prefixes, better plurals.
+
+### 2026-11-04 — My foods: extra units (9b1d722)
+- Units like scoop = 55 g on a custom food (needs serving weight); usable in recipes, the "+" search and the bank.
+
 ### 2026-11-04 — meal bank + paint-in calendar, cook days (0472730)
 - Plan tab: meal bank cards from the real data (dishes, dish + starch, My foods, recent foods), tweakable in place;
   tap card → tap slots (phone), drag and drop (PC); tap a meal to change/eat/remove it. Cook days ("+ cook")

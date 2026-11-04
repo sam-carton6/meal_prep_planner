@@ -29,7 +29,9 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 ## Checking work
 `npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
 then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`,
-`src/cookdays.ts` (what each cook day feeds) and `src/bank.ts` (meal bank cards), all tested; screens in `src/ui/`. Sam's phone is an iPhone 17: check layouts at 402 × 874.
+`src/cookdays.ts` (what each cook day feeds), `src/bank.ts` (meal bank cards), `src/import-file.ts` (RECIPE-IMPORT
+format) and `src/off.ts` (Open Food Facts), all tested; screens in `src/ui/`. Open Food Facts is the only thing that
+goes online (search words or barcode only). Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
@@ -57,7 +59,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   grams alongside; grocery list has checkboxes, hides pantry staples, groups by aisle.
 - Rework agreed 3 Nov 2026 (first pass was "fiddly"): a *meal bank* of tweakable meal cards placed on the
   calendar. Phone: tap a card, then tap slots; PC: drag and drop. **Sam sets cook days himself**; the app derives
-  portions, freezer hints and shopping from the plan + cook days. Clickable mockup first (`public/mockup.html`).
+  portions, freezer hints and shopping from the plan + cook days. Clickable mockup first (`public/mockup.html`,
+  removed 4 Nov once the real Plan tab replaced it).
   Recipes/foods arrive via [RECIPE-IMPORT.md](RECIPE-IMPORT.md); packaged foods looked up on Open Food Facts.
 - Hybrid built 4 Nov 2026: the meal bank + paint-in calendar live on the Plan tab, inside the real app with its
   tab bar. A planned container points at its *recipe*; the latest cook day of that recipe on or before it feeds
