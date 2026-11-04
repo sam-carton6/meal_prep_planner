@@ -324,3 +324,15 @@ table.label caption { caption-side: bottom; text-align: left; padding-top: 4px; 
 .bank-card .sugg { display: none; }
 .bank-card.on .sugg { display: flex; }
 @media (min-width: 900px) { .bank-card .sugg { display: flex; } }
+
+/* Pantry (Nov 2026) */
+.pantry-list { list-style: none; padding: 0; margin: 8px 0; }
+.pantry-list li { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); padding: 6px 0; }
+.pantry-list .name { flex: 1; }
+.pantry-list li.low .name { color: var(--warn); }
+.pchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pchip { margin: 0; }
+button.warn { color: var(--warn); border-color: var(--warn); }
+.pantry-check .grocery > span:first-child { flex: 1; }
+.pantry-check .grocery .row { flex-wrap: nowrap; gap: 12px; }
+button.link.muted { color: var(--muted); }

@@ -30,8 +30,12 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 "750 kcal: 1½ cup rice"); the eaten circle removed from the calendar; Sam's recipes in `data/meals.json` (7 dishes,
 rice, salad as a side) with a recipe book (`npm run book` → /recipe-book.html); containers start from each recipe's
 own count (e.g. 5); import fixes (typical sizes, My foods by name, better names). Tortilla label added (80 kcal per 28 g tortilla; quesadillas ≈ 836 kcal, 58 g protein per container).
-**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); whether to build
-"repeat a week" next.
+**Even later on 4 Nov (Sam's routine: shop Saturday, prep, cook Sunday, eat Mon–Fri, weekends on his own):**
+added *Repeat this week…* (Plan tab: copies 7 days of meals + cook days to the next N weeks, starting on the cook
+day; only empty slots), Shop *by week* (Saturday–Friday, ‹ › to look ahead; "Pick dates" for any range;
+shopping day changeable), and a *Pantry* (More → Pantry or Shop → Pantry: spices, sauces, rice, oats; kept off
+the list, shown as "check you have enough", "running low" puts it under Restock).
+**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); trying these on the phone.
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 
@@ -40,9 +44,12 @@ own count (e.g. 5); import fixes (typical sizes, My foods by name, better names)
   ❄️ ones in the freezer). Change them on the batch if they're wrong.
 - (4 Nov) Spare containers (e.g. for your girlfriend) are just shown as "spare"; there's no way to plan them for
   someone else. Fine, or do you want a "not me" slot that doesn't count in your calories?
-- (4 Nov) For 1–3 month planning: "repeat this week for the next N weeks" would save a lot of tapping. Build it?
-- (4 Nov) Shopping for 1–3 months can't be one trip (fresh veg). Shop already takes a date range per trip; a
-  "split by cook day / by week" view could make it one tap. Wanted?
+- (4 Nov) Repeat a week copies cook days at the size of the original (e.g. Mexican chicken makes 8, he plans 5:
+  3 spare every week). Fine, or should copies shrink to what's planned?
+- (4 Nov) With a Sunday cook day, Friday's container is 5 days out, so it's marked ❄️ freeze (rule: > 4 days).
+  Matches "froze some"; change FRIDGE_DAYS if Friday from the fridge is fine for him.
+- (4 Nov) Pantry suggestions come from recipe ingredients (spices, oils, spoon amounts, rice/oats). Chicken broth,
+  canned tomatoes etc. are left on the list unless he taps "in pantry".
 - (4 Nov) Weekends / eating out: leave them empty (the averages only count days with something planned) or add a
   rough quick entry like "Eating out ~1,200". Either works with "trend over precision".
 - (4 Nov) The meal bank makes a card for every dish + every starch. With many recipes the strip gets long; a

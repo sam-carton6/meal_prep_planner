@@ -25,6 +25,7 @@ import { baseName, buildCards, cardEntry, cardSuggestions, cardTweaks, dishSugge
 import { coverage, dishLabel, entryPortions, type Coverage, type CookDayInfo, FRIDGE_DAYS, liveEntries } from '../cookdays';
 import { add, batchSummary, perYieldUnit, times } from '../recipe-math';
 import { fmtAmount } from '../units';
+import { repeatStart, repeatWeek } from '../repeat';
 import { BatchEditor, newBatchFor } from './Cook';
 import { customAsPicked, FoodPicker, Macros, Num, r0, Sheet, useUnitsFor, type PickedFood } from './shared';
 
@@ -63,6 +64,7 @@ export function PlanTab() {
   const [cookOn, setCookOn] = useState<string | null>(null);
   const [editBatch, setEditBatch] = useState<Batch | null>(null);
   const [copying, setCopying] = useState(false);
+  const [repeating, setRepeating] = useState(false);
 
   const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   // Everything is small (one person's plan), so load it all: cook days feed meals across weeks.
@@ -232,7 +234,12 @@ export function PlanTab() {
         <CookPanel from={view === 'week' ? days[0] : month} to={view === 'week' ? days[6] : addDays(addMonths(month, 1), -1)}
           cov={cov} live={live} recipes={recipes} onOpen={setEditBatch} onCook={setCookOn} />
 
-        {view === 'week' && <button onClick={() => setCopying(true)}>Copy a day's breakfast & snacks to other days…</button>}
+        {view === 'week' && (
+          <div className="row">
+            <button onClick={() => setRepeating(true)}>Repeat this week…</button>
+            <button onClick={() => setCopying(true)}>Copy a day's breakfast & snacks to other days…</button>
+          </div>
+        )}
       </main>
 
       <MealBank
@@ -265,6 +272,10 @@ export function PlanTab() {
       )}
       {editBatch && <BatchEditor batch={editBatch} recipe={recipeById.get(editBatch.recipeId)} onClose={() => setEditBatch(null)} />}
       {copying && <CopyRoutine days={days} onClose={() => setCopying(false)} />}
+      {repeating && (
+        <RepeatWeek monday={days[0]} entries={allEntries ?? []} batches={batches} onClose={() => setRepeating(false)}
+          onDone={(weeks) => { setRepeating(false); setStart(addDays(start, 7 * weeks)); }} />
+      )}
     </div>
   );
 }
@@ -870,6 +881,103 @@ function CopyRoutine({ days, onClose }: { days: string[]; onClose: () => void })
         }}
       >
         Copy
+      </button>
+    </Sheet>
+  );
+}
+
+/**
+ * Repeat a week: copy 7 days (meals and cook days) to the next N weeks. Starts on the cook day before the week
+ * shown when there is one (cook Sunday, eat Monday–Friday copies as one piece). Only empty slots are filled.
+ */
+function RepeatWeek({ monday, entries, batches, onClose, onDone }: {
+  monday: string;
+  entries: CalendarEntry[];
+  batches: Batch[];
+  onClose: () => void;
+  onDone: (weeks: number) => void;
+}) {
+  const [start, setStart] = useState(() => repeatStart(monday, batches));
+  const [weeks, setWeeks] = useState(4);
+  const [added, setAdded] = useState<{ entries: string[]; batches: string[]; weeks: number } | null>(null);
+  const preview = useMemo(() => repeatWeek(entries, batches, start, weeks, () => ''), [entries, batches, start, weeks]);
+  const options = Array.from({ length: 7 }, (_, i) => addDays(monday, i - 1));
+  const src = entries.filter((e) => e.date >= start && e.date <= addDays(start, 6));
+  const srcCooks = batches.filter((b) => b.cookDate >= start && b.cookDate <= addDays(start, 6));
+  const last = addDays(start, 7 * weeks + 6);
+
+  if (added) {
+    return (
+      <Sheet title="Repeat this week" onClose={onClose}>
+        <p>
+          Added {added.entries.length} meal{added.entries.length === 1 ? '' : 's'} and {added.batches.length} cook day
+          {added.batches.length === 1 ? '' : 's'}.
+        </p>
+        <div className="row">
+          <button className="primary" onClick={() => onDone(added.weeks)}>See next week</button>
+          <button onClick={onClose}>Stay here</button>
+          <button
+            className="danger"
+            onClick={async () => {
+              await db.transaction('rw', db.calendar, db.batches, async () => {
+                await db.calendar.bulkDelete(added.entries);
+                await db.batches.bulkDelete(added.batches);
+              });
+              onClose();
+            }}
+          >
+            Undo
+          </button>
+        </div>
+      </Sheet>
+    );
+  }
+
+  return (
+    <Sheet title="Repeat this week" onClose={onClose}>
+      <p className="note">
+        Copies 7 days of meals and cook days to the weeks after. Slots that already have something are left as they
+        are. Copies are planned: tick meals eaten and enter what you bought on each cook day as usual.
+      </p>
+      <label className="block">
+        The 7 days from{' '}
+        <select value={start} onChange={(e) => setStart(e.target.value)}>
+          {options.map((d) => (
+            <option key={d} value={d}>{dayLabel(d)}{batches.some((b) => b.cookDate === d) ? ' 🍳' : ''}</option>
+          ))}
+        </select>{' '}
+        to {dayLabel(addDays(start, 6))}
+      </label>
+      <p className="note">
+        {src.length} meal{src.length === 1 ? '' : 's'}
+        {srcCooks.length ? `, cook day${srcCooks.length > 1 ? 's' : ''}: ${srcCooks.map((b) => `${b.recipeName} (${dayLabel(b.cookDate)})`).join(', ')}` : ', no cook days'}
+      </p>
+      <div className="row">
+        For the next <Num value={weeks} onChange={(n) => setWeeks(Math.max(1, Math.min(13, Math.round(n ?? 1))))} /> weeks
+        <span className="note">(up to {dayLabel(last)})</span>
+      </div>
+      <p>
+        Adds <b>{preview.entries.length}</b> meal{preview.entries.length === 1 ? '' : 's'} and <b>{preview.batches.length}</b> cook day
+        {preview.batches.length === 1 ? '' : 's'}.
+        {preview.skippedSlots > 0 && <span className="note"> {preview.skippedSlots} slot{preview.skippedSlots > 1 ? 's' : ''} already planned: left alone.</span>}
+        {preview.skippedCooks > 0 && <span className="note"> {preview.skippedCooks} cook day{preview.skippedCooks > 1 ? 's' : ''} already there.</span>}
+      </p>
+      {srcCooks.length === 0 && src.some((e) => e.source.kind === 'dish' || e.source.kind === 'batch') && (
+        <p className="note warn">No cook day in these 7 days: the copied containers will need cook days (or pick the day you cook above).</p>
+      )}
+      <button
+        className="primary"
+        disabled={!preview.entries.length && !preview.batches.length}
+        onClick={async () => {
+          const r = repeatWeek(entries, batches, start, weeks, newId);
+          await db.transaction('rw', db.calendar, db.batches, async () => {
+            await db.calendar.bulkAdd(r.entries);
+            await db.batches.bulkAdd(r.batches);
+          });
+          setAdded({ entries: r.entries.map((e) => e.id), batches: r.batches.map((b) => b.id), weeks: 1 });
+        }}
+      >
+        Repeat
       </button>
     </Sheet>
   );

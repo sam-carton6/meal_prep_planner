@@ -29,7 +29,8 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 ## Checking work
 `npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
 then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`,
-`src/cookdays.ts` (what each cook day feeds), `src/bank.ts` (meal bank cards), `src/import-file.ts` (RECIPE-IMPORT
+`src/cookdays.ts` (what each cook day feeds), `src/bank.ts` (meal bank cards), `src/repeat.ts` (repeat a
+week), `src/pantry.ts`, `src/import-file.ts` (RECIPE-IMPORT
 format) and `src/off.ts` (Open Food Facts), all tested; screens in `src/ui/`. Open Food Facts is the only thing that
 goes online (search words or barcode only). Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
@@ -75,6 +76,9 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   Code → file + book updated and pushed → More → Import (Replace) in the app.
 - Containers: a dish's own `servings` (e.g. 5) sets how many containers a batch makes, scaled by the main
   ingredient bought; the 40 g protein split is only the fallback (Sam, 4 Nov 2026).
+- Sam's week (4 Nov 2026): shop Saturday, prep (cutting, marinades), cook Sunday for 5 weekday meals; weekends
+  he's on his own. So: Shop goes week by week from the shopping day (Sat), "repeat a week" starts on the cook
+  day, and a simple pantry (spices, sauces, rice, oats, beans) stays off the list until marked running low.
 - What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
   cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for
   someone else). He knows how to cook most things: amounts and how to divide them matter more than recipe steps.

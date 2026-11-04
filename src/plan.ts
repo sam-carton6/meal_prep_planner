@@ -31,6 +31,13 @@ export function weekStart(s: string): string {
   return addDays(s, -back);
 }
 
+/** The shopping week containing `s`: from the last `shopDay` (0 = Sunday … 6 = Saturday) on or before it, 7 days. */
+export function shopWeek(s: string, shopDay = 6): [string, string] {
+  const back = (parseDate(s).getDay() - shopDay + 7) % 7;
+  const from = addDays(s, -back);
+  return [from, addDays(from, 6)];
+}
+
 export const weekDays = (start: string) => Array.from({ length: 7 }, (_, i) => addDays(start, i));
 
 /** First day of the month containing `s`. */

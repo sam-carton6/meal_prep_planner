@@ -2,6 +2,13 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — repeat a week, shop by week, pantry
+- Plan → *Repeat this week…*: 7 days (from the cook day before the week, e.g. Sunday) of meals and cook days
+  copied to the next N weeks; filled slots and existing cook days left alone; Undo. `src/repeat.ts` (tested).
+- Shop goes week by week from the shopping day (Saturday by default, set on the Shop tab); "Pick dates" keeps any
+  range. Pantry (`src/pantry.ts`, tested; stored in settings, no database change): More → Pantry, suggestions from
+  recipes, "running low" → Restock section; pantry things the week uses listed as "check you have enough".
+
 ### 2026-11-04 — wide layouts for the other tabs (f59d539)
 - Cook (two columns), Recipes (dishes | starches), Shop (aisles in up to three columns), More (tile grid) at ≥ 900 px.
 

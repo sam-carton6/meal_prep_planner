@@ -1,4 +1,4 @@
-// More tab: ingredient lookup, My foods, targets, backup, and the one-time recipes.json import.
+// More tab: ingredient lookup, pantry, My foods, targets, backup, and the one-time recipes.json import.
 
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -13,13 +13,15 @@ import oldRecipes from '../../recipes.json';
 import { Macros, Num, r0, r1, Sheet, useFoods } from './shared';
 import { ImportFilePage } from './ImportFile';
 import { FoodLookup } from './FoodLookup';
+import { PantryPage } from './Pantry';
 
-type Page = 'ingredients' | 'myfoods' | 'lookup' | 'targets' | 'backup' | 'importfile' | 'import' | null;
+type Page = 'ingredients' | 'pantry' | 'myfoods' | 'lookup' | 'targets' | 'backup' | 'importfile' | 'import' | null;
 
 export function MoreTab() {
   const [page, setPage] = useState<Page>(null);
   const items: [Page, string, string][] = [
     ['ingredients', 'Ingredients', 'Look up any USDA ingredient'],
+    ['pantry', 'Pantry', 'Spices, sauces, rice, oats: kept off the shopping list until running low'],
     ['myfoods', 'My foods', 'Takeout, treats, and things USDA lacks'],
     ['lookup', 'Look up a packaged food', 'Search Open Food Facts by name or barcode number'],
     ['targets', 'Targets', 'Protein per meal, calories per meal and per day'],
@@ -43,6 +45,7 @@ export function MoreTab() {
         ))}
       </ul>
       {page === 'ingredients' && <Ingredients onClose={() => setPage(null)} />}
+      {page === 'pantry' && <PantryPage onClose={() => setPage(null)} />}
       {page === 'myfoods' && <MyFoods onClose={() => setPage(null)} />}
       {page === 'lookup' && <FoodLookup onClose={() => setPage(null)} />}
       {page === 'targets' && <Targets onClose={() => setPage(null)} />}
