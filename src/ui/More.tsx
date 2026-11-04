@@ -12,14 +12,16 @@ import { forGrams, SOURCE_NAMES, type Food } from '../usda';
 import oldRecipes from '../../recipes.json';
 import { Macros, Num, r0, r1, Sheet, useFoods } from './shared';
 import { ImportFilePage } from './ImportFile';
+import { FoodLookup } from './FoodLookup';
 
-type Page = 'ingredients' | 'myfoods' | 'targets' | 'backup' | 'importfile' | 'import' | null;
+type Page = 'ingredients' | 'myfoods' | 'lookup' | 'targets' | 'backup' | 'importfile' | 'import' | null;
 
 export function MoreTab() {
   const [page, setPage] = useState<Page>(null);
   const items: [Page, string, string][] = [
     ['ingredients', 'Ingredients', 'Look up any USDA ingredient'],
     ['myfoods', 'My foods', 'Takeout, treats, and things USDA lacks'],
+    ['lookup', 'Look up a packaged food', 'Search Open Food Facts by name or barcode number'],
     ['targets', 'Targets', 'Protein per meal, calories per meal and per day'],
     ['backup', 'Backup', 'Save everything to a file, or restore one'],
     ['importfile', 'Import recipes & foods', 'A file or pasted reply from claude.ai (see RECIPE-IMPORT.md)'],
@@ -42,6 +44,7 @@ export function MoreTab() {
       </ul>
       {page === 'ingredients' && <Ingredients onClose={() => setPage(null)} />}
       {page === 'myfoods' && <MyFoods onClose={() => setPage(null)} />}
+      {page === 'lookup' && <FoodLookup onClose={() => setPage(null)} />}
       {page === 'targets' && <Targets onClose={() => setPage(null)} />}
       {page === 'backup' && <Backup onClose={() => setPage(null)} />}
       {page === 'importfile' && <ImportFilePage onClose={() => setPage(null)} />}
@@ -95,6 +98,7 @@ function MyFoods({ onClose }: { onClose: () => void }) {
   const foods = useLiveQuery(() => db.customFoods.orderBy('name').toArray(), []) ?? [];
   const [q, setQ] = useState('');
   const [edit, setEdit] = useState<CustomFood | null>(null);
+  const [lookup, setLookup] = useState(false);
   const idx = useMemo(() => buildIndex(foods.map((f) => ({ ...f, name: `${f.name} ${f.place ?? ''}` }))), [foods]);
   const shown = q ? search(idx, q, 100) : foods;
   return (
@@ -114,6 +118,8 @@ function MyFoods({ onClose }: { onClose: () => void }) {
       <button onClick={() => setEdit({ id: newId(), name: '', perServing: { kcal: 0, protein: 0, carbs: 0, fat: 0 }, servingLabel: '1 serving' })}>
         + Add a food
       </button>
+      <button onClick={() => setLookup(true)}>Look up a packaged food…</button>
+      {lookup && <FoodLookup onClose={() => setLookup(false)} />}
       {edit && <CustomFoodEditor food={edit} onClose={() => setEdit(null)} />}
     </Sheet>
   );
