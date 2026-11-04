@@ -50,10 +50,28 @@ broth, the Italian sausage. Added Sam's Garlic Ginger Beef & Rice (2 lb, 4 conta
 Whole Foods mushroom oyster sauce, Better Than Bouillon (in foods), Chinese cooking wine; no dark soy. ~688 kcal,
 47 g protein a container before rice. Asked him to check the oyster sauce and cooking wine labels for wheat. Added his Pasta & Meat Sauce
 (2 lb 85/15 assumed, 1 lb TJ's GF brown rice pasta, 5 containers ≈ 847 kcal / 43 g); pasta numbers are a typical
-brown rice pasta label (200 kcal, 4 g protein per 2 oz dry): check the bag.
+brown rice pasta label (200 kcal, 4 g protein per 2 oz dry): check the bag. Then (all beef 85/15): Greek
+Chicken & Potatoes picked; added his Japanese Chicken Curry (homemade GF roux, no shiro dashi), Butter Chicken,
+Chicken Twice-Baked Potatoes (Claude's draft), and Mashed potatoes as a side. Placeholders: *Numbers to check*.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
 list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).
+
+## Numbers to check (placeholders until Sam confirms; Sam, 4 Nov 2026: "placeholders are fine for now")
+
+All beef is 85/15. When Sam sends a label or a measurement, fix `data/meals.json`, run `npm run book`, and tick it off.
+- PBfit: 60 kcal, 8 g protein per 2 tbsp (from Sam); carbs 4 g, fat 1.5 g and 16 g per 2 tbsp are guesses.
+- Better Than Bouillon roasted chicken base: 15 kcal per tsp (6 g), from memory of the label.
+- Trader Joe's gluten-free brown rice pasta: 200 kcal, 4 g protein per 2 oz dry (a typical brown rice pasta label).
+- Gluten-free 1-to-1 flour (Bob's Red Mill / King Arthur): counted as USDA white rice flour.
+- Chipotle peppers in adobo: kcal and protein from his old recipe; no carbs or fat.
+- Mushroom oyster sauce (Whole Foods): counted as USDA oyster sauce. Chinese cooking wine: as white wine.
+- Garam masala: counted as USDA curry powder (USDA has none).
+- Mashed potatoes: butter counted as 3 tbsp (he uses 2-4), milk as 0.6 cup of 2% (type?), yield 7 cups (measure once).
+- Japanese curry: counts 226 g of the ~425 g roux batch; potatoes as USDA medium (213 g), apple small (158 g).
+- Sizes taken as typical: broccoli head 450 g, garlic head 40 g, potatoes (213 g medium, 369 g large), onions.
+- Gluten label checks: taco seasoning, chicken broth, Italian sausage, mushroom oyster sauce, Chinese cooking wine,
+  BBQ sauce (pulled pork suggestion).
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 

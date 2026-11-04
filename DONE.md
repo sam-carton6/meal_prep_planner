@@ -2,6 +2,14 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — recipes: Sam's and suggested, gluten-free
+- data/meals.json now 13 dishes + 3 sides: added Garlic Ginger Beef & Rice, Pasta & Meat Sauce, Greek Chicken &
+  Potatoes (suggested, picked), Japanese Chicken Curry, Butter Chicken, Chicken Twice-Baked Potatoes, Mashed
+  potatoes; foods: PBfit, Morning shake, Better Than Bouillon, TJ's GF pasta. Four more suggestions wait in
+  data/suggested.json. Placeholder numbers listed in TODO.md.
+- Import matching: vinegars, zucchini, red/gold/russet potatoes and sizes, yogurt cups, scallions, sherry, Chinese
+  cooking wine, GF soy sauce, mushroom oyster sauce, apples with sizes, teaspoon portions. Tested.
+
 ### 2026-11-04 — meal bank as a list; PBfit from the jar
 - Sam: "the meal bank is still awkward". Was a sideways strip of big cards with cut-off names and − / + on every
   card. Now a list grouped Meals / Foods, one line each (full name, kcal · protein), − / + and suggestions only on

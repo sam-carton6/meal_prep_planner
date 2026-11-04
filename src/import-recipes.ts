@@ -64,6 +64,12 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Soy sauce, gluten-free': 174278,
   'Mushroom oyster sauce': 174529, // USDA oyster sauce: about the same calories
   'Chinese cooking wine': 174837, // white table wine
+  'Potatoes, gold, raw': 2346403, // Yukon gold, peeled (USDA has no gold with skin)
+  'Potatoes, russet, raw': 170027, // flesh and skin
+  'Gluten-free flour, 1-to-1 (Bob\'s Red Mill)': 169714, // placeholder: white rice flour until Sam checks the bag
+  'Garam masala': 170924, // USDA has none: curry powder, about the same
+  'Milk, 2%': 172205,
+  'Apple, Fuji, raw': 167793, // SR entry with sizes (small 158 g)
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,
   'Sweet potatoes, orange': 168482,
@@ -157,6 +163,9 @@ export const TYPICAL_SIZES: { food: RegExp; units: string[]; grams: number; why:
   { food: /^Sweet potato/i, units: ['medium', 'whole'], grams: 130, why: 'USDA medium sweet potato' },
   { food: /^Yogurt/i, units: ['cup'], grams: 245, why: 'USDA cup of plain yogurt' },
   { food: /^Alcoholic beverage, wine/i, units: ['tbsp'], grams: 14.7, why: 'half a fluid ounce' },
+  { food: /^Potatoes, (gold|russet|red|white)/i, units: ['medium', 'whole'], grams: 213, why: 'USDA medium potato' },
+  { food: /^Potatoes, (gold|russet|red|white)/i, units: ['large'], grams: 369, why: 'USDA large potato' },
+  { food: /^Potatoes, (gold|russet|red|white)/i, units: ['small'], grams: 170, why: 'USDA small potato' },
 ];
 
 function portionGrams(u: string, food: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {

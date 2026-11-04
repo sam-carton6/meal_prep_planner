@@ -1,6 +1,6 @@
 {
   "format": "meal-prep-planner/1",
-  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas are from their label (cassava flour, 28 g each). PBfit from Sam's jar: 2 tbsp = 60 kcal, 8 g protein (carbs/fat estimated; 16 g assumed). The morning shake adds up 3 scoops (165 g) of Naked Mass and 1½ tbsp PBfit with water; 1 vs 2 tbsp is about ±15 kcal.",
+  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas are from their label (cassava flour, 28 g each). PBfit from Sam's jar: 2 tbsp = 60 kcal, 8 g protein (carbs/fat estimated; 16 g assumed). The morning shake adds up 3 scoops (165 g) of Naked Mass and 1½ tbsp PBfit with water; 1 vs 2 tbsp is about ±15 kcal. Numbers still to check are listed in TODO.md (Numbers to check).",
   "recipes": [
     {
       "name": "Mexican Chicken & Vegetables",
@@ -491,6 +491,288 @@
       "notes": "Sam's recipe. Fire-roasted diced tomatoes. Brown the beef with the onion and garlic in the olive oil, add both cans of tomatoes, the sugar (1 tbsp at most) and the dried herbs, simmer. Cook the Trader Joe's gluten-free brown rice pasta a minute short so it doesn't go mushy when reheated, then toss with the sauce (or keep it separate). Pasta numbers are the dry weight from the bag: check the label."
     },
     {
+      "name": "Greek Chicken & Potatoes",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "serve_with": null,
+      "ingredients": [
+        {
+          "name": "Chicken breast, boneless skinless, raw",
+          "amount": 2.5,
+          "unit": "lb"
+        },
+        {
+          "name": "Potatoes, red, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Zucchini, raw",
+          "amount": 2,
+          "unit": "medium"
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 2,
+          "unit": "medium"
+        },
+        {
+          "name": "Red onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Olive oil",
+          "amount": 3,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Lemon juice",
+          "amount": 3,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 4,
+          "unit": "clove"
+        },
+        {
+          "name": "Oregano, dried",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Feta cheese in brine",
+          "amount": 4,
+          "unit": "oz",
+          "optional": true
+        }
+      ],
+      "notes": "Suggested by Claude, picked by Sam (4 Nov 2026), not cooked yet. Sheet pans: potatoes in chunks go in first (about 20 min at 425 F), then the chicken (marinated in lemon, oil, garlic, oregano) and the vegetables for another 20-25 min. The potatoes are the starch, so no rice. Feta on top if you want it. Keeps 5 days; potatoes go a bit soft if frozen."
+    },
+    {
+      "name": "Japanese Chicken Curry",
+      "kind": "dish",
+      "servings": 4,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        {
+          "name": "Chicken thighs, boneless skinless, raw",
+          "amount": 1.5,
+          "unit": "lb"
+        },
+        {
+          "name": "Oil, avocado",
+          "amount": 37,
+          "unit": "g"
+        },
+        {
+          "name": "Onion, raw",
+          "amount": 1,
+          "unit": "large"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 5,
+          "unit": "clove"
+        },
+        {
+          "name": "Ginger root, raw",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "name": "Apple, Fuji, raw",
+          "amount": 1,
+          "unit": "small"
+        },
+        {
+          "name": "Honey",
+          "amount": 22,
+          "unit": "g"
+        },
+        {
+          "name": "Catsup",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "name": "Soy sauce, gluten-free (Kikkoman)",
+          "amount": 33,
+          "unit": "g"
+        },
+        {
+          "name": "Better Than Bouillon, roasted chicken base",
+          "amount": 5,
+          "unit": "tsp"
+        },
+        {
+          "name": "Carrots, raw",
+          "amount": 2,
+          "unit": "large"
+        },
+        {
+          "name": "Potatoes, gold, raw",
+          "amount": 3,
+          "unit": "medium"
+        },
+        {
+          "name": "Butter, without salt",
+          "amount": 128,
+          "unit": "g"
+        },
+        {
+          "name": "Gluten-free flour, 1-to-1 (Bob's Red Mill)",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "name": "Spices, curry powder",
+          "amount": 34,
+          "unit": "g"
+        },
+        {
+          "name": "Kosher salt",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Sam's recipe. Roux (makes about 425 g; this counts the 8 oz / 226 g used, freeze the rest): 242 g unsalted butter, 120 g gluten-free 1-to-1 flour (Bob's Red Mill or King Arthur), 58 g S&B curry powder, 1/2 tsp cayenne, 1/2 tsp cardamom, 1 tsp fennel, 1 tsp turmeric; cook the flour in the butter until peanut-butter brown, then the spices. Curry: soften the onion in the avocado oil with salt, add garlic, ginger and grated apple, brown the chicken, add honey, ketchup, soy sauce, 5 cups chicken stock (Better Than Bouillon + water), carrots and peeled potato quarters; simmer until tender, then melt in the 226 g of roux. Serve with short grain rice (the recipe's 8 cups is about 2 cups a container: the app sizes it to your calories)."
+    },
+    {
+      "name": "Butter Chicken",
+      "kind": "dish",
+      "servings": 4,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        {
+          "name": "Chicken thighs, boneless skinless, raw",
+          "amount": 1.5,
+          "unit": "lb"
+        },
+        {
+          "name": "Yogurt, plain, whole milk",
+          "amount": 240,
+          "unit": "g"
+        },
+        {
+          "name": "Garam masala",
+          "amount": 29,
+          "unit": "g"
+        },
+        {
+          "name": "Vegetable oil",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "name": "Onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Ginger root, raw",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 6,
+          "unit": "clove"
+        },
+        {
+          "name": "Spices, paprika",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "name": "Spices, cumin seed",
+          "amount": 9,
+          "unit": "g"
+        },
+        {
+          "name": "Spices, turmeric, ground",
+          "amount": 6,
+          "unit": "g",
+          "optional": true
+        },
+        {
+          "name": "Crushed tomatoes, canned",
+          "amount": 1,
+          "unit": "can (14 oz)"
+        },
+        {
+          "name": "Cream, fluid, heavy whipping",
+          "amount": 238,
+          "unit": "g"
+        },
+        {
+          "name": "Butter, without salt",
+          "amount": 28,
+          "unit": "g"
+        },
+        {
+          "name": "Kosher salt, black pepper, cilantro",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Sam's recipe. Marinade: 1 cup full-fat yogurt, 1 tbsp garam masala, 1 tbsp kosher salt, the chicken in 1 inch pieces. Sear the chicken in half the oil; in the rest cook the onion, ginger and garlic, then paprika, cumin, the second tbsp of garam masala and turmeric; add crushed tomatoes and 2/3 cup water, simmer, blend if you like, stir in the cream and butter, add the chicken back. Rice and cilantro to serve."
+    },
+    {
+      "name": "Chicken Twice-Baked Potatoes",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "serve_with": null,
+      "ingredients": [
+        {
+          "name": "Chicken breast, boneless skinless, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Potatoes, russet, raw",
+          "amount": 5,
+          "unit": "large"
+        },
+        {
+          "name": "Yogurt, Greek, plain, nonfat",
+          "amount": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "Cheddar cheese, shredded",
+          "amount": 4,
+          "unit": "oz"
+        },
+        {
+          "name": "Butter, without salt",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Milk, 2%",
+          "amount": 0.25,
+          "unit": "cup"
+        },
+        {
+          "name": "Green onions, raw",
+          "amount": 4,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic powder, paprika, salt, pepper",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Suggested by Claude, not cooked yet. Grill the seasoned chicken breast and dice it. Bake the potatoes (about 1 hour at 400 F), halve them, scoop the insides into a bowl leaving a thin wall, mash with Greek yogurt (instead of sour cream: more protein), butter, milk, half the cheddar, green onions and seasoning, fold in the chicken. Refill the skins, top with the rest of the cheddar, bake 15-20 min. One potato (two halves) per container. Freezes well before the second bake."
+    },
+    {
       "name": "White rice",
       "kind": "starch",
       "main_ingredient": "Rice, white, long grain, dry",
@@ -569,6 +851,39 @@
         "unit": "bowl"
       },
       "notes": "A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls)."
+    },
+    {
+      "name": "Mashed potatoes",
+      "kind": "starch",
+      "servings": null,
+      "main_ingredient": "Potatoes, gold, raw",
+      "ingredients": [
+        {
+          "name": "Potatoes, gold, raw",
+          "amount": 3,
+          "unit": "lb"
+        },
+        {
+          "name": "Butter, without salt",
+          "amount": 3,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Milk, 2%",
+          "amount": 0.6,
+          "unit": "cup"
+        },
+        {
+          "name": "Salt and pepper",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "yield": {
+        "amount": 7,
+        "unit": "cup"
+      },
+      "notes": "Sam's: 3 lb gold potatoes, 2-4 tbsp butter (counted as 3), 1/2-2/3 cup milk (counted as 0.6 cup of 2%). Yield of 7 cups is an estimate: measure once and fix it."
     }
   ],
   "foods": [
