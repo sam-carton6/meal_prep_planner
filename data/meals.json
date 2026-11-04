@@ -436,6 +436,61 @@
       "notes": "Sam's recipe, doubled to 2 lb (beef comes in 1 lb packs). Sauce: gluten-free Kikkoman soy sauce, sugar, mushroom oyster sauce (Whole Foods), Better Than Bouillon chicken base, Chinese cooking wine (Whole Foods), black pepper and 10 tbsp water. Fry the green onion whites, garlic and ginger in a little oil, brown the beef, add the sauce and cook it down; sesame oil and green onion tops at the end. Red chili or bell pepper to garnish. Gluten: check the mushroom oyster sauce and the cooking wine labels for wheat."
     },
     {
+      "name": "Pasta & Meat Sauce",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": null,
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Pasta, gluten-free brown rice (Trader Joe's), dry",
+          "amount": 1,
+          "unit": "lb"
+        },
+        {
+          "name": "Crushed tomatoes, canned",
+          "amount": 1,
+          "unit": "can (28 oz)"
+        },
+        {
+          "name": "Diced tomatoes, canned",
+          "amount": 1,
+          "unit": "can (14 oz)"
+        },
+        {
+          "name": "Sweet onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 6,
+          "unit": "clove"
+        },
+        {
+          "name": "Olive oil",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sugars, granulated",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Salt, pepper, dried parsley, dried oregano, red pepper flakes",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Sam's recipe. Fire-roasted diced tomatoes. Brown the beef with the onion and garlic in the olive oil, add both cans of tomatoes, the sugar (1 tbsp at most) and the dried herbs, simmer. Cook the Trader Joe's gluten-free brown rice pasta a minute short so it doesn't go mushy when reheated, then toss with the sauce (or keep it separate). Pasta numbers are the dry weight from the bag: check the label."
+    },
+    {
       "name": "White rice",
       "kind": "starch",
       "main_ingredient": "Rice, white, long grain, dry",
@@ -608,6 +663,18 @@
           "grams": 6
         }
       ]
+    },
+    {
+      "name": "Pasta, gluten-free brown rice (Trader Joe's), dry",
+      "brand": "Trader Joe's",
+      "place": null,
+      "serving": "2 oz dry (56 g)",
+      "serving_grams": 56,
+      "kcal": 200,
+      "protein_g": 4,
+      "carbs_g": 43,
+      "fat_g": 1.5,
+      "units": []
     }
   ]
 }

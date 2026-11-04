@@ -48,7 +48,9 @@ shake" food added to data/meals.json.
 pork); waiting on him to pick, and to paste his own. Label checks on current recipes: taco seasoning, chicken
 broth, the Italian sausage. Added Sam's Garlic Ginger Beef & Rice (2 lb, 4 containers) with his own products: 2 tbsp oil, GF Kikkoman,
 Whole Foods mushroom oyster sauce, Better Than Bouillon (in foods), Chinese cooking wine; no dark soy. ~688 kcal,
-47 g protein a container before rice. Asked him to check the oyster sauce and cooking wine labels for wheat.
+47 g protein a container before rice. Asked him to check the oyster sauce and cooking wine labels for wheat. Added his Pasta & Meat Sauce
+(2 lb 85/15 assumed, 1 lb TJ's GF brown rice pasta, 5 containers ≈ 847 kcal / 43 g); pasta numbers are a typical
+brown rice pasta label (200 kcal, 4 g protein per 2 oz dry): check the bag.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
 list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).
