@@ -2,6 +2,13 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — meal bank + paint-in calendar, cook days (0472730)
+- Plan tab: meal bank cards from the real data (dishes, dish + starch, My foods, recent foods), tweakable in place;
+  tap card → tap slots (phone), drag and drop (PC); tap a meal to change/eat/remove it. Cook days ("+ cook")
+  create planned batches; the app works out what each feeds, spare, freeze (> 4 days), short, and meals with no
+  cook day. Database version 2 (planned meals point at the recipe). `src/cookdays.ts`, `src/bank.ts` (tested).
+  Mockup removed. Tested with Playwright at 402 × 874 and 1440 × 900 with the imported recipes.
+
 ### 2026-10-21 — calendar month view, drained cans, pots, recent breakfasts
 - Week/month toggle and a wide PC layout (4798132). Drained/whole-can switch (`src/cans.ts`, tested), saved pots
   with empty weights, "Containers on hand" always editable, recent entries per slot, inline food search, labelled
