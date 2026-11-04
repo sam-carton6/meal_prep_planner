@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { itemNutrition } from './recipe-math';
 import { describe, expect, it } from 'vitest';
 import { learnedFrom, matchFoods, parseImportFile, recipePreview, rematch, reviewRecipe, toCustomFood, toRecipe } from './import-file';
 import { buildIndex } from './search';
@@ -104,5 +105,35 @@ describe('the short label prompt in RECIPE-IMPORT.md', () => {
     expect(f.recipes).toEqual([]);
     expect(toCustomFood(f.foods[0])).toMatchObject({ name: 'Greek yogurt, plain, nonfat', brand: 'Fage', servingGrams: 170,
       perServing: { kcal: 90, protein: 18, carbs: 5, fat: 0 } });
+  });
+});
+
+describe('sizes and My foods in imports', () => {
+  it('uses a typical size when the USDA entry has none, and says so', () => {
+    const rv = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [
+      { name: 'Peppers, bell, orange, raw', amount: 2, unit: 'medium' },
+      { name: 'Garlic, raw', amount: 0.5, unit: 'head' },
+      { name: 'Egg, whole, raw, fresh', amount: 3, unit: 'large' },
+    ] }, index, byId, foods);
+    expect(rv.lines.map((l) => Math.round(l.item.gramsPerUnit))).toEqual([119, 40, 50]);
+    expect(rv.lines[0].warn).toMatch(/about 119 g/);
+    expect(rv.lines[1].warn).toMatch(/estimate/);
+  });
+
+  it('matches My foods by name, and never guesses USDA for names known not to be there', () => {
+    const adobo = toCustomFood({ name: 'Chipotle peppers in adobo', serving: '1 can (7 oz)', serving_grams: 198, kcal: 150, protein_g: 3 });
+    const ing = { name: 'Chipotle peppers in adobo', amount: 1, unit: 'can (7 oz)' };
+    const withIt = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [ing] }, index, byId, foods, {}, [adobo]);
+    expect(withIt.lines[0].item.food).toEqual({ kind: 'custom', id: adobo.id });
+    expect(itemNutrition(withIt.lines[0].item).kcal).toBeCloseTo(150, 0);
+    const without = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [ing] }, index, byId, foods);
+    expect(without.lines[0].item.food).toEqual({ kind: 'none' });
+    expect(without.lines[0].warn).toMatch(/Not in USDA/);
+  });
+
+  it('counts My foods in their own units (scoops)', () => {
+    const nm = toCustomFood({ name: 'Naked Mass', serving: '1 serving', serving_grams: 333, kcal: 1360, protein_g: 50, units: [{ unit: 'scoop', grams: 55 }] });
+    const rv = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [{ name: 'naked mass', amount: 3, unit: 'scoops' }] }, index, byId, foods, {}, [nm]);
+    expect(itemNutrition(rv.lines[0].item).kcal).toBeCloseTo((1360 * 165) / 333, 0);
   });
 });

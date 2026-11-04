@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, getSettings } from '../db';
 import type { CustomFood, Recipe } from '../model';
-import { DEFAULT_SETTINGS } from '../model';
+import { DEFAULT_SETTINGS, newId } from '../model';
 import {
   learnedFrom,
   parseImportFile,
@@ -35,6 +35,8 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState('');
   const [reviews, setReviews] = useState<ReviewRecipe[] | null>(null);
   const [fileFoods, setFileFoods] = useState<FileFood[]>([]);
+  // The file's foods as My foods entries, ids fixed up front so recipe lines can point at them.
+  const [fileCustoms, setFileCustoms] = useState<CustomFood[]>([]);
   const [choices, setChoices] = useState<Record<string, Choice>>({});
   const [changing, setChanging] = useState<{ r: number; l: number } | null>(null);
   const [saved, setSaved] = useState('');
@@ -50,8 +52,11 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
       if (!foods) throw new Error('Still loading the ingredient list. Try again in a second.');
       const f = parseImportFile(raw);
       const learned = settings.importMatches ?? {};
-      setReviews(f.recipes.map((r) => reviewRecipe(r, index, byId, foods, learned)));
+      const customs = f.foods.map((x) => toCustomFood(x, foodMatch(x)?.id));
+      const all = [...customs, ...existingFoods.filter((e) => !customs.some((c) => c.id === e.id))];
+      setReviews(f.recipes.map((r) => reviewRecipe(r, index, byId, foods, learned, all)));
       setFileFoods(f.foods);
+      setFileCustoms(customs);
       setChoices({});
     } catch (e) {
       setError((e as Error).message);
@@ -73,7 +78,8 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
       const old = foodMatch(f);
       const c = choiceOf(`f${i}`, !!old);
       if (c === 'skip') return;
-      customs.push(toCustomFood(f, c === 'replace' && old ? old.id : undefined));
+      const made = fileCustoms[i] ?? toCustomFood(f);
+      customs.push(c === 'copy' ? { ...made, id: newId() } : made);
     });
     await db.transaction('rw', db.recipes, db.customFoods, db.settings, async () => {
       await db.recipes.bulkPut(recipes);

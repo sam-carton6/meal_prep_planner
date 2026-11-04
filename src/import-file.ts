@@ -7,7 +7,7 @@ import type { CustomFood, Nutrition, Recipe, RecipeItem } from './model';
 import { newId, ZERO } from './model';
 import { withDrainOptions } from './cans';
 import { unitGrams, USDA_MATCH } from './import-recipes';
-import { perPortion, portionsForProtein, totals } from './recipe-math';
+import { perPortion, portionsForProtein, times, totals } from './recipe-math';
 import { search, type IndexedItem } from './search';
 import type { Food } from './usda';
 
@@ -89,6 +89,7 @@ export const learnKey = (name: string) => name.trim().toLowerCase();
  * words that match nothing).
  */
 export function matchFoods(name: string, index: IndexedItem<Food>[], byId: Map<number, Food>, limit = 6, learned: Learned = {}): Food[] {
+  if (!(learnKey(name) in learned) && USDA_MATCH[name] === null) return []; // known not to be in USDA
   const known = learned[learnKey(name)] ?? USDA_MATCH[name];
   const first = known ? byId.get(known) : undefined;
   let hits = search(index, name, limit);
@@ -150,12 +151,47 @@ export function itemFor(ing: FileIngredient, food: Food | undefined, allFoods: F
   return { item, matched, warn };
 }
 
-export function reviewRecipe(r: FileRecipe, index: IndexedItem<Food>[], byId: Map<number, Food>, allFoods: Food[], learned: Learned = {}): ReviewRecipe {
+export function reviewRecipe(
+  r: FileRecipe,
+  index: IndexedItem<Food>[],
+  byId: Map<number, Food>,
+  allFoods: Food[],
+  learned: Learned = {},
+  customs: CustomFood[] = [],
+): ReviewRecipe {
   const lines = r.ingredients.map((ing): ReviewLine => {
+    const custom = ing.amount === null ? undefined : customs.find((c) => sameName(c.name, ing.name));
     const options = ing.amount === null ? [] : matchFoods(ing.name, index, byId, 6, learned);
-    return { ing, options, ...itemFor(ing, options[0], allFoods) };
+    if (custom && !(learnKey(ing.name) in learned)) return { ing, options, ...itemForCustom(ing, custom) };
+    const line = { ing, options, ...itemFor(ing, options[0], allFoods) };
+    if (!options.length && ing.amount !== null && USDA_MATCH[ing.name] === null) {
+      line.warn = 'Not in USDA: add it to My foods (e.g. from its label), then import again. Counts as 0 kcal for now.';
+    }
+    return line;
   });
   return { file: r, lines };
+}
+
+const sameName = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/** An ingredient made from a My foods entry (e.g. chipotle peppers in adobo, from its label). */
+export function itemForCustom(ing: FileIngredient, c: CustomFood): Pick<ReviewLine, 'item' | 'matched' | 'warn'> {
+  const serving = c.servingGrams && c.servingGrams > 0 ? c.servingGrams : undefined;
+  const g = serving ?? 100; // no weight known: count the amount in servings
+  const per100g = times(c.perServing, 100 / g);
+  const servingWord = c.servingLabel.replace(/^1\s+/, '').trim().toLowerCase();
+  const u = ing.unit.trim();
+  const extra = (c.units ?? []).find((x) => sameName(x.unit, u) || sameName(`${x.unit}s`, u));
+  const grams = unitGrams(u)?.grams ?? (extra ? extra.grams : sameName(u, servingWord) || /^servings?$/i.test(u) || !serving ? g : undefined);
+  const item: RecipeItem = {
+    id: newId(), name: ing.name, amount: ing.amount, unit: u, scaling: 'scale', optional: !!ing.optional,
+    food: { kind: 'custom', id: c.id }, per100g, group: c.group, gramsPerUnit: grams ?? 0,
+  };
+  return {
+    item,
+    matched: `My foods: ${c.name} (${Math.round(c.perServing.kcal)} kcal per ${c.servingLabel})`,
+    warn: grams === undefined ? `No weight for "${u}" of this My foods entry: counts as 0 kcal. Give it a serving weight.` : undefined,
+  };
 }
 
 /** The same line matched to a different USDA food (keeps the amount and unit). */

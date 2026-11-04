@@ -61,6 +61,30 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Sweet onion': 170008,
   'Shredded cheddar': 328637,
   'White rice, long grain': 168877, // dry
+  // 4 Nov 2026: the names Sam's claude.ai recipe chats use (RECIPE-IMPORT.md format).
+  'Bell peppers, raw': 170108, // red, as before
+  'Bell peppers, red, raw': 170108,
+  'White onion, raw': 170000,
+  'Onion, raw': 170000,
+  'Sweet onion, raw': 170008,
+  'Peas, frozen': 170016,
+  'Spinach, raw': 168462,
+  'Sweet potatoes, raw': 168482,
+  'Carrots, raw': 170393,
+  'Garlic, raw': 1104647,
+  'Cheddar cheese, shredded': 328637,
+  'Eggs, large': 171287,
+  'Vegetable oil': 172336, // canola
+  'Rice, white, long grain, dry': 168877,
+  'White rice, long grain, dry': 168877,
+  'Spring mix and baby spinach, raw': 169249, // as green leaf lettuce: USDA has no spring mix
+  'English cucumber, raw': 2346406,
+  'Broccoli, raw': 321900,
+  'Pork sausage, raw': 172934, // link/patty, unprepared
+  'Chipotle peppers in adobo, canned': null,
+  'Chipotle peppers in adobo sauce, canned': null,
+  'Tortillas, gluten-free, 7 inch': null, // needs the package label
+  'Gluten-free tortillas, 7 inch': null,
 };
 
 /** Cans Sam drained in his old recipes (he usually drains, but used whole cans in the chili; 21 Oct 2026). */
@@ -89,12 +113,39 @@ const UNIT_WORDS: Record<string, string[]> = { whole: ['medium', 'whole'], mediu
  * Grams in one of `unit` for a food: plain weights, "can (15 oz)" style labels, cups/tbsp/tsp and portions
  * ("medium", "clove") from USDA. "whole" falls back to USDA's medium (with a note). Undefined if unknown.
  */
-export function unitGrams(unit: string, food?: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {
+export function unitGrams(unit: string, food?: Pick<Food, 'portions' | 'name'>): { grams: number; note?: string } | undefined {
   const u = unit.trim();
   if (u in G_PER) return { grams: G_PER[u as keyof typeof G_PER] };
   const fromLabel = gramsFromLabel(u);
   if (fromLabel) return { grams: fromLabel };
   if (!food) return undefined;
+  const found = portionGrams(u, food);
+  if (found) return found;
+  // USDA's newer (Foundation) entries often list no sizes at all: use a typical size, flagged.
+  const typical = TYPICAL_SIZES.find((t) => t.food.test(food.name) && t.units.includes(u));
+  if (typical) return { grams: typical.grams, note: `1 ${u} taken as about ${typical.grams} g (${typical.why})` };
+  return undefined;
+}
+
+/** Typical sizes for common foods, for when the USDA entry has no size for the unit (estimates are flagged). */
+export const TYPICAL_SIZES: { food: RegExp; units: string[]; grams: number; why: string }[] = [
+  { food: /^Peppers?, (bell|sweet)/i, units: ['medium', 'whole'], grams: 119, why: 'USDA medium bell pepper' },
+  { food: /^Peppers?, (bell|sweet)/i, units: ['large'], grams: 164, why: 'USDA large bell pepper' },
+  { food: /^Peppers?, (bell|sweet)/i, units: ['small'], grams: 74, why: 'USDA small bell pepper' },
+  { food: /^Onions?,/i, units: ['medium', 'whole'], grams: 110, why: 'USDA medium onion' },
+  { food: /^Onions?,/i, units: ['large'], grams: 150, why: 'USDA large onion' },
+  { food: /^Onions?,/i, units: ['small'], grams: 70, why: 'USDA small onion' },
+  { food: /^Garlic/i, units: ['head', 'bulb'], grams: 40, why: 'estimate: about 13 cloves; weigh one to check' },
+  { food: /^Broccoli/i, units: ['head', 'whole', 'crown'], grams: 450, why: 'estimate for a supermarket head; weigh one to check' },
+  { food: /^Eggs?,/i, units: ['large', 'whole'], grams: 50, why: 'USDA large egg' },
+  { food: /^Eggs?,/i, units: ['medium'], grams: 44, why: 'USDA medium egg' },
+  { food: /^Eggs?,/i, units: ['extra large'], grams: 56, why: 'USDA extra large egg' },
+  { food: /^Cucumber/i, units: ['medium', 'whole'], grams: 300, why: 'USDA cucumber' },
+  { food: /^Carrots?,/i, units: ['medium', 'whole'], grams: 61, why: 'USDA medium carrot' },
+  { food: /^Sweet potato/i, units: ['medium', 'whole'], grams: 130, why: 'USDA medium sweet potato' },
+];
+
+function portionGrams(u: string, food: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {
   const opts = unitOptions(food.portions);
   for (const w of UNIT_WORDS[u] ?? [u, u.replace(/s$/, '')]) {
     const hit = opts.find((o) => o.unit === w || o.unit.startsWith(w + ' ') || o.unit.startsWith(w + ','));

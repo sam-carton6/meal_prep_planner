@@ -1,0 +1,464 @@
+{
+  "format": "meal-prep-planner/1",
+  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas need their label.",
+  "recipes": [
+    {
+      "name": "Mexican Chicken & Vegetables",
+      "kind": "dish",
+      "servings": 8,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "ingredients": [
+        {
+          "name": "Chicken thighs, boneless skinless, raw",
+          "amount": 3.15,
+          "unit": "lb"
+        },
+        {
+          "name": "Chipotle peppers in adobo",
+          "amount": 1,
+          "unit": "can (7 oz)"
+        },
+        {
+          "name": "Black beans, canned",
+          "amount": 1,
+          "unit": "can (15 oz)",
+          "drained": true
+        },
+        {
+          "name": "Diced tomatoes, canned",
+          "amount": 1,
+          "unit": "can (14 oz)",
+          "drained": false
+        },
+        {
+          "name": "Carrots, raw",
+          "amount": 5,
+          "unit": "medium"
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 2,
+          "unit": "medium"
+        },
+        {
+          "name": "White onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Spinach, raw",
+          "amount": 5,
+          "unit": "oz"
+        },
+        {
+          "name": "Peas, frozen",
+          "amount": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "Chicken broth",
+          "amount": 2,
+          "unit": "cup"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 0.5,
+          "unit": "head"
+        },
+        {
+          "name": "Seasonings",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Serve with white rice (cooked separately)."
+    },
+    {
+      "name": "Sweet Potato Beef Chili",
+      "kind": "dish",
+      "servings": 8,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 3,
+          "unit": "lb"
+        },
+        {
+          "name": "Sweet potatoes, raw",
+          "amount": 1.75,
+          "unit": "lb"
+        },
+        {
+          "name": "Dark red kidney beans, canned",
+          "amount": 1,
+          "unit": "can (15 oz)",
+          "drained": false
+        },
+        {
+          "name": "Great northern beans, canned",
+          "amount": 1,
+          "unit": "can (15 oz)",
+          "drained": false
+        },
+        {
+          "name": "Crushed tomatoes, canned",
+          "amount": 1,
+          "unit": "can (20 oz)",
+          "drained": false
+        },
+        {
+          "name": "Diced tomatoes, canned",
+          "amount": 1,
+          "unit": "can (14 oz)",
+          "drained": false
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 2,
+          "unit": "medium"
+        },
+        {
+          "name": "Sweet onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 0.5,
+          "unit": "head"
+        },
+        {
+          "name": "Chicken broth",
+          "amount": 2,
+          "unit": "cup"
+        },
+        {
+          "name": "Seasonings",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Cheddar cheese, shredded",
+          "amount": 1,
+          "unit": "cup",
+          "optional": true
+        }
+      ],
+      "notes": "Beef fat not drained. Eaten on its own, no rice. Cooked batch about 11.2 lb (5,060 g) without the pot, about 630 g per container. Instant Pot insert weighs 836 g."
+    },
+    {
+      "name": "Taco Beef & Black Beans",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Black beans, canned",
+          "amount": 1,
+          "unit": "can (15 oz)",
+          "drained": false
+        },
+        {
+          "name": "Taco seasoning",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Fat not drained; the whole can of beans with its liquid cooks down into a thick sauce. Skillet weighs 1,941 g. Last batch about 1,173 g cooked, about 235 g per container; subtract about 50 g before dividing for what sticks to the skillet. Serve with white rice."
+    },
+    {
+      "name": "Grilled Chicken Breast",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "ingredients": [
+        {
+          "name": "Chicken breast, boneless skinless, raw",
+          "amount": 2.53,
+          "unit": "lb"
+        },
+        {
+          "name": "Seasonings",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "5 breasts, grilled with no oil, one per container. Serve with Big Batch Salad."
+    },
+    {
+      "name": "Chicken & Cheddar Quesadillas",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "ingredients": [
+        {
+          "name": "Chicken breast, boneless skinless, raw",
+          "amount": 27.4,
+          "unit": "oz"
+        },
+        {
+          "name": "Cheddar cheese, extra sharp, white",
+          "amount": 16,
+          "unit": "oz"
+        },
+        {
+          "name": "Tortillas, gluten-free, 7 inch",
+          "amount": 16,
+          "unit": "tortilla"
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 262,
+          "unit": "g"
+        },
+        {
+          "name": "Sweet onion, raw",
+          "amount": 319,
+          "unit": "g"
+        },
+        {
+          "name": "Taco seasoning",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Cook peppers and onion first so they release their water. 3 quesadillas per container (about 101 g cooked chicken, 92 g cooked veg, 80 g cheese each meal); the 16th tortilla was a double-filled one eaten fresh. Store the filling separately and assemble fresh so tortillas don't go soggy."
+    },
+    {
+      "name": "Chicken Fried Rice",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "ingredients": [
+        {
+          "name": "Chicken thighs, boneless skinless, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Rice, white, long grain, dry",
+          "amount": 1.75,
+          "unit": "cup"
+        },
+        {
+          "name": "Eggs, large",
+          "amount": 3,
+          "unit": "large"
+        },
+        {
+          "name": "Cabbage, raw, shredded",
+          "amount": 4,
+          "unit": "cup"
+        },
+        {
+          "name": "Broccoli, raw",
+          "amount": 1,
+          "unit": "head"
+        },
+        {
+          "name": "Peas, frozen",
+          "amount": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "Carrots, raw",
+          "amount": 3,
+          "unit": "medium"
+        },
+        {
+          "name": "Onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 4,
+          "unit": "clove"
+        },
+        {
+          "name": "Green onions, raw",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "name": "Soy sauce, gluten-free, low sodium",
+          "amount": 0.25,
+          "unit": "cup"
+        },
+        {
+          "name": "Vegetable oil",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sesame oil",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Salt and pepper",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Not cooked yet. Cook the rice a day ahead and chill it. Brown the chicken, scramble the eggs, cook the veg in batches (too much for one skillet), crisp the rice, then combine with soy sauce, sesame oil and green onions. Weigh the batch and divide by 5."
+    },
+    {
+      "name": "Grilled Sausage & Black Beans",
+      "kind": "dish",
+      "servings": 4,
+      "main_ingredient": "Italian sausage, pork, raw",
+      "ingredients": [
+        {
+          "name": "Italian sausage, pork, raw",
+          "amount": 336,
+          "unit": "g"
+        },
+        {
+          "name": "Pork sausage, raw",
+          "amount": 340,
+          "unit": "g"
+        },
+        {
+          "name": "Black beans, canned",
+          "amount": 1,
+          "unit": "can (15 oz)",
+          "drained": true
+        },
+        {
+          "name": "Garlic powder",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Oregano, dried",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Crushed red pepper",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "8 links (4 fennel-and-sherry, 4 plain), grilled whole then sliced: 2 links per container. Serve with about 164 g cooked rice."
+    },
+    {
+      "name": "White rice",
+      "kind": "starch",
+      "main_ingredient": "Rice, white, long grain, dry",
+      "ingredients": [
+        {
+          "name": "Rice, white, long grain, dry",
+          "amount": 1.5,
+          "unit": "cup"
+        }
+      ],
+      "yield": {
+        "amount": 4.5,
+        "unit": "cup cooked"
+      },
+      "notes": "1 cup dry makes about 3 cups cooked (Instant Pot, rinsed). 1½ cups dry made 706 g cooked; 2½ cups made about 1,184 g. About 50 g sticks to the pot: subtract it before dividing."
+    },
+    {
+      "name": "Big Batch Salad",
+      "kind": "starch",
+      "main_ingredient": "Spring mix and baby spinach, raw",
+      "ingredients": [
+        {
+          "name": "Spring mix and baby spinach, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 610,
+          "unit": "g"
+        },
+        {
+          "name": "English cucumber, raw",
+          "amount": 534,
+          "unit": "g"
+        },
+        {
+          "name": "Carrots, raw",
+          "amount": 406,
+          "unit": "g"
+        },
+        {
+          "name": "Red onion, raw",
+          "amount": 400,
+          "unit": "g"
+        },
+        {
+          "name": "Olive oil",
+          "amount": 10,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Red wine vinegar",
+          "amount": 7.5,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Balsamic vinegar",
+          "amount": 5,
+          "unit": "tsp"
+        },
+        {
+          "name": "Salt and pepper",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Feta cheese in brine",
+          "amount": 8,
+          "unit": "oz",
+          "optional": true
+        }
+      ],
+      "yield": {
+        "amount": 5,
+        "unit": "bowl"
+      },
+      "notes": "A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls)."
+    }
+  ],
+  "foods": [
+    {
+      "name": "Chipotle peppers in adobo",
+      "brand": null,
+      "place": null,
+      "serving": "1 can (7 oz)",
+      "serving_grams": 198,
+      "kcal": 150,
+      "protein_g": 3,
+      "carbs_g": null,
+      "fat_g": null,
+      "units": []
+    },
+    {
+      "name": "Naked Mass, chocolate",
+      "brand": "Naked Nutrition",
+      "place": null,
+      "serving": "1 serving (about 7 scoops)",
+      "serving_grams": 333,
+      "kcal": 1360,
+      "protein_g": 50,
+      "carbs_g": 251,
+      "fat_g": 15,
+      "units": [
+        {
+          "unit": "scoop",
+          "grams": 55
+        }
+      ]
+    }
+  ]
+}
