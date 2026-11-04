@@ -354,6 +354,93 @@
       "notes": "8 links (4 fennel-and-sherry, 4 plain), grilled whole then sliced: 2 links per container. Serve with about 164 g cooked rice."
     },
     {
+      "name": "Garlic Ginger Beef & Rice",
+      "kind": "dish",
+      "servings": 4,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Green onions, raw",
+          "amount": 10,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 10,
+          "unit": "clove"
+        },
+        {
+          "name": "Ginger root, raw",
+          "amount": 5,
+          "unit": "tsp"
+        },
+        {
+          "name": "Vegetable oil",
+          "amount": 6,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sesame oil",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Soy sauce, gluten-free, low sodium",
+          "amount": 6,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sugars, granulated",
+          "amount": 4,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Oyster sauce, gluten-free",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Chicken bouillon powder, gluten-free",
+          "amount": 2,
+          "unit": "tsp"
+        },
+        {
+          "name": "Dark soy sauce, gluten-free",
+          "amount": 1,
+          "unit": "tsp"
+        },
+        {
+          "name": "Dry sherry",
+          "amount": 4,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Vietnamese dried chilies",
+          "amount": null,
+          "unit": "to taste",
+          "optional": true
+        },
+        {
+          "name": "Black pepper",
+          "amount": null,
+          "unit": "to taste"
+        },
+        {
+          "name": "Bell peppers, raw",
+          "amount": 1,
+          "unit": "medium",
+          "optional": true
+        }
+      ],
+      "notes": "Sam's recipe, doubled to 2 lb (beef comes in 1 lb packs). Sauce: tamari, sugar, oyster sauce, bouillon, dark soy, sherry, black pepper and 10 tbsp water. Fry the green onion whites, garlic and ginger in part of the oil, brown the beef in the rest, add the sauce and cook it down; sesame oil and green onion tops at the end. Gluten-free swaps: tamari for soy sauce, gluten-free oyster sauce (e.g. Lee Kum Kee green label, Wok Mei), dry sherry or mirin for Shaoxing wine (wheat), gluten-free bouillon; dark soy: a gluten-free one, or 1 tsp more tamari + 1/4 tsp molasses. Red chili or bell pepper to garnish."
+    },
+    {
       "name": "White rice",
       "kind": "starch",
       "main_ingredient": "Rice, white, long grain, dry",

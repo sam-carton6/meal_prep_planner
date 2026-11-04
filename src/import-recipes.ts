@@ -57,6 +57,9 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Apple cider vinegar': 173469,
   'Zucchini, raw': 169291,
   'Potatoes, red, raw': 170029, // flesh and skin
+  'Green onions, raw': 170005, // SR scallions, 32 kcal/100 g with sizes (the Foundation entry says 2.7 kcal)
+  'Dark soy sauce, gluten-free': 174278, // tamari
+  'Dry sherry': 175112, // dessert wine, dry
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,
   'Sweet potatoes, orange': 168482,
@@ -112,7 +115,7 @@ export interface ImportResult {
   report: { name: string; old: { kcal: number; protein: number }; now: Nutrition; lines: ImportLine[] }[];
 }
 
-const UNIT_WORDS: Record<string, string[]> = { whole: ['medium', 'whole'], medium: ['medium'], head: ['head'] };
+const UNIT_WORDS: Record<string, string[]> = { whole: ['medium', 'whole'], medium: ['medium'], head: ['head'], tsp: ['tsp', 'teaspoon'], tbsp: ['tbsp', 'tablespoon'] };
 
 /**
  * Grams in one of `unit` for a food: plain weights, "can (15 oz)" style labels, cups/tbsp/tsp and portions
@@ -149,6 +152,7 @@ export const TYPICAL_SIZES: { food: RegExp; units: string[]; grams: number; why:
   { food: /^Carrots?,/i, units: ['medium', 'whole'], grams: 61, why: 'USDA medium carrot' },
   { food: /^Sweet potato/i, units: ['medium', 'whole'], grams: 130, why: 'USDA medium sweet potato' },
   { food: /^Yogurt/i, units: ['cup'], grams: 245, why: 'USDA cup of plain yogurt' },
+  { food: /^Alcoholic beverage, wine/i, units: ['tbsp'], grams: 14.7, why: 'half a fluid ounce' },
 ];
 
 function portionGrams(u: string, food: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {

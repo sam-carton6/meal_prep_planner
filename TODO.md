@@ -46,7 +46,8 @@ shake" food added to data/meals.json.
 **Recipes (4 Nov, later):** Sam: app is OK for now, add recipes; all gluten-free. Five suggestions in
 `data/suggested.json` (teriyaki chicken, tikka masala, Korean-style beef, Greek chicken & potatoes, BBQ pulled
 pork); waiting on him to pick, and to paste his own. Label checks on current recipes: taco seasoning, chicken
-broth, the Italian sausage.
+broth, the Italian sausage. Added Sam's Garlic Ginger Beef & Rice (2 lb, 4 containers, gluten-free swaps): as
+written it's ~815 kcal a container before rice (6 tbsp oil + 85/15 fat); offered 2 tbsp oil / 5 containers / 93-7.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
 list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).
