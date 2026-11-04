@@ -29,9 +29,9 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 **Later on 4 Nov:** GitHub access fixed, everything pushed. Added: target suggestions ("40 g protein: 1¼ servings",
 "750 kcal: 1½ cup rice"); the eaten circle removed from the calendar; Sam's recipes in `data/meals.json` (7 dishes,
 rice, salad as a side) with a recipe book (`npm run book` → /recipe-book.html); containers start from each recipe's
-own count (e.g. 5); import fixes (typical sizes, My foods by name, better names). **Waiting on Sam:** the
-gluten-free tortilla label numbers (quesadillas count 0 kcal for them until then); importing meals.json into the
-app (he can't upload files on that computer: paste works).
+own count (e.g. 5); import fixes (typical sizes, My foods by name, better names). Tortilla label added (80 kcal per 28 g tortilla; quesadillas ≈ 836 kcal, 58 g protein per container).
+**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); whether to build
+"repeat a week" next.
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 

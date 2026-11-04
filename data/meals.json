@@ -1,6 +1,6 @@
 {
   "format": "meal-prep-planner/1",
-  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas need their label.",
+  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas are from their label (cassava flour, 28 g each).",
   "recipes": [
     {
       "name": "Mexican Chicken & Vegetables",
@@ -461,6 +461,23 @@
         {
           "unit": "scoop",
           "grams": 55
+        }
+      ]
+    },
+    {
+      "name": "Tortillas, gluten-free, 7 inch",
+      "brand": null,
+      "place": null,
+      "serving": "1 tortilla (28 g)",
+      "serving_grams": 28,
+      "kcal": 80,
+      "protein_g": 0,
+      "carbs_g": 15,
+      "fat_g": 2,
+      "units": [
+        {
+          "unit": "tortilla",
+          "grams": 28
         }
       ]
     }
