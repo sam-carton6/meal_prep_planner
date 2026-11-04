@@ -53,7 +53,8 @@ Whole Foods mushroom oyster sauce, Better Than Bouillon (in foods), Chinese cook
 brown rice pasta label (200 kcal, 4 g protein per 2 oz dry): check the bag. Then (all beef 85/15): Greek
 Chicken & Potatoes picked; added his Japanese Chicken Curry (homemade GF roux, no shiro dashi), Butter Chicken,
 Chicken Twice-Baked Potatoes (Claude's draft), and Mashed potatoes as a side. Placeholders: *Numbers to check*.
-Rice is now planned by weight (grams of cooked rice, 25 g steps; 706 g cooked per 1½ cups dry). Sam's
+Sam prefers the scale (4 Nov): rice and mashed potatoes planned in grams; the prep sheet shows grams next to
+everything you'd weigh. Rice is now planned by weight (grams of cooked rice, 25 g steps; 706 g cooked per 1½ cups dry). Sam's
 ketchup, BBQ sauce and Better Than Bouillon are corn-free.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
@@ -69,7 +70,7 @@ All beef is 85/15. When Sam sends a label or a measurement, fix `data/meals.json
 - Chipotle peppers in adobo: kcal and protein from his old recipe; no carbs or fat.
 - Mushroom oyster sauce (Whole Foods): counted as USDA oyster sauce. Chinese cooking wine: as white wine.
 - Garam masala: counted as USDA curry powder (USDA has none).
-- Mashed potatoes: 4 tbsp butter and whole milk (Sam); 0.6 cup milk and the 7-cup yield are estimates (measure once).
+- Mashed potatoes: 4 tbsp butter and whole milk (Sam); 0.6 cup milk and the 1,550 g batch weight are estimates (weigh once).
 - Japanese curry: counts 226 g of the ~425 g roux batch; potatoes as USDA medium (213 g), apple small (158 g).
 - Sizes taken as typical: broccoli head 450 g, garlic head 40 g, potatoes (213 g medium, 369 g large), onions.
 - Gluten label checks: taco seasoning, chicken broth, Italian sausage, mushroom oyster sauce, Chinese cooking wine,

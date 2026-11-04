@@ -940,10 +940,10 @@
         }
       ],
       "yield": {
-        "amount": 7,
-        "unit": "cup"
+        "amount": 1550,
+        "unit": "g"
       },
-      "notes": "Sam's: 3 lb gold potatoes, about 4 tbsp butter, 1/2-2/3 cup whole milk (counted as 0.6 cup). Yield of 7 cups is an estimate: measure once and fix it."
+      "notes": "Sam's: 3 lb gold potatoes, about 4 tbsp butter, 1/2-2/3 cup whole milk (counted as 0.6 cup). Planned by weight: the 1,550 g batch weight is an estimate (potatoes + milk + butter); weigh the finished batch once and fix it."
     }
   ],
   "foods": [

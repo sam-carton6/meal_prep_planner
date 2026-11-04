@@ -5,16 +5,23 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db';
-import type { Batch } from '../model';
+import type { Batch, RecipeItem } from '../model';
 import { dayLabel, isoDate, parseDate } from '../plan';
 import { coverage, FRIDGE_DAYS } from '../cookdays';
 import { prepDates, prepSheet, type PrepDish, type PrepGroup } from '../prep';
 import { fmtAmount } from '../units';
-import { roundSide, sideStep } from '../recipe-math';
+import { itemGrams, roundSide, sideStep } from '../recipe-math';
 import { BatchEditor, cookedSplit, PotWeigher } from './Cook';
 import { Macros, r0, Sheet } from './shared';
 
 const short = (d: string) => `${parseDate(d).toLocaleDateString(undefined, { weekday: 'short' })} ${parseDate(d).getDate()}`;
+/** "· 183 g" after anything you'd put on the scale (not spoons, pinches, or amounts already in grams). */
+const scaleGrams = (i: RecipeItem) => {
+  if (i.amount === null || /^(g|tbsp|tsp|pinch|dash)\b/.test(i.unit)) return '';
+  const g = itemGrams(i);
+  return g > 0 ? ` · ${Math.round(g).toLocaleString()} g` : '';
+};
+
 /** Weights as entered (3.15 lb); cups, spoons and whole things to the nearest quarter. */
 const amountText = (n: number, unit: string, name: string) => {
   const exact = /^(lb|oz|g|kg)$/.test(unit) || Math.round(n * 4) === 0;
@@ -91,7 +98,7 @@ function PrepDishCard({ d, onEdit }: { d: PrepDish; onEdit: () => void }) {
         🍳 {b.recipeName} <span className="tag">{b.status}</span>
       </h3>
       <div>
-        {main?.amount ? <>Cook <b>{amountText(main.amount, main.unit, main.name.split(',')[0].toLowerCase())}</b> → </> : null}
+        {main?.amount ? <>Cook <b>{amountText(main.amount, main.unit, main.name.split(',')[0].toLowerCase())}</b>{scaleGrams(main)} → </> : null}
         <b>{servings(b.portions)}</b> ({d.gramsEach ? <><b>{r0(d.gramsEach)} g</b>, </> : null}<Macros short n={d.each} /> each)
       </div>
       <button className="link small" onClick={() => setAll(!all)}>{all ? 'Hide' : 'Show'} all amounts</button>
@@ -100,7 +107,7 @@ function PrepDishCard({ d, onEdit }: { d: PrepDish; onEdit: () => void }) {
           {b.items.map((i) => (
             <li key={i.id}>
               {i.amount === null ? <span className="note">{i.name}{/to taste/i.test(i.name) ? '' : `, ${i.unit}`}</span> : (
-                <>{amountText(i.amount, i.unit, i.name)}{i.optional ? <span className="note"> (optional)</span> : null}</>
+                <>{amountText(i.amount, i.unit, i.name)}{scaleGrams(i)}{i.optional ? <span className="note"> (optional)</span> : null}</>
               )}
             </li>
           ))}
