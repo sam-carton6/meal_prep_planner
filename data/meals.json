@@ -908,9 +908,9 @@
       ],
       "yield": {
         "amount": 5,
-        "unit": "bowl"
+        "unit": "container"
       },
-      "notes": "A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls). Vinegar per bowl: 1 tbsp balsamic + 1 tbsp red wine vinegar (Sam, 4 Nov 2026)."
+      "notes": "A side, counted per container (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls). Vinegar per bowl: 1 tbsp balsamic + 1 tbsp red wine vinegar (Sam, 4 Nov 2026). Sam's way: cut all the vegetables, weigh each, divide by 5 into 5 containers (the prep sheet lists the grams per container)."
     },
     {
       "name": "Mashed potatoes",

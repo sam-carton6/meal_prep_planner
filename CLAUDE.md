@@ -93,7 +93,7 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   BBQ sauce). Suggested recipes wait in `data/suggested.json` until Sam picks; picked ones
   move to `data/meals.json`.
 - **Weigh, don't measure** (Sam, 4 Nov 2026): he uses a kitchen scale. Sides are planned in grams (rice, mashed
-  potatoes; the salad stays per bowl), containers by grams after weighing the pot, and the prep sheet gives grams
+  potatoes); the salad is a weekly batch split 5 ways, so the prep sheet gives grams of each vegetable per container, containers by grams after weighing the pot, and the prep sheet gives grams
   next to everything but spoon amounts. Shopping stays in store units (lb, cans).
 - What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
   cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for

@@ -71,9 +71,20 @@ export function PrepSheetPage({ date, onClose }: { date?: string; onClose: () =>
               <b>{s.recipe.name}</b>: {fmtAmount(roundSide(s.cups, sideStep(s.recipe.yieldUnit) === 25 ? 5 : 0.25))} {s.recipe.yieldUnit ?? 'cup'} for {s.containers} container
               {s.containers === 1 ? '' : 's'} → cook{' '}
               <b>{s.cook.filter((i) => i.amount !== null).map((i) => amountText(i.amount!, i.unit, i.name.split(',')[0].toLowerCase())).join(', ')}</b>
+              {sideStep(s.recipe.yieldUnit) === 0.5 && (
+                // A side made as a batch and split (the salad): weigh each part and divide it between the containers.
+                <ul className="prep-items">
+                  <li className="note">Per container ({fmtAmount(s.cups / Math.max(1, s.containers))} {s.recipe.yieldUnit}):</li>
+                  {s.cook.filter((i) => i.amount !== null && !i.optional).map((i) => {
+                    const per = { ...i, amount: i.amount! * (1 / Math.max(1, s.containers)) };
+                    const spoon = /^(tbsp|tsp|pinch|dash)\b/.test(i.unit);
+                    return <li key={i.id}>{spoon ? amountText(per.amount, i.unit, i.name) : `${Math.round(itemGrams(per))} g ${i.name}`}</li>;
+                  })}
+                </ul>
+              )}
             </div>
           ))}
-          <p className="note">Rice per container is in each dish above.</p>
+          <p className="note">Rice per container is in each dish above. Salad: weigh each vegetable and split it evenly.</p>
         </div>
       )}
       {sheet && sheet.dishes.length > 0 && (
