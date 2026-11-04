@@ -27,6 +27,7 @@ import { add, batchSummary, perYieldUnit, times } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { repeatStart, repeatWeek } from '../repeat';
 import { BatchEditor, newBatchFor } from './Cook';
+import { PrepSheetPage } from './Prep';
 import { customAsPicked, FoodPicker, Macros, Num, r0, Sheet, useUnitsFor, type PickedFood } from './shared';
 
 const SLOT_NAMES: Record<Slot, string> = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snacks' };
@@ -65,6 +66,7 @@ export function PlanTab() {
   const [editBatch, setEditBatch] = useState<Batch | null>(null);
   const [copying, setCopying] = useState(false);
   const [repeating, setRepeating] = useState(false);
+  const [prepFor, setPrepFor] = useState<string | null>(null);
 
   const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   // Everything is small (one person's plan), so load it all: cook days feed meals across weeks.
@@ -195,6 +197,7 @@ export function PlanTab() {
                         🍳 {b.recipeName}
                       </button>
                     ))}
+                    {cooks.length > 0 && <button className="cookbtn" onClick={() => setPrepFor(d)} title="Prep sheet: how to divide it">📋 prep</button>}
                     <button className="cookbtn" onClick={() => setCookOn(d)}>+ cook</button>
                   </div>
                   {SLOTS.map((slot) => (
@@ -271,6 +274,7 @@ export function PlanTab() {
           onCreated={(b) => { setCookOn(null); setEditBatch(b); }} />
       )}
       {editBatch && <BatchEditor batch={editBatch} recipe={recipeById.get(editBatch.recipeId)} onClose={() => setEditBatch(null)} />}
+      {prepFor && <PrepSheetPage date={prepFor} onClose={() => setPrepFor(null)} />}
       {copying && <CopyRoutine days={days} onClose={() => setCopying(false)} />}
       {repeating && (
         <RepeatWeek monday={days[0]} entries={allEntries ?? []} batches={batches} onClose={() => setRepeating(false)}

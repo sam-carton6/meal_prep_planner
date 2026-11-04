@@ -340,3 +340,9 @@ button.link.muted { color: var(--muted); }
 .confirm .note { flex-basis: 100%; }
 button.danger.armed { background: #c0392b; color: #fff; border-color: #c0392b; }
 .size-form { margin: 6px 0; }
+/* Prep sheet */
+.prep-dish h3 { margin: 0 0 4px; }
+.prep-dish h4 { margin: 12px 0 4px; }
+.prep-group { border-left: 3px solid var(--accent); padding: 4px 8px; margin: 6px 0; }
+.prep-group.spare { border-left-color: var(--line); }
+.prep-items { margin: 4px 0 8px; padding-left: 20px; font-size: 0.9rem; }

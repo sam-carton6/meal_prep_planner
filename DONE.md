@@ -2,6 +2,13 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — prep sheet; freeze after 5 days
+- Prep sheet (`src/prep.ts`, tested; `src/ui/Prep.tsx`): Cook → 📋 Prep sheet or 📋 prep on a Plan cook day. For
+  each dish cooked that day: amount of the main ingredient → servings; containers grouped by servings + cups of
+  rice with kcal/protein and the days they're for (❄️ ones to freeze); grams per container once the pot is weighed;
+  spare; fridge/freezer count; Mark cooked. Then all the rice to cook (dry amount).
+- FRIDGE_DAYS 4 → 5 (Sam): Sunday cooking lasts through Friday in the fridge.
+
 ### 2026-11-04 — deleting works everywhere (Sam: "deleting recipes and cook items doesn't work")
 - Delete used the browser's confirm pop-up, which is silently blocked inside another page (the claude.ai test
   copy), so it always answered "no". Now an in-page "Yes, delete it / Cancel" (`ConfirmButton`) for recipes, cook

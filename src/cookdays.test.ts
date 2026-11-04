@@ -35,11 +35,11 @@ describe('cook days', () => {
     expect(cov.uncovered).toHaveLength(0);
   });
 
-  it('re-counts when a cook day goes away, and flags freezer containers (more than 4 days later)', () => {
-    const meals = ['2026-11-02', '2026-11-05', '2026-11-06', '2026-11-08'].map((d) => meal(d));
+  it('re-counts when a cook day goes away, and flags freezer containers (more than 5 days later)', () => {
+    const meals = ['2026-11-02', '2026-11-06', '2026-11-07', '2026-11-08'].map((d) => meal(d));
     const cov = coverage(meals, [batch('sun', '2026-11-01')]);
-    expect(cov.cookDays.get('sun')!.freeze).toBe(2); // the 6th (5 days) and the 8th
-    expect(cov.frozen.has(meals[1].id)).toBe(false); // 4 days later: fridge is fine
+    expect(cov.cookDays.get('sun')!.freeze).toBe(2); // the 7th (6 days) and the 8th
+    expect(cov.frozen.has(meals[1].id)).toBe(false); // 5 days later (Sunday → Friday): fridge is fine
     expect(cov.frozen.has(meals[2].id)).toBe(true);
   });
 

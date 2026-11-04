@@ -35,19 +35,22 @@ added *Repeat this week…* (Plan tab: copies 7 days of meals + cook days to the
 day; only empty slots), Shop *by week* (Saturday–Friday, ‹ › to look ahead; "Pick dates" for any range;
 shopping day changeable), and a *Pantry* (More → Pantry or Shop → Pantry: spices, sauces, rice, oats; kept off
 the list, shown as "check you have enough", "running low" puts it under Restock).
-**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); trying these on the phone.
+Then: deleting fixed (pop-ups were blocked in the test copy; now in-page "Yes, delete it"), freeze rule now
+**more than 5 days** (Sam), and the **prep sheet** (Cook → 📋 Prep sheet, or 📋 prep on a cook day in Plan): per
+dish what to cook, containers grouped by servings + rice, grams each after weighing the pot, kcal/protein, which
+day each is for, ❄️ freezer ones, spare; then total rice to cook. "Mark cooked" right there.
+**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); trying these on the phone;
+Mexican chicken's recipe says 8 containers but he plans 5 (3 spare each week): change to 5, or are they for his
+girlfriend?
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 
-- (4 Nov) Freezer rule: containers eaten **more than 4 days** after the cook day are marked ❄️ freeze. Right number?
 - (4 Nov) "Mark cooked" on a cook day now fills in fridge/freezer by itself from the plan (eaten ones taken off,
   ❄️ ones in the freezer). Change them on the batch if they're wrong.
 - (4 Nov) Spare containers (e.g. for your girlfriend) are just shown as "spare"; there's no way to plan them for
   someone else. Fine, or do you want a "not me" slot that doesn't count in your calories?
 - (4 Nov) Repeat a week copies cook days at the size of the original (e.g. Mexican chicken makes 8, he plans 5:
   3 spare every week). Fine, or should copies shrink to what's planned?
-- (4 Nov) With a Sunday cook day, Friday's container is 5 days out, so it's marked ❄️ freeze (rule: > 4 days).
-  Matches "froze some"; change FRIDGE_DAYS if Friday from the fridge is fine for him.
 - (4 Nov) Pantry suggestions come from recipe ingredients (spices, oils, spoon amounts, rice/oats). Chicken broth,
   canned tomatoes etc. are left on the list unless he taps "in pantry".
 - (4 Nov) Weekends / eating out: leave them empty (the averages only count days with something planned) or add a

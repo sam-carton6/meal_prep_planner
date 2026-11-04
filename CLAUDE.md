@@ -30,7 +30,7 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 `npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
 then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`,
 `src/cookdays.ts` (what each cook day feeds), `src/bank.ts` (meal bank cards), `src/repeat.ts` (repeat a
-week), `src/pantry.ts`, `src/import-file.ts` (RECIPE-IMPORT
+week), `src/pantry.ts`, `src/prep.ts` (the prep sheet), `src/import-file.ts` (RECIPE-IMPORT
 format) and `src/off.ts` (Open Food Facts), all tested; screens in `src/ui/`. Open Food Facts is the only thing that
 goes online (search words or barcode only). Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
@@ -67,7 +67,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   tab bar. A planned container points at its *recipe*; the latest cook day of that recipe on or before it feeds
   it (Sam chose this over pinning each meal to a batch). Eaten meals are pinned to their batch. A new cook day
   starts at the recipe's normal size and Sam enters what he bought; extra containers show as *spare* (e.g. for
-  his girlfriend), not as a problem. Starches don't get cook days. Freeze = eaten more than 4 days after cooking.
+  his girlfriend), not as a problem. Starches don't get cook days. Freeze = eaten more than 5 days after cooking
+  (Sam, 4 Nov 2026: Sunday → Friday from the fridge is fine).
 - **Low friction beats precision** (Sam, 4 Nov 2026): he tracks his weight and judges by the trend; ±100 kcal a
   day doesn't matter, weekends are loose, he often skips breakfast and sometimes eats out. Prefer fewer taps and
   fields over exactness. He plans 1–3 months in one sitting: shopping lists ready, what to prep and freeze ahead.

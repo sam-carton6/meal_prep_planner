@@ -10,7 +10,7 @@ import { add, batchSummary, containersFor, perPortion, perYieldUnit, times, tota
 import { fmtAmount } from './units';
 
 /** Containers eaten more than this many days after cooking should go in the freezer. */
-export const FRIDGE_DAYS = 4;
+export const FRIDGE_DAYS = 5; // Sam, 4 Nov 2026: cook Sunday, Friday from the fridge is fine
 
 export const daysBetween = (from: string, to: string) =>
   Math.round((parseDate(to).getTime() - parseDate(from).getTime()) / 864e5);

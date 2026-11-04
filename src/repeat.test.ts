@@ -33,7 +33,7 @@ describe('repeat a week', () => {
     expect(r.entries.every((e) => !e.eaten && e.source.kind === 'dish' && !e.source.batchId)).toBe(true);
     const cov = coverage([...entries, ...r.entries], [...batches, ...r.batches]);
     expect(cov.uncovered).toHaveLength(0);
-    expect(cov.frozen.size).toBe(4); // each Friday is 5 days after its Sunday: freezer
+    expect(cov.frozen.size).toBe(0); // Friday is 5 days after Sunday: still the fridge
     expect(cov.feeds.get(r.entries[0].id)).toBe(r.batches[0].id);
   });
 

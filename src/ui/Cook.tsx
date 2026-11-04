@@ -21,6 +21,7 @@ import {
 import { fmtAmount } from '../units';
 import { coverage, entryPortions, entryStarch } from '../cookdays';
 import { ItemList } from './items';
+import { PrepSheetPage } from './Prep';
 import { ConfirmButton, Macros, Num, r0, Sheet } from './shared';
 
 export function newBatchFor(recipe: Recipe, date: string, proteinPerMeal = DEFAULT_SETTINGS.proteinPerMeal): Batch {
@@ -47,6 +48,7 @@ export function CookTab() {
   const [editing, setEditing] = useState<{ batch: Batch; recipe?: Recipe } | null>(null);
   const [choosing, setChoosing] = useState(false);
   const [showPast, setShowPast] = useState(false);
+  const [prepping, setPrepping] = useState(false);
   const today = isoDate(new Date());
 
   const planned = batches.filter((b) => b.status === 'planned');
@@ -83,8 +85,9 @@ export function CookTab() {
 
   return (
     <main className="wide">
-      <header>
+      <header className="row spread">
         <h1>Cook</h1>
+        <button className="primary" onClick={() => setPrepping(true)}>📋 Prep sheet</button>
       </header>
 
       <div className="cols">
@@ -157,6 +160,7 @@ export function CookTab() {
         </Sheet>
       )}
       {editing && <BatchEditor batch={editing.batch} recipe={editing.recipe} onClose={() => setEditing(null)} />}
+      {prepping && <PrepSheetPage onClose={() => setPrepping(false)} />}
     </main>
   );
 }
@@ -325,7 +329,7 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
  * Fridge/freezer counts for a batch that was just cooked: containers already eaten from it are gone, and the
  * ones planned more than FRIDGE_DAYS out go in the freezer.
  */
-async function cookedSplit(b: Batch): Promise<Pick<Batch, 'fridge' | 'freezer'>> {
+export async function cookedSplit(b: Batch): Promise<Pick<Batch, 'fridge' | 'freezer'>> {
   const [entries, batches] = await Promise.all([db.calendar.toArray(), db.batches.toArray()]);
   const all = batches.some((x) => x.id === b.id) ? batches.map((x) => (x.id === b.id ? b : x)) : [...batches, b];
   const day = coverage(entries, all).cookDays.get(b.id);
@@ -359,7 +363,7 @@ function StarchHint({ dishKcal, dishProtein, starch, aim, containers }: {
  * Weigh the pot: pick a saved pot (its empty weight is remembered), weigh pot + food, get the food's weight.
  * Pots live in settings; the last one used is picked first next time.
  */
-function PotWeigher({ cookedWeightG, onChange, hint }: {
+export function PotWeigher({ cookedWeightG, onChange, hint }: {
   cookedWeightG?: number;
   onChange: (g: number | undefined) => void;
   hint: string;
