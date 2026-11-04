@@ -5,7 +5,7 @@
 import type { Nutrition } from './model';
 import { ZERO } from './model';
 import { recipePreview, reviewRecipe, toCustomFood, type ImportFile, type ReviewRecipe } from './import-file';
-import { itemGrams, itemNutrition, perYieldUnit, times, totals, add } from './recipe-math';
+import { itemGrams, itemNutrition, perYieldUnit, sideStep, starchToReach, times, totals, add } from './recipe-math';
 import { buildIndex } from './search';
 import { fmtAmount } from './units';
 import type { Food } from './usda';
@@ -53,8 +53,8 @@ export function bookData(file: ImportFile, foods: Food[], opts: BookOptions) {
     const side = want ? all.find((x) => x.rv.file.kind === 'starch' && x.rv.file.name.trim().toLowerCase() === want) : undefined;
     if (!side || b.rv.file.kind === 'starch') continue;
     const perCup = side.each;
-    const byCup = /cup/.test(side.unit ?? '');
-    const amount = byCup ? Math.max(0, Math.round(((opts.aimKcal - b.each.kcal) / Math.max(1, perCup.kcal)) * 4) / 4) : 1;
+    const step = sideStep(side.unit);
+    const amount = step !== 0.5 ? starchToReach(b.each.kcal, opts.aimKcal, Math.max(1, perCup.kcal), step) : 1;
     b.side = { name: side.rv.file.name, amount, unit: side.unit ?? '', with: add(b.each, times(perCup, amount)) };
   }
   const checks: string[] = [];
@@ -78,8 +78,8 @@ export function renderRecipeBook(file: ImportFile, foods: Food[], opts: BookOpti
   const cards = [...dishes, ...recipes.filter((b) => b.rv.file.kind === 'starch')].map((b) => {
     const r = b.rv.file;
     const stats = r.kind === 'starch'
-      ? `<div><span class="big">${n0(b.each.kcal)}</span><span class="lab">kcal per ${esc(b.unit ?? '')}</span></div>
-<div><span class="big">${n0(b.each.protein)} g</span><span class="lab">protein per ${esc(b.unit ?? '')}</span></div>
+      ? `<div><span class="big">${n0(b.each.kcal * (b.unit === 'g' ? 100 : 1))}</span><span class="lab">kcal per ${b.unit === 'g' ? '100 g' : esc(b.unit ?? '')}</span></div>
+<div><span class="big">${n0(b.each.protein * (b.unit === 'g' ? 100 : 1))} g</span><span class="lab">protein per ${b.unit === 'g' ? '100 g' : esc(b.unit ?? '')}</span></div>
 <div><span class="big">${fmtAmount(r.yield?.amount ?? 1)}</span><span class="lab">${esc(r.yield?.unit ?? '')} per batch</span></div>`
       : `<div><span class="big">${n0(b.each.kcal)}</span><span class="lab">kcal per container</span></div>
 <div><span class="big${b.each.protein < opts.proteinPerMeal - 0.5 ? ' lowtxt' : ''}">${n0(b.each.protein)} g</span><span class="lab">protein per container</span></div>

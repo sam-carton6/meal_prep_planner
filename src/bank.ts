@@ -6,7 +6,7 @@ import type { Batch, CalendarEntry, CustomFood, Nutrition, Recipe } from './mode
 import { sideOf } from './weeks';
 import { ZERO } from './model';
 import { dishEach, dishLabel, dishNutrition, typicalBatch } from './cookdays';
-import { perYieldUnit, starchToReach, times } from './recipe-math';
+import { perYieldUnit, roundSide, sideStep, starchToReach, times } from './recipe-math';
 import { fmtAmount, stepFor } from './units';
 
 export type EntryDraft = Pick<CalendarEntry, 'label' | 'nutrition' | 'source'>;
@@ -109,7 +109,7 @@ export function buildCards(input: BankInput): MealCard[] {
       const p = last.get(id);
       const prevCups = p && (p.source.kind === 'dish' || p.source.kind === 'batch') && p.source.starch
         ? p.source.starch.cups * p.source.portions : undefined;
-      const suggested = starchToReach(each.kcal, mealKcalAim, perYieldUnit(s).kcal);
+      const suggested = starchToReach(each.kcal, mealKcalAim, perYieldUnit(s).kcal, sideStep(s.yieldUnit));
       cards.push({ id, group: 'prep', name: d.name, recipeId: d.id, each, starch: s,
         defaults: { servings: prevPortions(p) ?? 1, cups: prevCups ?? suggested } });
     }
@@ -170,7 +170,7 @@ export function cardTweaks(card: MealCard, tweaks: Values = {}): CardTweak[] {
     const s = v.servings ?? 1;
     const out: CardTweak[] = [{ key: 'servings', n: s, text: s === 1 ? 'serving' : 'servings', step: 0.5, min: 0.5 }];
     if (card.starch) {
-      out.push({ key: 'cups', n: v.cups ?? 0, text: `${(card.starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${card.starch.name.split(',')[0].toLowerCase()}`, step: 0.25, min: 0 });
+      out.push({ key: 'cups', n: v.cups ?? 0, text: `${(card.starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${card.starch.name.split(',')[0].toLowerCase()}`, step: sideStep(card.starch.yieldUnit), min: 0 });
     }
     return out;
   }
@@ -246,7 +246,7 @@ const quarter = (n: number) => Math.round(n * 4) / 4;
  */
 export function dishSuggestions(
   each: Nutrition,
-  starch: { per: Nutrition; text: string } | undefined,
+  starch: { per: Nutrition; text: string; step?: number } | undefined,
   servings: number,
   cups: number,
   t: Targets,
@@ -260,7 +260,7 @@ export function dishSuggestions(
   }
   if (t.kcal > 0) {
     if (starch && starch.per.kcal > 0) {
-      const c = Math.max(0, quarter((t.kcal - servings * each.kcal) / starch.per.kcal));
+      const c = Math.max(0, roundSide((t.kcal - servings * each.kcal) / starch.per.kcal, starch.step ?? 0.25));
       if (c !== cups) out.push({ text: `${t.kcal} kcal: ${fmtAmount(c)} ${starch.text}`, servings, cups: c });
     } else if (!starch && each.kcal > 0) {
       const s = Math.max(0.25, quarter(t.kcal / each.kcal));
@@ -275,7 +275,7 @@ export function cardSuggestions(card: MealCard, tweaks: Values, t: Targets): { t
   if (card.group !== 'prep') return [];
   const v = cardValues(card, tweaks);
   const starch = card.starch
-    ? { per: perYieldUnit(card.starch), text: cardTweaks(card, tweaks).find((x) => x.key === 'cups')!.text }
+    ? { per: perYieldUnit(card.starch), text: cardTweaks(card, tweaks).find((x) => x.key === 'cups')!.text, step: sideStep(card.starch.yieldUnit) }
     : undefined;
   return dishSuggestions(card.each, starch, v.servings ?? 1, v.cups ?? 0, t).map((s) => ({
     text: s.text,

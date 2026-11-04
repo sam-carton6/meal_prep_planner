@@ -9,10 +9,11 @@ import { newId, ZERO } from '../model';
 import { addDays, dayLabel, parseDate, sumEntries, weekStart } from '../plan';
 import { dishEach, typicalBatch } from '../cookdays';
 import {
-  byCup, choiceDraft, cookDayFor, defaultChoice, setRow, stockDraft, syncCookDay, weekdaysOf, weekRow,
+  choiceDraft, cookDayFor, defaultChoice, setRow, stockDraft, syncCookDay, weekdaysOf, weekRow,
   WEEK_SLOTS, type CalendarChange, type Choice, type RowDay,
 } from '../weeks';
 import { fmtAmount } from '../units';
+import { sideStep } from '../recipe-math';
 import { AddEntry, Stepper } from './Plan';
 import { Macros, Sheet } from './shared';
 
@@ -175,8 +176,8 @@ function RowEditor({ monday, slot, ctx, dishes, entries }: {
           </select>
           {side && main.starch && (
             <Stepper
-              t={{ key: 'cups', n: main.starch.cups, text: (side.yieldUnit ?? 'cup').replace(/ cooked$/, ''), step: byCup(side) ? 0.25 : 0.5, min: 0 }}
-              onStep={(d) => set({ ...main, starch: { ...main.starch!, cups: Math.max(0, main.starch!.cups + d * (byCup(side) ? 0.25 : 0.5)) } })}
+              t={{ key: 'cups', n: main.starch.cups, text: (side.yieldUnit ?? 'cup').replace(/ cooked$/, ''), step: sideStep(side.yieldUnit), min: 0 }}
+              onStep={(d) => set({ ...main, starch: { ...main.starch!, cups: Math.max(0, main.starch!.cups + d * sideStep(side.yieldUnit)) } })}
             />
           )}
           {each && <span className="note"><Macros short n={each} /> each</span>}

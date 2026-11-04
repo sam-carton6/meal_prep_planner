@@ -10,6 +10,7 @@ import { dayLabel, isoDate, parseDate } from '../plan';
 import { coverage, FRIDGE_DAYS } from '../cookdays';
 import { prepDates, prepSheet, type PrepDish, type PrepGroup } from '../prep';
 import { fmtAmount } from '../units';
+import { roundSide, sideStep } from '../recipe-math';
 import { BatchEditor, cookedSplit, PotWeigher } from './Cook';
 import { Macros, r0, Sheet } from './shared';
 
@@ -60,7 +61,7 @@ export function PrepSheetPage({ date, onClose }: { date?: string; onClose: () =>
           <h3>🍚 Sides to cook</h3>
           {sheet.starches.map((s) => (
             <div key={s.recipe.id}>
-              <b>{s.recipe.name}</b>: {fmtAmount(Math.round(s.cups * 4) / 4)} {s.recipe.yieldUnit ?? 'cup'} for {s.containers} container
+              <b>{s.recipe.name}</b>: {fmtAmount(roundSide(s.cups, sideStep(s.recipe.yieldUnit) === 25 ? 5 : 0.25))} {s.recipe.yieldUnit ?? 'cup'} for {s.containers} container
               {s.containers === 1 ? '' : 's'} → cook{' '}
               <b>{s.cook.filter((i) => i.amount !== null).map((i) => amountText(i.amount!, i.unit, i.name.split(',')[0].toLowerCase())).join(', ')}</b>
             </div>

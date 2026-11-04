@@ -7,7 +7,7 @@
 
 import type { Batch, CalendarEntry, Nutrition, Recipe, Slot } from './model';
 import { addDays } from './plan';
-import { containersFor, perYieldUnit } from './recipe-math';
+import { containersFor, perYieldUnit, sideStep, starchToReach } from './recipe-math';
 import { dishLabel, dishNutrition } from './cookdays';
 import type { EntryDraft } from './bank';
 
@@ -172,14 +172,14 @@ export const sideOf = (dish: Recipe, recipes: Recipe[]) => {
 };
 
 /** Measured in cups (rice) rather than whole things (a salad bowl). */
-export const byCup = (side: Recipe) => /cup/.test(side.yieldUnit ?? 'cup');
+export const byCup = (side: Recipe) => sideStep(side.yieldUnit) !== 0.5;
 
 /** A new row: 1 serving with its usual side, enough of it (to the ¼ cup) to reach the calorie aim; a bowl is 1. */
 export function defaultChoice(dish: Recipe, recipes: Recipe[], each: Nutrition, aimKcal: number): Choice {
   const side = sideOf(dish, recipes);
   if (!side) return { recipeId: dish.id, portions: 1 };
   const per = perYieldUnit(side).kcal;
-  const cups = byCup(side) ? Math.max(0, Math.round(((aimKcal - each.kcal) / Math.max(1, per)) * 4) / 4) : 1;
+  const cups = byCup(side) ? starchToReach(each.kcal, aimKcal, Math.max(1, per), sideStep(side.yieldUnit)) : 1;
   return { recipeId: dish.id, portions: 1, starch: { recipeId: side.id, cups } };
 }
 

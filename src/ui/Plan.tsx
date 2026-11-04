@@ -23,7 +23,7 @@ import {
 } from '../plan';
 import { baseName, buildCards, cardEntry, cardSuggestions, cardTweaks, dishSuggestions, stepTweak, type CardTweak, type EntryDraft, type MealCard, type Targets, type Values } from '../bank';
 import { coverage, dishLabel, entryPortions, unpinned, type Coverage, type CookDayInfo, FRIDGE_DAYS, liveEntries } from '../cookdays';
-import { add, batchSummary, perYieldUnit, times } from '../recipe-math';
+import { add, batchSummary, perYieldUnit, roundSide, sideStep, times } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { repeatStart, repeatWeek } from '../repeat';
 import { BatchEditor, newBatchFor } from './Cook';
@@ -540,8 +540,8 @@ function EntrySheet({ entry, cov, batches, recipeById, targets, onClose, onCook 
           <Stepper t={{ key: 'servings', n: s.portions, text: s.portions === 1 ? 'serving' : 'servings', step: 0.5, min: 0.5 }}
             onStep={(dir) => setDish(Math.max(0.5, s.portions + dir * 0.5), s.starch ? s.starch.cups * s.portions : 0)} />
           {s.starch && starch && (
-            <Stepper t={{ key: 'cups', n: s.starch.cups * s.portions, text: `${(starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${starch.name.split(',')[0].toLowerCase()}`, step: 0.25, min: 0 }}
-              onStep={(dir) => setDish(s.portions, Math.max(0, Math.round((s.starch!.cups * s.portions + dir * 0.25) * 4) / 4))} />
+            <Stepper t={{ key: 'cups', n: s.starch.cups * s.portions, text: `${(starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${starch.name.split(',')[0].toLowerCase()}`, step: sideStep(starch.yieldUnit), min: 0 }}
+              onStep={(dir) => setDish(s.portions, Math.max(0, roundSide(s.starch!.cups * s.portions + dir * sideStep(starch.yieldUnit), sideStep(starch.yieldUnit))))} />
           )}
           {(() => {
             const starchPer = starch ? perYieldUnit(starch) : undefined;
@@ -550,7 +550,7 @@ function EntrySheet({ entry, cov, batches, recipeById, targets, onClose, onCook 
             const text = starch ? `${(starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${starch.name.split(',')[0].toLowerCase()}` : '';
             return (
               <Suggestions
-                list={dishSuggestions(each, starchPer ? { per: starchPer, text } : undefined, s.portions, cups, { protein: targets.protein, kcal: targets.kcal })}
+                list={dishSuggestions(each, starchPer ? { per: starchPer, text, step: starch ? sideStep(starch.yieldUnit) : 0.25 } : undefined, s.portions, cups, { protein: targets.protein, kcal: targets.kcal })}
                 onPick={(x) => setDish(x.servings, x.cups)}
               />
             );

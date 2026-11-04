@@ -147,3 +147,12 @@ describe('containers a batch makes', () => {
     expect(containersFor({ ...recipe, servings: undefined }, recipe.items, 40)).toBe(6);
   });
 });
+
+describe('side amounts', () => {
+  it('steps rice by 25 g when weighed, cups by quarters, bowls by halves', async () => {
+    const { sideStep, starchToReach } = await import('./recipe-math');
+    expect([sideStep('g cooked'), sideStep('cup cooked'), sideStep('bowl')]).toEqual([25, 0.25, 0.5]);
+    // 706 g cooked from 972 kcal of dry rice: 1.38 kcal a gram; 420 kcal to go → 304 g → 300 g
+    expect(starchToReach(330, 750, 972 / 706, 25)).toBe(300);
+  });
+});

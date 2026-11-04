@@ -53,6 +53,8 @@ Whole Foods mushroom oyster sauce, Better Than Bouillon (in foods), Chinese cook
 brown rice pasta label (200 kcal, 4 g protein per 2 oz dry): check the bag. Then (all beef 85/15): Greek
 Chicken & Potatoes picked; added his Japanese Chicken Curry (homemade GF roux, no shiro dashi), Butter Chicken,
 Chicken Twice-Baked Potatoes (Claude's draft), and Mashed potatoes as a side. Placeholders: *Numbers to check*.
+Rice is now planned by weight (grams of cooked rice, 25 g steps; 706 g cooked per 1½ cups dry). Sam's
+ketchup, BBQ sauce and Better Than Bouillon are corn-free.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
 list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).

@@ -87,10 +87,20 @@ export function perYieldUnit(starch: Pick<Recipe, 'items' | 'yieldAmount'>): Nut
  * Cups (yield units) of starch to bring a container from `dishKcal` up to `aimKcal`, in quarter steps.
  * Zero if the dish already reaches the aim.
  */
-export function starchToReach(dishKcal: number, aimKcal: number, starchKcalPerUnit: number): number {
+export function starchToReach(dishKcal: number, aimKcal: number, starchKcalPerUnit: number, step = 0.25): number {
   if (starchKcalPerUnit <= 0 || dishKcal >= aimKcal) return 0;
-  return Math.round(((aimKcal - dishKcal) / starchKcalPerUnit) * 4) / 4;
+  return roundSide((aimKcal - dishKcal) / starchKcalPerUnit, step);
 }
+
+/**
+ * How a side is measured and stepped (Nov 2026: Sam weighs his rice): grams of cooked rice ("g cooked") in 25 g
+ * steps, cups in ¼ cups, whole things (a salad bowl) in halves.
+ */
+export function sideStep(yieldUnit?: string): number {
+  const u = (yieldUnit ?? 'cup').trim();
+  return /^g\b/.test(u) ? 25 : /cup/.test(u) ? 0.25 : 0.5;
+}
+export const roundSide = (n: number, step: number) => Math.round(n / step) * step;
 
 /**
  * How much to cook to get `wantedYield` (e.g. cups cooked): the starch recipe's items scaled down/up.
