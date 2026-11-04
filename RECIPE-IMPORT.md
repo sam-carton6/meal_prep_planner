@@ -82,6 +82,40 @@ Rules:
 - Don't invent nutrition numbers for recipes; the app calculates them.
 ```
 
+## Short prompt: just nutrition labels
+
+For one or a few packaged foods. Paste this into a claude.ai chat, attach photos of each label (the Nutrition
+Facts panel; the front of the package helps with the name), send, then copy the reply into More → Import recipes &
+foods (paste the whole reply) → Check it → Save these.
+
+```text
+Read the nutrition label(s) in my photos and reply with only this JSON in a code block (format
+"meal-prep-planner/1"), one entry in "foods" per product, then a short list of anything you couldn't read:
+
+{
+  "format": "meal-prep-planner/1",
+  "foods": [
+    {
+      "name": "Greek yogurt, plain, nonfat",
+      "brand": "Fage",
+      "place": null,
+      "serving": "1 container (170 g)",
+      "serving_grams": 170,
+      "kcal": 90, "protein_g": 18, "carbs_g": 5, "fat_g": 0,
+      "units": []
+    }
+  ]
+}
+
+Rules:
+- Copy the numbers exactly as printed for ONE serving (the "per serving" column, not "per container").
+- "serving": the serving size as printed. "serving_grams": its weight in grams if printed (or ml for drinks);
+  null if the label gives no weight.
+- "name": what it is, plain words (no brand); "brand": the brand on the package.
+- "units": leave empty unless I tell you one (e.g. my scoop is 55 g → { "unit": "scoop", "grams": 55 }).
+- Don't guess numbers you can't read: say so in the list after the JSON.
+```
+
 ## Sending them to Claude Code instead
 
 Put the `.json` file (or the PDFs/screenshots themselves) in `data/private/to-import/` in this project and say

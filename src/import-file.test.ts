@@ -95,3 +95,14 @@ describe('foods', () => {
     expect(toCustomFood(f.foods[1]).units).toBeUndefined();
   });
 });
+
+describe('the short label prompt in RECIPE-IMPORT.md', () => {
+  it('has an example the app reads (foods only, no recipes)', () => {
+    const start = doc.indexOf('{\n  "format"', doc.indexOf('## Short prompt'));
+    const example = doc.slice(start, doc.indexOf('\nRules:', start));
+    const f = parseImportFile(`\`\`\`json\n${example}\n\`\`\``);
+    expect(f.recipes).toEqual([]);
+    expect(toCustomFood(f.foods[0])).toMatchObject({ name: 'Greek yogurt, plain, nonfat', brand: 'Fage', servingGrams: 170,
+      perServing: { kcal: 90, protein: 18, carbs: 5, fat: 0 } });
+  });
+});
