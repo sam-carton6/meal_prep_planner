@@ -128,6 +128,14 @@ paste the reply to Claude Code. It updates the file, rebuilds the recipe book (`
 `/recipe-book.html` on the app's links) and pushes. Then More → Import recipes & foods → Replace brings the change
 into the app (past cook days keep their own amounts).
 
+## From a YouTube video (how Sam finds most recipes)
+
+AI chats can't watch videos, but almost every cooking video has the full recipe in the description or on the
+creator's website (linked under the video). Copy that ingredient list, add the link and what you change ("2 lb
+beef instead of 1", "no dark soy", "2 tbsp oil", "I use Kikkoman GF"), and paste it to Claude Code. It adds the
+recipe with your changes, swaps or flags anything with gluten or corn, puts amounts in grams where you'd weigh them,
+keeps the video link as the recipe's `source`, and tells you the calories and protein per container.
+
 ## Sending them to Claude Code instead
 
 Put the `.json` file (or the PDFs/screenshots themselves) in `data/private/to-import/` in this project and say
