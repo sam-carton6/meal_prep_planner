@@ -290,3 +290,6 @@ label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap
   .cards, .bank.closed .cards { display: flex; flex-direction: column; overflow: visible; }
   .bank-card { width: 100%; cursor: grab; }
 }
+.unit-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.unit-row .note { font-size: 0.8rem; align-self: center; }
+button.link.danger { color: #c0392b; }

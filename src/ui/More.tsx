@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, exportAll, getSettings, importAll } from '../db';
 import { buildImport, type OldFile } from '../import-recipes';
-import type { CustomFood, Settings } from '../model';
+import type { CustomFood, CustomUnit, Settings } from '../model';
 import { DEFAULT_SETTINGS, newId } from '../model';
 import { isoDate } from '../plan';
 import { search, buildIndex } from '../search';
@@ -103,7 +103,7 @@ function MyFoods({ onClose }: { onClose: () => void }) {
           <li key={f.id}>
             <button onClick={() => setEdit(foods.find((x) => x.id === f.id)!)}>
               <span className="name">{f.name.trim()}</span>
-              <span className="meta">{f.place ? `${f.place} · ` : ''}{r0(f.perServing.kcal)} kcal · {r0(f.perServing.protein)} g protein per {f.servingLabel}</span>
+              <span className="meta">{f.place ? `${f.place} · ` : ''}{f.brand ? `${f.brand} · ` : ''}{r0(f.perServing.kcal)} kcal · {r0(f.perServing.protein)} g protein per {f.servingLabel}{f.units?.length ? ` · also by ${f.units.map((u) => u.unit).join(', ')}` : ''}</span>
             </button>
           </li>
         ))}
@@ -120,10 +120,16 @@ function CustomFoodEditor({ food, onClose }: { food: CustomFood; onClose: () => 
   const [f, setF] = useState(food);
   const n = f.perServing;
   const setN = (k: keyof typeof n, v: number | null) => setF({ ...f, perServing: { ...n, [k]: v ?? 0 } });
+  const setUnit = (i: number, u: CustomUnit) => setF({ ...f, units: (f.units ?? []).map((x, j) => (j === i ? u : x)) });
+  const clean = (x: CustomFood): CustomFood => {
+    const units = (x.units ?? []).map((u) => ({ unit: u.unit.trim(), grams: u.grams })).filter((u) => u.unit && u.grams > 0);
+    return { ...x, name: x.name.trim(), units: units.length ? units : undefined };
+  };
   return (
     <Sheet title={food.name || 'New food'} onClose={onClose}>
       <label className="block">Name<input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} placeholder="e.g. Chicken burrito bowl" /></label>
       <label className="block">Place (optional)<input value={f.place ?? ''} onChange={(e) => setF({ ...f, place: e.target.value || undefined })} placeholder="e.g. Chipotle" /></label>
+      <label className="block">Brand (optional)<input value={f.brand ?? ''} onChange={(e) => setF({ ...f, brand: e.target.value || undefined })} placeholder="e.g. Naked Nutrition" /></label>
       <label className="block">Serving<input value={f.servingLabel} onChange={(e) => setF({ ...f, servingLabel: e.target.value })} placeholder="1 bowl" /></label>
       <div className="grid2">
         <label>kcal <Num value={n.kcal} onChange={(v) => setN('kcal', v)} /></label>
@@ -132,8 +138,25 @@ function CustomFoodEditor({ food, onClose }: { food: CustomFood; onClose: () => 
         <label>Fat g <Num value={n.fat} onChange={(v) => setN('fat', v)} /></label>
         <label>Serving weight g (optional) <Num value={f.servingGrams} onChange={(v) => setF({ ...f, servingGrams: v ?? undefined })} /></label>
       </div>
+      <h3>Other units</h3>
+      <p className="note">
+        {f.servingGrams
+          ? 'e.g. scoop = 55 g. The meal bank and recipes can then count it in scoops (and grams).'
+          : 'Enter the serving weight above first: units are worked out from grams.'}
+      </p>
+      {(f.units ?? []).map((u, i) => (
+        <div className="fields unit-row" key={i}>
+          <label>Unit<input value={u.unit} placeholder="scoop" onChange={(e) => setUnit(i, { ...u, unit: e.target.value })} /></label>
+          <label>Grams in one<Num value={u.grams || null} placeholder="g" onChange={(v) => setUnit(i, { ...u, grams: v ?? 0 })} /></label>
+          {f.servingGrams && u.grams > 0 ? (
+            <span className="note">1 {u.unit || 'unit'} = {r0(n.kcal * u.grams / f.servingGrams)} kcal · {r1(n.protein * u.grams / f.servingGrams)} g protein</span>
+          ) : <span />}
+          <button className="link danger" onClick={() => setF({ ...f, units: (f.units ?? []).filter((_, j) => j !== i) })}>Remove</button>
+        </div>
+      ))}
+      <button className="small" onClick={() => setF({ ...f, units: [...(f.units ?? []), { unit: '', grams: 0 }] })}>+ Add a unit</button>
       <div className="row actions">
-        <button className="primary" disabled={!f.name.trim()} onClick={async () => { await db.customFoods.put({ ...f, name: f.name.trim() }); onClose(); }}>Save</button>
+        <button className="primary" disabled={!f.name.trim()} onClick={async () => { await db.customFoods.put(clean(f)); onClose(); }}>Save</button>
         <button className="danger" onClick={async () => { if (confirm(`Delete "${f.name}"?`)) { await db.customFoods.delete(f.id); onClose(); } }}>Delete</button>
       </div>
     </Sheet>

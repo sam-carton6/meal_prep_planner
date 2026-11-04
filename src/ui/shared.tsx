@@ -121,7 +121,12 @@ export function customAsPicked(c: CustomFood): PickedFood {
     name: c.name,
     group: c.group,
     per100g: { kcal: c.perServing.kcal * k, protein: c.perServing.protein * k, carbs: c.perServing.carbs * k, fat: c.perServing.fat * k },
-    units: [{ unit: label, gramsPerUnit: g }, ...(c.servingGrams ? unitOptions([]) : [])],
+    units: [
+      { unit: label, gramsPerUnit: g },
+      // Extra units (scoop, bowl...) and weights only make sense when the serving's weight is known.
+      ...(c.servingGrams ? (c.units ?? []).filter((u) => u.grams > 0 && u.unit.trim()).map((u) => ({ unit: u.unit.trim(), gramsPerUnit: u.grams })) : []),
+      ...(c.servingGrams ? unitOptions([]) : []),
+    ],
   };
 }
 
