@@ -5,6 +5,10 @@
   --line: #e3e8e5;
   --accent: #2f6f4f;
   --field: #f2f5f3;
+  --warn: #b9770e;
+  --cook: #8a4fbf;
+  --sel: #2f6f4f22;
+  --tabs-h: 54px;
   color-scheme: light dark;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -16,6 +20,9 @@
     --line: #2a322e;
     --accent: #7cc4a0;
     --field: #1d2421;
+    --warn: #e0a84a;
+    --cook: #c49bea;
+    --sel: #7cc4a033;
   }
 }
 * { box-sizing: border-box; }
@@ -76,9 +83,9 @@ th:first-child, td:first-child { text-align: left; }
 th { color: var(--muted); font-weight: 600; }
 
 /* ---- App shell: tab bar ---- */
-.app { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+.app { padding-bottom: calc(var(--tabs-h) + 10px + env(safe-area-inset-bottom)); }
 .tabs {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; height: calc(var(--tabs-h) + env(safe-area-inset-bottom));
   display: flex; background: var(--bg); border-top: 1px solid var(--line);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -125,7 +132,7 @@ section { margin-bottom: 8px; }
   display: inline-block; font-size: 0.7rem; padding: 1px 6px; border-radius: 6px; margin-right: 6px;
   background: var(--field); color: var(--accent); border: 1px solid var(--line); vertical-align: 1px;
 }
-.warn { color: #b9770e; }
+.warn { color: var(--warn); }
 
 /* ---- Sheets (full-screen pages on top) ---- */
 .sheet {
@@ -214,3 +221,72 @@ label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap
 .recent { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 10px; }
 .recent .note { width: 100%; }
 .recent button { margin: 0; text-align: left; font-size: 0.85rem; }
+
+/* ---- Plan: meal bank + paint-in calendar ---- */
+/* Phone: the bank is a strip of cards just above the tab bar. Wide screens: a sidebar on the right. */
+.plan-main { padding-bottom: 200px; }
+.plan-layout.bank-closed .plan-main { padding-bottom: 50px; }
+.bank {
+  position: fixed; left: 0; right: 0; z-index: 9; bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom));
+  background: var(--bg); border-top: 1px solid var(--line); padding: 6px 12px 8px;
+  box-shadow: 0 -4px 12px #0000000d;
+}
+.bank-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--muted); font-weight: 600; min-height: 30px; }
+.bank-head button { margin: 0 0 0 8px; padding: 4px 12px; }
+.bank-head button.link { padding: 4px 0; }
+.bank.closed .cards { display: none; }
+.cards { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 2px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+.cards .note { margin: 4px 0; font-size: 0.85rem; }
+.bank-card {
+  flex: none; width: 152px; scroll-snap-align: start; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--field); padding: 7px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;
+  user-select: none; -webkit-user-select: none;
+}
+.bank-card.on { border: 2px solid var(--accent); background: var(--sel); padding: 6px 7px; }
+.bc-name { font-size: 0.85rem; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.bc-sub { font-size: 0.72rem; color: var(--muted); }
+.bc-n { font-size: 0.74rem; color: var(--muted); }
+.stepper { display: flex; align-items: center; gap: 4px; font-size: 0.76rem; margin-top: 2px; }
+.stepper > span { flex: 1; text-align: center; line-height: 1.15; }
+.stepper > button { width: 30px; height: 28px; padding: 0; margin: 0; flex: none; border-radius: 7px; background: var(--bg); font-size: 1rem; }
+.stepper .unit-cycle { font-size: 0.76rem; padding: 0; text-decoration: underline dotted; }
+.card .stepper { font-size: 0.95rem; margin: 6px 0; max-width: 340px; }
+.card .stepper > button { width: 40px; height: 36px; }
+.plan-head { padding: 6px 0 6px; z-index: 5; }
+.plan-head .seg { margin: 2px 0 4px; }
+.plan-head .seg button { padding: 5px; font-size: 0.88rem; }
+.plan-head .row { margin: 2px 0; }
+.slot-name.slot-add { margin: 0; padding: 8px 0 0; background: none; border: none; text-align: left; font-size: 0.8rem; color: var(--muted); border-radius: 0; }
+.slot-add .plus { color: var(--accent); font-weight: 700; padding-left: 2px; }
+.hint { font-size: 0.82rem; background: var(--sel); border-radius: 8px; padding: 6px 8px; margin-top: 6px; }
+.placing .slot { outline: 1.5px dashed var(--accent); outline-offset: -1px; border-radius: 8px; cursor: copy; }
+.slot.dragover { background: var(--sel); border-radius: 8px; }
+.slot { min-height: 36px; }
+.chip-tick { color: var(--muted); padding: 4px 2px 4px 8px; font-size: 0.95rem; }
+.chip.eaten .chip-tick { color: var(--accent); font-weight: 700; }
+.chip[draggable='true'] { cursor: grab; }
+.day-head .ok { color: var(--accent); font-weight: 600; }
+.day-head .off { color: var(--warn); font-weight: 600; }
+.cook-row { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 4px; }
+.cook-row button { margin: 0; font-size: 0.75rem; padding: 3px 8px; border-radius: 8px; }
+.cookbtn { border-style: dashed; background: none; color: var(--muted); }
+.cooktag { background: var(--cook); color: var(--bg); border-color: var(--cook); }
+.cooktag.cooked { background: none; color: var(--cook); }
+.cook-panel h3 { margin: 4px 0 6px; }
+.cook-day { border-top: 1px solid var(--line); padding: 8px 0; font-size: 0.9rem; }
+.cook-day:first-of-type { border-top: none; }
+.cook-day .link-plain { display: block; width: 100%; padding: 0; }
+.cook-day button.small { margin: 4px 0 0; }
+.month-cook { color: var(--cook); }
+
+@media (min-width: 900px) {
+  .plan-layout { display: flex; align-items: flex-start; }
+  .plan-layout .plan-main { flex: 1; min-width: 0; padding-bottom: 24px; }
+  .bank {
+    position: sticky; top: 0; bottom: auto; width: 290px; flex: none; box-shadow: none;
+    height: calc(100vh - var(--tabs-h)); overflow-y: auto; border-top: none; border-left: 1px solid var(--line); padding: 10px 12px;
+  }
+  .bank-toggle { display: none; }
+  .cards, .bank.closed .cards { display: flex; flex-direction: column; overflow: visible; }
+  .bank-card { width: 100%; cursor: grab; }
+}

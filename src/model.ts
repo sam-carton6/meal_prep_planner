@@ -8,8 +8,12 @@
 //                                                Batch (one cook of a recipe: planned or cooked, real amounts,
 //                                                       portions, cooked weight, fridge/freezer counts)
 //                                                                         │
-//                                  CalendarEntry (a slot on a day: a batch portion (+ starch), or any food;
+//                                  CalendarEntry (a slot on a day: a dish container (+ starch), or any food;
 //                                                 keeps its own copy of the nutrition so history never changes)
+//
+// Cook days (version 2, Nov 2026): a planned dish meal points at its *recipe*, not a batch. The batch (cook day)
+// that feeds it is worked out each time: the latest cook day of that recipe on or before the meal (plan.ts,
+// coverage). Ticking the meal as eaten pins it to that batch, so history stays put.
 
 export interface Nutrition {
   kcal: number;
@@ -108,7 +112,17 @@ export interface CustomFood {
   servingLabel: string; // e.g. "1 bowl", "1 can (7 oz)"
   /** Weight of one serving if known; lets it be used as a recipe ingredient by weight. */
   servingGrams?: number;
+  /** Extra units besides the serving and grams, e.g. { unit: 'scoop', grams: 55 } (need servingGrams). */
+  units?: CustomUnit[];
+  brand?: string;
+  /** Open Food Facts barcode, when it came from there. */
+  barcode?: string;
   group?: string;
+}
+
+export interface CustomUnit {
+  unit: string;
+  grams: number;
 }
 
 export type Slot = 'breakfast' | 'lunch' | 'dinner' | 'snack';
@@ -121,7 +135,13 @@ export interface CalendarEntry {
   /** What it is, for display: "Sweet Potato Beef Chili + 1⅓ cup rice". */
   label: string;
   source:
+    /** Pinned to one batch (entries made before version 2). `cups` of starch is per portion. */
     | { kind: 'batch'; batchId: string; portions: number; starch?: { batchId?: string; recipeId: string; cups: number } }
+    /**
+     * A dish container from whichever cook day covers it (version 2). `batchId` is set once eaten.
+     * `portions` can be 1.5 etc. (eating more or less); `cups` of starch is per portion.
+     */
+    | { kind: 'dish'; recipeId: string; portions: number; starch?: { recipeId: string; cups: number }; batchId?: string }
     | { kind: 'food'; food: FoodRef; amount: number; unit: string }
     | { kind: 'quick' };
   /** Nutrition copied in when the entry is made, so the log never changes afterwards. */

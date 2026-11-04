@@ -8,6 +8,7 @@ import type { Batch } from '../model';
 import { DEFAULT_SETTINGS } from '../model';
 import { addDays, AISLES, dayLabel, groceryList, isoDate } from '../plan';
 import { starchToCook } from '../recipe-math';
+import { entryStarch } from '../cookdays';
 
 export function ShopTab() {
   const today = isoDate(new Date());
@@ -28,8 +29,8 @@ export function ShopTab() {
   const starchBatches: Batch[] = useMemo(() => {
     const cups = new Map<string, number>();
     for (const e of entries) {
-      if (e.source.kind === 'batch' && e.source.starch && !e.eaten)
-        cups.set(e.source.starch.recipeId, (cups.get(e.source.starch.recipeId) ?? 0) + e.source.starch.cups * e.source.portions);
+      const st = entryStarch(e);
+      if (st && !e.eaten) cups.set(st.recipeId, (cups.get(st.recipeId) ?? 0) + st.cups);
     }
     const out: Batch[] = [];
     for (const [rid, c] of cups) {

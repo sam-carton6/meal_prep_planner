@@ -23,6 +23,32 @@ db.version(1).stores({
   groceryChecks: 'id',
 });
 
+// Version 2 (Nov 2026, cook days): same tables. Planned (not eaten) meals that were pinned to a batch now point
+// at the batch's recipe instead, so whichever cook day comes before them feeds them (see plan.ts, coverage).
+// Eaten meals keep their batch. Nothing is deleted.
+db.version(2)
+  .stores({
+    recipes: 'id, name, kind',
+    batches: 'id, recipeId, status, cookDate',
+    customFoods: 'id, name, place',
+    calendar: 'id, date, [date+slot]',
+    settings: 'id',
+    groceryChecks: 'id',
+  })
+  .upgrade(async (tx) => {
+    const batches = new Map((await tx.table<Batch>('batches').toArray()).map((b) => [b.id, b]));
+    await tx
+      .table<CalendarEntry>('calendar')
+      .toCollection()
+      .modify((e) => {
+        if (e.eaten || e.source.kind !== 'batch') return;
+        const b = batches.get(e.source.batchId);
+        if (!b) return;
+        const { portions, starch } = e.source;
+        e.source = { kind: 'dish', recipeId: b.recipeId, portions, ...(starch ? { starch: { recipeId: starch.recipeId, cups: starch.cups } } : {}) };
+      });
+  });
+
 export async function getSettings(): Promise<Settings> {
   return { ...DEFAULT_SETTINGS, ...((await db.settings.get('settings')) ?? {}) };
 }

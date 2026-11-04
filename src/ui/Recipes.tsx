@@ -152,7 +152,7 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
         </button>
       </div>
       {planning && (
-        <BatchEditor batch={newBatchFor(r, isoDate(new Date()))} recipe={r} onClose={() => { setPlanning(false); onClose(); }} />
+        <BatchEditor batch={newBatchFor(r, isoDate(new Date()), settings.proteinPerMeal)} recipe={r} onClose={() => { setPlanning(false); onClose(); }} />
       )}
     </Sheet>
   );

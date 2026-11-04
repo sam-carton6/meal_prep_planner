@@ -5,7 +5,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, getSettings } from '../db';
 import type { Batch, Recipe } from '../model';
 import { DEFAULT_SETTINGS, newId } from '../model';
-import { addDays, dayLabel, isoDate, portionsUsed } from '../plan';
+import { addDays, dayLabel, isoDate } from '../plan';
 import {
   batchSummary,
   itemGrams,
@@ -19,12 +19,12 @@ import {
   totals,
 } from '../recipe-math';
 import { fmtAmount } from '../units';
+import { coverage, entryPortions, entryStarch } from '../cookdays';
 import { ItemList } from './items';
 import { Macros, Num, r0, Sheet } from './shared';
 
-export function newBatchFor(recipe: Recipe, date: string): Batch {
+export function newBatchFor(recipe: Recipe, date: string, proteinPerMeal = DEFAULT_SETTINGS.proteinPerMeal): Batch {
   const items = recipe.items.map((i) => ({ ...i }));
-  const s = DEFAULT_SETTINGS;
   return {
     id: newId(),
     recipeId: recipe.id,
@@ -32,7 +32,7 @@ export function newBatchFor(recipe: Recipe, date: string): Batch {
     status: 'planned',
     cookDate: date,
     items,
-    portions: recipe.kind === 'dish' ? portionsForProtein(totals(items), s.proteinPerMeal) : 1,
+    portions: recipe.kind === 'dish' ? portionsForProtein(totals(items), proteinPerMeal) : 1,
     fridge: 0,
     freezer: 0,
     createdAt: new Date().toISOString(),
@@ -43,6 +43,7 @@ export function CookTab() {
   const batches = useLiveQuery(() => db.batches.orderBy('cookDate').toArray(), []) ?? [];
   const recipes = useLiveQuery(() => db.recipes.toArray(), []) ?? [];
   const entries = useLiveQuery(() => db.calendar.toArray(), []) ?? [];
+  const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   const [editing, setEditing] = useState<{ batch: Batch; recipe?: Recipe } | null>(null);
   const [choosing, setChoosing] = useState(false);
   const [showPast, setShowPast] = useState(false);
@@ -57,16 +58,18 @@ export function CookTab() {
     const until = addDays(today, 14);
     const need = new Map<string, { cups: number; dates: string[] }>();
     for (const e of entries) {
-      if (e.source.kind !== 'batch' || !e.source.starch || e.date < today || e.date > until || e.eaten) continue;
-      if (e.source.starch.batchId) continue; // already portioned from a cooked starch batch
-      const n = need.get(e.source.starch.recipeId) ?? { cups: 0, dates: [] };
-      n.cups += e.source.starch.cups * e.source.portions;
+      const st = entryStarch(e);
+      if (!st || e.date < today || e.date > until || e.eaten) continue;
+      if (e.source.kind === 'batch' && e.source.starch?.batchId) continue; // already portioned from a cooked starch batch
+      const n = need.get(st.recipeId) ?? { cups: 0, dates: [] };
+      n.cups += st.cups;
       n.dates.push(e.date);
-      need.set(e.source.starch.recipeId, n);
+      need.set(st.recipeId, n);
     }
     return [...need].map(([recipeId, n]) => ({ recipe: recipes.find((r) => r.id === recipeId), ...n }));
   }, [entries, recipes, today]);
 
+  const cov = useMemo(() => coverage(entries, batches), [entries, batches]);
   const open = (b: Batch) => setEditing({ batch: b, recipe: recipes.find((r) => r.id === b.recipeId) });
 
   const row = (b: Batch, extra: React.ReactNode) => (
@@ -89,9 +92,11 @@ export function CookTab() {
       <ul className="results">
         {planned.map((b) => {
           const s = batchSummary(b);
+          const day = cov.cookDays.get(b.id);
           return row(b, <>
             {dayLabel(b.cookDate)}{b.cookDate < today ? ' (past, mark cooked?)' : ''} · {b.portions} containers ·{' '}
             <Macros short n={s.each} /> each
+            {day && day.used > 0 && <> · {fmtAmount(day.used)} planned{day.freeze ? `, ❄️ ${fmtAmount(day.freeze)} to freeze` : ''}{day.short ? `, ⚠ ${fmtAmount(day.short)} short` : ''}</>}
           </>);
         })}
       </ul>
@@ -113,7 +118,7 @@ export function CookTab() {
       {stock.length === 0 && <p className="note">Nothing in stock. Cooked batches with containers left show here.</p>}
       <ul className="results">
         {stock.map((b) => {
-          const planned = portionsUsed(b.id, entries.filter((e) => !e.eaten));
+          const planned = cov.cookDays.get(b.id)?.used ?? 0;
           return row(b, <>
             🧊 fridge {b.fridge} · ❄️ freezer {b.freezer} · {planned} on the calendar · cooked {dayLabel(b.cookDate)}
           </>);
@@ -134,7 +139,7 @@ export function CookTab() {
                 <button
                   onClick={() => {
                     setChoosing(false);
-                    setEditing({ batch: newBatchFor(r, today), recipe: r });
+                    setEditing({ batch: newBatchFor(r, today, settings.proteinPerMeal), recipe: r });
                   }}
                 >
                   <span className="name">{r.name}</span>
@@ -291,7 +296,7 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
           Save
         </button>
         {b.status === 'planned' && (
-          <button onClick={() => save({ status: 'cooked', fridge: b.fridge + b.freezer ? b.fridge : b.portions })}>
+          <button onClick={async () => save(b.fridge + b.freezer ? { status: 'cooked' } : { status: 'cooked', ...(await cookedSplit(b)) })}>
             Mark cooked
           </button>
         )}
@@ -311,6 +316,20 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
       </div>
     </Sheet>
   );
+}
+
+/**
+ * Fridge/freezer counts for a batch that was just cooked: containers already eaten from it are gone, and the
+ * ones planned more than FRIDGE_DAYS out go in the freezer.
+ */
+async function cookedSplit(b: Batch): Promise<Pick<Batch, 'fridge' | 'freezer'>> {
+  const [entries, batches] = await Promise.all([db.calendar.toArray(), db.batches.toArray()]);
+  const all = batches.some((x) => x.id === b.id) ? batches.map((x) => (x.id === b.id ? b : x)) : [...batches, b];
+  const day = coverage(entries, all).cookDays.get(b.id);
+  const eaten = day ? day.entries.filter((e) => e.eaten).reduce((n, e) => n + entryPortions(e), 0) : 0;
+  const left = Math.max(0, Math.round(b.portions - eaten));
+  const freezer = Math.min(left, Math.round(day?.freeze ?? 0));
+  return { fridge: left - freezer, freezer };
 }
 
 function StarchHint({ dishKcal, dishProtein, starch, aim, containers }: {

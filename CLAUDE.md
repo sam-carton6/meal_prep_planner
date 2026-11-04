@@ -28,8 +28,8 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 
 ## Checking work
 `npm test` (maths/logic tests) and `npm run build`, then try it with `npm run dev` in the PC browser at phone size,
-then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`
-(tested); screens in `src/ui/`. Sam's phone is an iPhone 17: check layouts at 402 × 874.
+then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`,
+`src/cookdays.ts` (what each cook day feeds) and `src/bank.ts` (meal bank cards), all tested; screens in `src/ui/`. Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
@@ -59,3 +59,11 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   calendar. Phone: tap a card, then tap slots; PC: drag and drop. **Sam sets cook days himself**; the app derives
   portions, freezer hints and shopping from the plan + cook days. Clickable mockup first (`public/mockup.html`).
   Recipes/foods arrive via [RECIPE-IMPORT.md](RECIPE-IMPORT.md); packaged foods looked up on Open Food Facts.
+- Hybrid built 4 Nov 2026: the meal bank + paint-in calendar live on the Plan tab, inside the real app with its
+  tab bar. A planned container points at its *recipe*; the latest cook day of that recipe on or before it feeds
+  it (Sam chose this over pinning each meal to a batch). Eaten meals are pinned to their batch. A new cook day
+  starts at the recipe's normal size and Sam enters what he bought; extra containers show as *spare* (e.g. for
+  his girlfriend), not as a problem. Starches don't get cook days. Freeze = eaten more than 4 days after cooking.
+- What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
+  cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for
+  someone else). He knows how to cook most things: amounts and how to divide them matter more than recipe steps.
