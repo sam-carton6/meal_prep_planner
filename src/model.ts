@@ -164,6 +164,8 @@ export interface Settings {
   /** Saved pots/containers and their empty weights; the last one used is picked first next time. */
   pots: Pot[];
   lastPotId?: string;
+  /** Import: ingredient name (lower case) → USDA id Sam picked by hand, used first on later imports. */
+  importMatches?: Record<string, number>;
 }
 
 export const DEFAULT_SETTINGS: Settings = {

@@ -13,8 +13,11 @@ function words(text: string): string[] {
     .filter(Boolean);
 }
 
-// "carrots" should also find "Carrot…", so drop a trailing s from longer query words.
-function stem(word: string): string {
+// "carrots" should also find "Carrot…", so drop a trailing s from longer query words; "potatoes" → "potato",
+// "berries" → "berr" (finds "berry").
+export function stem(word: string): string {
+  if (word.length > 4 && word.endsWith('oes')) return word.slice(0, -2);
+  if (word.length > 4 && word.endsWith('ies')) return word.slice(0, -3);
   return word.length > 3 && word.endsWith('s') && !word.endsWith('ss') ? word.slice(0, -1) : word;
 }
 
@@ -38,6 +41,9 @@ function score(entry: IndexedItem<Searchable>, query: string[]): number | null {
     const pos = entry.words.findIndex((w) => w.startsWith(q));
     if (pos === -1) return null;
     total += pos;
+    // A whole word (or its plural) beats a longer word that only starts the same: "pea" → peas, not peaches.
+    const w = entry.words[pos];
+    if (q.length >= 3 && w !== q && w !== `${q}s` && w !== `${q}es` && !entry.words.some((x) => x === q || x === `${q}s` || x === `${q}es`)) total += 2;
     if (qi === 0 && pos !== 0) total += 5;
   }
   total += entry.words.length * 0.3;

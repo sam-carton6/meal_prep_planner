@@ -85,6 +85,27 @@ export interface ImportResult {
 
 const UNIT_WORDS: Record<string, string[]> = { whole: ['medium', 'whole'], medium: ['medium'], head: ['head'] };
 
+/**
+ * Grams in one of `unit` for a food: plain weights, "can (15 oz)" style labels, cups/tbsp/tsp and portions
+ * ("medium", "clove") from USDA. "whole" falls back to USDA's medium (with a note). Undefined if unknown.
+ */
+export function unitGrams(unit: string, food?: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {
+  const u = unit.trim();
+  if (u in G_PER) return { grams: G_PER[u as keyof typeof G_PER] };
+  const fromLabel = gramsFromLabel(u);
+  if (fromLabel) return { grams: fromLabel };
+  if (!food) return undefined;
+  const opts = unitOptions(food.portions);
+  for (const w of UNIT_WORDS[u] ?? [u, u.replace(/s$/, '')]) {
+    const hit = opts.find((o) => o.unit === w || o.unit.startsWith(w + ' ') || o.unit.startsWith(w + ','));
+    if (hit) {
+      const note = w !== u && u !== w + 's' ? `1 ${u} taken as USDA "${hit.unit}" (${Math.round(hit.gramsPerUnit)} g)` : undefined;
+      return { grams: hit.gramsPerUnit, note };
+    }
+  }
+  return undefined;
+}
+
 function toItem(ing: OldIngredient, foods: Map<number, Food>, customFoods: CustomFood[], optional = false, drained = false) {
   const base = { id: newId(), name: ing.name, amount: ing.amount, unit: ing.unit, scaling: 'scale' as const, optional };
   const old = { kcal: ing.calories, protein: ing.protein_g };
@@ -102,20 +123,12 @@ function toItem(ing: OldIngredient, foods: Map<number, Food>, customFoods: Custo
   // Weight of one unit: plain weights, "(15 oz)" labels, cups and portions from USDA, else back-calculated
   // from Sam's own calories for that line (marked as a guess).
   const weightOf = (per100kcal: number): number => {
-    const u = ing.unit;
-    if (u in G_PER) return G_PER[u as keyof typeof G_PER];
-    const fromLabel = gramsFromLabel(u);
-    if (fromLabel) return fromLabel;
-    if (food) {
-      const opts = unitOptions(food.portions);
-      for (const w of UNIT_WORDS[u] ?? [u]) {
-        const hit = opts.find((o) => o.unit === w || o.unit.startsWith(w + ' ') || o.unit.startsWith(w + ','));
-        if (hit) {
-          if (w !== u) note = `1 ${u} taken as USDA "${hit.unit}" (${Math.round(hit.gramsPerUnit)} g)`;
-          return hit.gramsPerUnit;
-        }
-      }
+    const known = unitGrams(ing.unit, food);
+    if (known) {
+      note = known.note;
+      return known.grams;
     }
+    const u = ing.unit;
     const g = per100kcal > 0 ? ing.calories / (per100kcal / 100) / (ing.amount ?? 1) : 0;
     note = `no USDA size for "${u}": ${Math.round(g)} g each, worked out from your old calories`;
     return g;

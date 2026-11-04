@@ -11,8 +11,9 @@ import { search, buildIndex } from '../search';
 import { forGrams, SOURCE_NAMES, type Food } from '../usda';
 import oldRecipes from '../../recipes.json';
 import { Macros, Num, r0, r1, Sheet, useFoods } from './shared';
+import { ImportFilePage } from './ImportFile';
 
-type Page = 'ingredients' | 'myfoods' | 'targets' | 'backup' | 'import' | null;
+type Page = 'ingredients' | 'myfoods' | 'targets' | 'backup' | 'importfile' | 'import' | null;
 
 export function MoreTab() {
   const [page, setPage] = useState<Page>(null);
@@ -21,7 +22,8 @@ export function MoreTab() {
     ['myfoods', 'My foods', 'Takeout, treats, and things USDA lacks'],
     ['targets', 'Targets', 'Protein per meal, calories per meal and per day'],
     ['backup', 'Backup', 'Save everything to a file, or restore one'],
-    ['import', 'Import recipes.json', 'Your existing recipes, recalculated from USDA'],
+    ['importfile', 'Import recipes & foods', 'A file or pasted reply from claude.ai (see RECIPE-IMPORT.md)'],
+    ['import', 'Your original recipes.json', 'The recipes you had before the app, recalculated from USDA'],
   ];
   return (
     <main>
@@ -42,6 +44,7 @@ export function MoreTab() {
       {page === 'myfoods' && <MyFoods onClose={() => setPage(null)} />}
       {page === 'targets' && <Targets onClose={() => setPage(null)} />}
       {page === 'backup' && <Backup onClose={() => setPage(null)} />}
+      {page === 'importfile' && <ImportFilePage onClose={() => setPage(null)} />}
       {page === 'import' && <ImportPage onClose={() => setPage(null)} />}
     </main>
   );

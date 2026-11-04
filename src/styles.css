@@ -293,3 +293,7 @@ label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap
 .unit-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
 .unit-row .note { font-size: 0.8rem; align-self: center; }
 button.link.danger { color: #c0392b; }
+.card.skipped { opacity: 0.5; }
+select.choice { font-size: 0.85rem; padding: 4px 6px; max-width: 48%; }
+.ok-note { background: var(--sel); border-radius: 8px; padding: 8px 10px; }
+table.compare .link.small { padding: 0; font-size: 0.8rem; }

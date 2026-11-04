@@ -281,6 +281,14 @@ function MealBank({ cards, tweaks, onTweak, placing, onPick, onDone, canUndo, on
   open: boolean;
   onToggle: () => void;
 }) {
+  const clash = useMemo(() => {
+    const seen = new Map<string, Set<string>>();
+    for (const c of cards) if (c.group === 'prep' && c.starch) {
+      const k = c.starch.name.split(',')[0].toLowerCase();
+      seen.set(k, (seen.get(k) ?? new Set()).add(c.starch.id));
+    }
+    return new Set([...seen].filter(([, ids]) => ids.size > 1).map(([k]) => k));
+  }, [cards]);
   return (
     <aside className={`bank ${open || placing ? '' : 'closed'}`}>
       <div className="bank-head">
@@ -299,7 +307,7 @@ function MealBank({ cards, tweaks, onTweak, placing, onPick, onDone, canUndo, on
           <p className="note">No meals yet. Add recipes (Recipes tab) or My foods (More), or import a file (More → Import).</p>
         )}
         {cards.map((c) => (
-          <BankCard key={c.id} card={c} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
+          <BankCard key={c.id} card={c} clash={clash} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
             onTweak={(t) => onTweak(c.id, t)} onPick={() => onPick(c.id)} />
         ))}
       </div>
@@ -307,13 +315,16 @@ function MealBank({ cards, tweaks, onTweak, placing, onPick, onDone, canUndo, on
   );
 }
 
-function cardTitle(c: MealCard) {
-  if (c.group === 'prep') return c.starch ? `${c.name} + ${c.starch.name.split(',')[0].toLowerCase()}` : c.name;
-  return c.name;
+/** "Chili + white rice"; the starch's full name if two starches share a short name. */
+function cardTitle(c: MealCard, clash: Set<string>) {
+  if (c.group !== 'prep' || !c.starch) return c.name;
+  const short = c.starch.name.split(',')[0].toLowerCase();
+  return `${c.name} + ${clash.has(short) ? c.starch.name.toLowerCase() : short}`;
 }
 
-function BankCard({ card, tweaks, on, onTweak, onPick }: {
+function BankCard({ card, clash, tweaks, on, onTweak, onPick }: {
   card: MealCard;
+  clash: Set<string>;
   tweaks: Values;
   on: boolean;
   onTweak: (t: Values) => void;
@@ -330,7 +341,7 @@ function BankCard({ card, tweaks, on, onTweak, onPick }: {
       onClick={onPick}
       onKeyDown={(ev) => (ev.key === 'Enter' || ev.key === ' ') && onPick()}
     >
-      <span className="bc-name">{cardTitle(card)}</span>
+      <span className="bc-name">{cardTitle(card, clash)}</span>
       {card.group === 'food' && card.place && <span className="bc-sub">{card.place}</span>}
       <span className="bc-n">{r0(e.nutrition.kcal)} kcal · {r0(e.nutrition.protein)} g protein</span>
       {cardTweaks(card, tweaks).map((t) => (

@@ -31,6 +31,11 @@ describe('search', () => {
     expect(names('carrots')).toContain('Carrot juice, canned');
     expect(names('carrot')).toContain('Carrots, raw');
     expect(names('pea')).toEqual(['Peas, green, frozen, unprepared']);
+    const more = buildIndex([{ name: 'Sweet potato, raw, unprepared' }, { name: 'Blueberries, raw' }, { name: 'Strawberry jam' }]);
+    expect(search(more, 'sweet potatoes').map((i) => i.name)).toEqual(['Sweet potato, raw, unprepared']);
+    expect(search(more, 'strawberries').map((i) => i.name)).toEqual(['Strawberry jam']);
+    const peas = buildIndex([{ name: 'Peaches, frozen, sliced, sweetened' }, { name: 'Peas, green, frozen, unprepared' }]);
+    expect(search(peas, 'frozen peas')[0].name).toBe('Peas, green, frozen, unprepared');
   });
 
   it('finds numbers like 85%', () => {
