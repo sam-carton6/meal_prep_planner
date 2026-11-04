@@ -15,7 +15,9 @@ weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPh
 **Next up (3 Nov):** Sam tried it: works but fiddly. Rework around a *meal bank* dragged onto the calendar, with
 cooking and shopping worked out from the plan. Agreed: tap card → tap slots on the phone (drag on PC), Sam sets
 cook days, mockup first: https://staging-meal-prep-planner.samcarton6.workers.dev/mockup.html (fake data).
-Waiting on Sam's verdict on the mockup. Recipes/foods come in via
+Verdict (3 Nov): mockup "feels way better". Build a hybrid: the mockup's
+meal bank + paint-in calendar, inside the existing app keeping its bottom tab bar and its breadth (Cook, Recipes,
+Shop, More). Next chat: confirm "bar at the bottom" = the tab bar, then estimate and build. Recipes/foods come in via
 [RECIPE-IMPORT.md](RECIPE-IMPORT.md) (claude.ai prompt → JSON → import).
 
 ## Check with Sam (decisions made during the rough pass)
