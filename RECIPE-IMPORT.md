@@ -82,6 +82,8 @@ Rules:
   I tell you (e.g. my scoop). Restaurant items: use the restaurant's published nutrition if you know it,
   otherwise say it's an estimate.
 - Don't invent nutrition numbers for recipes; the app calculates them.
+- Everything must be gluten-free: tamari or gluten-free soy sauce, no wheat flour, pasta or regular tortillas.
+  Say in the list after the JSON which ingredients need a label check (seasoning packets, broth, sausage, sauces).
 ```
 
 ## Short prompt: just nutrition labels

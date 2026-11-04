@@ -43,6 +43,10 @@ Then the **weeks planner** (Plan → Weeks, now the first view): lunch + dinner 
 Sunday before sized to what's planned (the "8 vs 5 Mexican chicken" spare problem is gone); tap a day to swap it
 (another dish, freezer, takeout/any food, leftovers). Meal bank down to one card per dish. PBfit + a "Morning
 shake" food added to data/meals.json.
+**Recipes (4 Nov, later):** Sam: app is OK for now, add recipes; all gluten-free. Five suggestions in
+`data/suggested.json` (teriyaki chicken, tikka masala, Korean-style beef, Greek chicken & potatoes, BBQ pulled
+pork); waiting on him to pick, and to paste his own. Label checks on current recipes: taco seasoning, chicken
+broth, the Italian sausage.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
 the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
 list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).

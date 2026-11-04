@@ -52,6 +52,11 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Bell peppers': 170108, // red
   Spinach: 168462,
   'Chicken broth': 174566,
+  // Added 4 Nov 2026 with the suggested gluten-free recipes (search picked black rice, apples, baby zucchini).
+  'Rice vinegar': 172237, // USDA has no rice vinegar: distilled, about the same (near 0 kcal)
+  'Apple cider vinegar': 173469,
+  'Zucchini, raw': 169291,
+  'Potatoes, red, raw': 170029, // flesh and skin
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,
   'Sweet potatoes, orange': 168482,
@@ -143,6 +148,7 @@ export const TYPICAL_SIZES: { food: RegExp; units: string[]; grams: number; why:
   { food: /^Cucumber/i, units: ['medium', 'whole'], grams: 300, why: 'USDA cucumber' },
   { food: /^Carrots?,/i, units: ['medium', 'whole'], grams: 61, why: 'USDA medium carrot' },
   { food: /^Sweet potato/i, units: ['medium', 'whole'], grams: 130, why: 'USDA medium sweet potato' },
+  { food: /^Yogurt/i, units: ['cup'], grams: 245, why: 'USDA cup of plain yogurt' },
 ];
 
 function portionGrams(u: string, food: Pick<Food, 'portions'>): { grams: number; note?: string } | undefined {

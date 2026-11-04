@@ -109,6 +109,18 @@ describe('the short label prompt in RECIPE-IMPORT.md', () => {
 });
 
 describe('sizes and My foods in imports', () => {
+  it('matches the gluten-free recipe names to the right foods (not black rice, apples or baby zucchini)', () => {
+    const rv = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [
+      { name: 'Rice vinegar', amount: 2, unit: 'tbsp' },
+      { name: 'Apple cider vinegar', amount: 2, unit: 'tbsp' },
+      { name: 'Zucchini, raw', amount: 2, unit: 'medium' },
+      { name: 'Yogurt, Greek, plain, nonfat', amount: 1, unit: 'cup' },
+    ] }, index, byId, foods);
+    expect(rv.lines.map((l) => l.matched)).toEqual(['Vinegar, distilled', 'Vinegar, cider',
+      'Squash, summer, zucchini, includes skin, raw', 'Yogurt, Greek, plain, nonfat']);
+    expect(rv.lines.map((l) => Math.round(l.item.amount! * l.item.gramsPerUnit))).toEqual([30, 30, 392, 245]);
+  });
+
   it('uses a typical size when the USDA entry has none, and says so', () => {
     const rv = reviewRecipe({ name: 'x', kind: 'dish', ingredients: [
       { name: 'Peppers, bell, orange, raw', amount: 2, unit: 'medium' },

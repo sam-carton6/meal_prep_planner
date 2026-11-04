@@ -1,0 +1,104 @@
+{
+  "format": "meal-prep-planner/1",
+  "about": "Suggested by Claude (4 Nov 2026), not cooked yet. Gluten-free, 5 containers each, about 40-50 g protein.",
+  "recipes": [
+    {
+      "name": "Chicken Teriyaki & Broccoli",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        { "name": "Chicken thighs, boneless skinless, raw", "amount": 2.5, "unit": "lb" },
+        { "name": "Broccoli, raw", "amount": 2, "unit": "head" },
+        { "name": "Carrots, raw", "amount": 2, "unit": "medium" },
+        { "name": "Soy sauce, gluten-free, low sodium", "amount": 0.5, "unit": "cup" },
+        { "name": "Honey", "amount": 3, "unit": "tbsp" },
+        { "name": "Rice vinegar", "amount": 2, "unit": "tbsp" },
+        { "name": "Garlic, raw", "amount": 4, "unit": "clove" },
+        { "name": "Ginger root, raw", "amount": 1, "unit": "tbsp" },
+        { "name": "Cornstarch", "amount": 1, "unit": "tbsp" },
+        { "name": "Sesame oil", "amount": 1, "unit": "tbsp" },
+        { "name": "Green onions, raw", "amount": 50, "unit": "g", "optional": true }
+      ],
+      "notes": "Cut thighs into bite-size pieces and brown in batches. Sauce: tamari, honey, rice vinegar, garlic, ginger; thicken with the cornstarch mixed in 2 tbsp cold water. Steam or roast the broccoli and carrots separately so they don't go soggy, then toss everything in the sauce. Use gluten-free tamari. Keeps 5 days; freezes OK (broccoli softens)."
+    },
+    {
+      "name": "Chicken Tikka Masala",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        { "name": "Chicken thighs, boneless skinless, raw", "amount": 2.5, "unit": "lb" },
+        { "name": "Yogurt, Greek, plain, nonfat", "amount": 1, "unit": "cup" },
+        { "name": "Tomato sauce, canned", "amount": 1, "unit": "can (15 oz)" },
+        { "name": "Coconut milk, canned", "amount": 0.75, "unit": "cup" },
+        { "name": "Onion, raw", "amount": 1, "unit": "large" },
+        { "name": "Garlic, raw", "amount": 5, "unit": "clove" },
+        { "name": "Ginger root, raw", "amount": 1, "unit": "tbsp" },
+        { "name": "Spinach, raw", "amount": 5, "unit": "oz" },
+        { "name": "Olive oil", "amount": 1, "unit": "tbsp" },
+        { "name": "Garam masala, cumin, paprika, turmeric", "amount": null, "unit": "to taste" }
+      ],
+      "notes": "Marinate the chicken in half the yogurt with the spices (overnight is fine: a Saturday prep job). Brown the chicken, cook the onion, garlic and ginger, add tomato sauce and coconut milk, simmer 15 min, stir in the rest of the yogurt off the heat and wilt the spinach in. Freezes very well."
+    },
+    {
+      "name": "Korean-Style Beef Bowls",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Ground beef 90/10, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        { "name": "Ground beef 90/10, raw", "amount": 2.5, "unit": "lb" },
+        { "name": "Green beans, frozen", "amount": 12, "unit": "oz" },
+        { "name": "Carrots, raw", "amount": 3, "unit": "medium" },
+        { "name": "Soy sauce, gluten-free, low sodium", "amount": 0.33, "unit": "cup" },
+        { "name": "Brown sugar", "amount": 2, "unit": "tbsp" },
+        { "name": "Sesame oil", "amount": 1, "unit": "tbsp" },
+        { "name": "Garlic, raw", "amount": 5, "unit": "clove" },
+        { "name": "Ginger root, raw", "amount": 1, "unit": "tbsp" },
+        { "name": "Green onions, raw", "amount": 100, "unit": "g" },
+        { "name": "Crushed red pepper", "amount": null, "unit": "to taste" }
+      ],
+      "notes": "Brown the beef (90/10, so no need to drain), add garlic and ginger, then tamari, brown sugar and sesame oil and let it cook down. Carrots shredded or matchsticks, green beans sauteed or steamed. Green onions on top. Skip gochujang unless the label says gluten-free (most contain wheat). Freezes well."
+    },
+    {
+      "name": "Greek Chicken & Potatoes",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "serve_with": null,
+      "ingredients": [
+        { "name": "Chicken breast, boneless skinless, raw", "amount": 2.5, "unit": "lb" },
+        { "name": "Potatoes, red, raw", "amount": 2, "unit": "lb" },
+        { "name": "Zucchini, raw", "amount": 2, "unit": "medium" },
+        { "name": "Bell peppers, raw", "amount": 2, "unit": "medium" },
+        { "name": "Red onion, raw", "amount": 1, "unit": "medium" },
+        { "name": "Olive oil", "amount": 3, "unit": "tbsp" },
+        { "name": "Lemon juice", "amount": 3, "unit": "tbsp" },
+        { "name": "Garlic, raw", "amount": 4, "unit": "clove" },
+        { "name": "Oregano, dried", "amount": null, "unit": "to taste" },
+        { "name": "Feta cheese in brine", "amount": 4, "unit": "oz", "optional": true }
+      ],
+      "notes": "Sheet pans: potatoes in chunks go in first (about 20 min at 425 F), then the chicken (marinated in lemon, oil, garlic, oregano) and the vegetables for another 20-25 min. The potatoes are the starch, so no rice. Feta on top if you want it. Keeps 5 days; potatoes go a bit soft if frozen."
+    },
+    {
+      "name": "BBQ Pulled Pork",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Pork tenderloin, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        { "name": "Pork tenderloin, raw", "amount": 2.5, "unit": "lb" },
+        { "name": "Barbecue sauce", "amount": 0.75, "unit": "cup" },
+        { "name": "Onion, raw", "amount": 1, "unit": "medium" },
+        { "name": "Chicken broth", "amount": 1, "unit": "cup" },
+        { "name": "Cabbage, raw, shredded", "amount": 4, "unit": "cup" },
+        { "name": "Apple cider vinegar", "amount": 2, "unit": "tbsp" },
+        { "name": "Smoked paprika, garlic powder, salt", "amount": null, "unit": "to taste" }
+      ],
+      "notes": "Instant Pot: tenderloin, onion, broth and the rub, 45 min high pressure, natural release; shred, drain most of the liquid, stir in the BBQ sauce. Quick slaw: cabbage with the vinegar and a pinch of salt, packed beside the pork. Check the BBQ sauce label says gluten-free (many do, some use malt vinegar or soy sauce). Tenderloin keeps it lean; pork shoulder is juicier but about 150 kcal more per container. Freezes very well (slaw: make fresh)."
+    }
+  ]
+}
