@@ -773,6 +773,66 @@
       "notes": "Suggested by Claude, not cooked yet. Grill the seasoned chicken breast and dice it. Bake the potatoes (about 1 hour at 400 F), halve them, scoop the insides into a bowl leaving a thin wall, mash with Greek yogurt (instead of sour cream: more protein), butter, milk, half the cheddar, green onions and seasoning, fold in the chicken. Refill the skins, top with the rest of the cheddar, bake 15-20 min. One potato (two halves) per container. Freezes well before the second bake."
     },
     {
+      "name": "Korean-Style Beef Bowls",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": "White rice",
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 2.5,
+          "unit": "lb"
+        },
+        {
+          "name": "Green beans, raw",
+          "amount": 12,
+          "unit": "oz"
+        },
+        {
+          "name": "Carrots, raw",
+          "amount": 3,
+          "unit": "medium"
+        },
+        {
+          "name": "Soy sauce, gluten-free (Kikkoman)",
+          "amount": 0.33,
+          "unit": "cup"
+        },
+        {
+          "name": "Brown sugar",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sesame oil",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 5,
+          "unit": "clove"
+        },
+        {
+          "name": "Ginger root, raw",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Green onions, raw",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "name": "Crushed red pepper",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "Suggested by Claude, picked by Sam (4 Nov 2026), not cooked yet. Brown the beef (85/15; drain some fat if you like), add garlic and ginger, then the gluten-free soy sauce, brown sugar and sesame oil and let it cook down. Carrots shredded or in matchsticks; fresh green beans sauteed or steamed. Green onions on top. Skip gochujang unless the label says gluten-free (most contain wheat). Freezes well."
+    },
+    {
       "name": "White rice",
       "kind": "starch",
       "main_ingredient": "Rice, white, long grain, dry",

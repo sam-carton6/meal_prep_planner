@@ -89,7 +89,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   one-offs. Entering what he bought (saving the cook day) stops the auto-sizing.
 - **Gluten-free** (Sam, 4 Nov 2026): every recipe and suggestion must be gluten-free (tamari, not soy sauce; rice,
   potatoes, gluten-free tortillas). Flag ingredients that often hide wheat (seasoning packets, broth, sausage, BBQ
-  sauce, gochujang): check the label. Suggested recipes wait in `data/suggested.json` until Sam picks; picked ones
+  sauce, gochujang): check the label. He also avoids corn (no cornstarch; watch corn syrup in ketchup and
+  BBQ sauce). Suggested recipes wait in `data/suggested.json` until Sam picks; picked ones
   move to `data/meals.json`.
 - What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
   cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for

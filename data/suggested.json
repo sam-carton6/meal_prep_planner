@@ -50,11 +50,6 @@
           "unit": "tbsp"
         },
         {
-          "name": "Cornstarch",
-          "amount": 1,
-          "unit": "tbsp"
-        },
-        {
           "name": "Sesame oil",
           "amount": 1,
           "unit": "tbsp"
@@ -66,7 +61,7 @@
           "optional": true
         }
       ],
-      "notes": "Cut thighs into bite-size pieces and brown in batches. Sauce: tamari, honey, rice vinegar, garlic, ginger; thicken with the cornstarch mixed in 2 tbsp cold water. Steam or roast the broccoli and carrots separately so they don't go soggy, then toss everything in the sauce. Use gluten-free tamari. Keeps 5 days; freezes OK (broccoli softens)."
+      "notes": "Cut thighs into bite-size pieces and brown in batches. Sauce: tamari, honey, rice vinegar, garlic, ginger; simmer to thicken (no cornstarch: Sam avoids corn). Steam or roast the broccoli and carrots separately so they don't go soggy, then toss everything in the sauce. Use gluten-free tamari. Keeps 5 days; freezes OK (broccoli softens)."
     },
     {
       "name": "Chicken Tikka Masala",
@@ -127,66 +122,6 @@
         }
       ],
       "notes": "Marinate the chicken in half the yogurt with the spices (overnight is fine: a Saturday prep job). Brown the chicken, cook the onion, garlic and ginger, add tomato sauce and coconut milk, simmer 15 min, stir in the rest of the yogurt off the heat and wilt the spinach in. Freezes very well."
-    },
-    {
-      "name": "Korean-Style Beef Bowls",
-      "kind": "dish",
-      "servings": 5,
-      "main_ingredient": "Ground beef 90/10, raw",
-      "serve_with": "White rice",
-      "ingredients": [
-        {
-          "name": "Ground beef 90/10, raw",
-          "amount": 2.5,
-          "unit": "lb"
-        },
-        {
-          "name": "Green beans, frozen",
-          "amount": 12,
-          "unit": "oz"
-        },
-        {
-          "name": "Carrots, raw",
-          "amount": 3,
-          "unit": "medium"
-        },
-        {
-          "name": "Soy sauce, gluten-free, low sodium",
-          "amount": 0.33,
-          "unit": "cup"
-        },
-        {
-          "name": "Brown sugar",
-          "amount": 2,
-          "unit": "tbsp"
-        },
-        {
-          "name": "Sesame oil",
-          "amount": 1,
-          "unit": "tbsp"
-        },
-        {
-          "name": "Garlic, raw",
-          "amount": 5,
-          "unit": "clove"
-        },
-        {
-          "name": "Ginger root, raw",
-          "amount": 1,
-          "unit": "tbsp"
-        },
-        {
-          "name": "Green onions, raw",
-          "amount": 100,
-          "unit": "g"
-        },
-        {
-          "name": "Crushed red pepper",
-          "amount": null,
-          "unit": "to taste"
-        }
-      ],
-      "notes": "Brown the beef (90/10, so no need to drain), add garlic and ginger, then tamari, brown sugar and sesame oil and let it cook down. Carrots shredded or matchsticks, green beans sauteed or steamed. Green onions on top. Skip gochujang unless the label says gluten-free (most contain wheat). Freezes well."
     },
     {
       "name": "BBQ Pulled Pork",

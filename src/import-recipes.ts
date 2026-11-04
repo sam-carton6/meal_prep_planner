@@ -70,6 +70,7 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Garam masala': 170924, // USDA has none: curry powder, about the same
   'Milk, 2%': 172205,
   'Milk, whole': 172217,
+  'Green beans, raw': 2346400,
   'Apple, Fuji, raw': 167793, // SR entry with sizes (small 158 g)
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,
