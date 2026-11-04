@@ -13,7 +13,9 @@ Tested in the PC browser at phone size: import, scaling a batch, starch suggesti
 Plus (21 Oct): calendar week/month toggle, wide PC layout; Drained/whole-can switch on cans; saved pots for
 weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPhone 17 width (402 px).
 **Next up (3 Nov):** Sam tried it: works but fiddly. Rework around a *meal bank* dragged onto the calendar, with
-cooking and shopping worked out from the plan. Waiting on Sam's OK to the plan in chat. Recipes/foods come in via
+cooking and shopping worked out from the plan. Agreed: tap card → tap slots on the phone (drag on PC), Sam sets
+cook days, mockup first: https://staging-meal-prep-planner.samcarton6.workers.dev/mockup.html (fake data).
+Waiting on Sam's verdict on the mockup. Recipes/foods come in via
 [RECIPE-IMPORT.md](RECIPE-IMPORT.md) (claude.ai prompt → JSON → import).
 
 ## Check with Sam (decisions made during the rough pass)

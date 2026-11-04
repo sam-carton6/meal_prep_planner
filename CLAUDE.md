@@ -55,3 +55,7 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
 - Agreed 20 Oct 2026: bundle USDA SR Legacy + Foundation Foods in the app; imported recipes are recalculated from
   USDA with a side-by-side check; a *Recipe* (template) is separate from a *Batch* (one actual cook); US units with
   grams alongside; grocery list has checkboxes, hides pantry staples, groups by aisle.
+- Rework agreed 3 Nov 2026 (first pass was "fiddly"): a *meal bank* of tweakable meal cards placed on the
+  calendar. Phone: tap a card, then tap slots; PC: drag and drop. **Sam sets cook days himself**; the app derives
+  portions, freezer hints and shopping from the plan + cook days. Clickable mockup first (`public/mockup.html`).
+  Recipes/foods arrive via [RECIPE-IMPORT.md](RECIPE-IMPORT.md); packaged foods looked up on Open Food Facts.

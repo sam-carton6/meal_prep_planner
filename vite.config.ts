@@ -27,6 +27,8 @@ export default defineConfig({
         // Cache the app and the USDA file so search works offline.
         globPatterns: ['**/*.{js,css,html,png,json}'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+        // Standalone pages (e.g. the rework mockup) must not be swapped for the app's index.html.
+        navigateFallbackDenylist: [/^\/mockup/],
       },
     }),
   ],
