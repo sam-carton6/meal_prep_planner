@@ -230,29 +230,38 @@ label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap
 .recent button { margin: 0; text-align: left; font-size: 0.85rem; }
 
 /* ---- Plan: meal bank + paint-in calendar ---- */
-/* Phone: the bank is a strip of cards just above the tab bar. Wide screens: a sidebar on the right. */
-.plan-main { padding-bottom: 200px; }
-.plan-layout.bank-closed .plan-main { padding-bottom: 50px; }
+/* Phone: the bank is a list in a drawer above the tab bar (closed by default; while placing, only the picked one
+   shows). Wide screens: a sidebar on the right. */
+.plan-main { padding-bottom: 56vh; }
+.plan-layout.bank-closed .plan-main { padding-bottom: 60px; }
+.plan-main.placing { padding-bottom: 220px; }
 .bank {
   position: fixed; left: 0; right: 0; z-index: 9; bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom));
-  background: var(--bg); border-top: 1px solid var(--line); padding: 6px 12px 8px;
+  background: var(--bg); border-top: 1px solid var(--line); padding: 4px 12px 6px;
   box-shadow: 0 -4px 12px #0000000d;
 }
-.bank-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--muted); font-weight: 600; min-height: 30px; }
+.bank-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); font-weight: 600; min-height: 34px; }
 .bank-head button { margin: 0 0 0 8px; padding: 4px 12px; }
 .bank-head button.link { padding: 4px 0; }
-.bank.closed .cards { display: none; }
-.cards { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 2px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
-.cards .note { margin: 4px 0; font-size: 0.85rem; }
+.bank-toggle { display: flex; justify-content: space-between; width: 100%; padding: 6px 0 !important; margin: 0 !important; font-weight: 600; color: inherit; }
+.bank.closed .bank-list { display: none; }
+.bank-list { max-height: 46vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+.bank.placing .bank-list { max-height: 34vh; }
+.bank.placing .bank-card:not(.on), .bank.placing .bank-group h4, .bank.placing .bank-tip { display: none; }
+.bank-group h4 { margin: 8px 0 2px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 .bank-card {
-  flex: none; width: 152px; scroll-snap-align: start; border: 1px solid var(--line); border-radius: 12px;
-  background: var(--field); padding: 7px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;
-  user-select: none; -webkit-user-select: none;
+  border-bottom: 1px solid var(--line); padding: 9px 4px; cursor: pointer; user-select: none; -webkit-user-select: none;
 }
-.bank-card.on { border: 2px solid var(--accent); background: var(--sel); padding: 6px 7px; }
-.bc-name { font-size: 0.85rem; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.bc-sub { font-size: 0.72rem; color: var(--muted); }
-.bc-n { font-size: 0.74rem; color: var(--muted); }
+.bank-card.on { background: var(--sel); border-radius: 10px; border-bottom-color: transparent; padding: 9px 8px; }
+.bc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.bc-name { font-size: 0.92rem; font-weight: 600; line-height: 1.25; }
+.bc-sub { font-weight: 400; color: var(--muted); }
+.bc-n { font-size: 0.78rem; color: var(--muted); white-space: nowrap; flex: none; }
+.bc-tweak { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; cursor: default; }
+.bc-tweak .stepper { font-size: 0.9rem; max-width: 300px; }
+.bc-tweak .stepper > button { width: 38px; height: 34px; }
+.bank-tip { margin: 6px 0 0; font-size: 0.8rem; }
+.bank-title-wide { display: none; }
 .stepper { display: flex; align-items: center; gap: 4px; font-size: 0.76rem; margin-top: 2px; }
 .stepper > span { flex: 1; text-align: center; line-height: 1.15; }
 .stepper > button { width: 30px; height: 28px; padding: 0; margin: 0; flex: none; border-radius: 7px; background: var(--bg); font-size: 1rem; }
@@ -293,9 +302,12 @@ label.drain { font-size: 0.85rem; display: inline-flex; align-items: center; gap
     position: sticky; top: 0; bottom: auto; width: 290px; flex: none; box-shadow: none;
     height: calc(100vh - var(--tabs-h)); overflow-y: auto; border-top: none; border-left: 1px solid var(--line); padding: 10px 12px;
   }
-  .bank-toggle { display: none; }
-  .cards, .bank.closed .cards { display: flex; flex-direction: column; overflow: visible; }
-  .bank-card { width: 100%; cursor: grab; }
+  .bank-toggle { display: none !important; }
+  .bank-title-wide { display: inline; }
+  .bank.closed .bank-list, .bank-list { display: block; max-height: none; overflow: visible; }
+  .bank.placing .bank-card:not(.on), .bank.placing .bank-group h4, .bank.placing .bank-tip { display: block; }
+  .bank-card { cursor: grab; }
+  .plan-main.placing { padding-bottom: 24px; }
 }
 .unit-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
 .unit-row .note { font-size: 0.8rem; align-self: center; }
@@ -321,9 +333,7 @@ table.label caption { caption-side: bottom; text-align: left; padding-top: 4px; 
 .sugg { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px; }
 .sugg button.link { font-size: 0.74rem; text-align: left; padding: 1px 0; line-height: 1.2; }
 .card .sugg button.link { font-size: 0.9rem; padding: 4px 0; }
-.bank-card .sugg { display: none; }
-.bank-card.on .sugg { display: flex; }
-@media (min-width: 900px) { .bank-card .sugg { display: flex; } }
+
 
 /* Pantry (Nov 2026) */
 .pantry-list { list-style: none; padding: 0; margin: 8px 0; }

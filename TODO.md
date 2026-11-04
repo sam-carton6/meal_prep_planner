@@ -44,8 +44,8 @@ Sunday before sized to what's planned (the "8 vs 5 Mexican chicken" spare proble
 (another dish, freezer, takeout/any food, leftovers). Meal bank down to one card per dish. PBfit + a "Morning
 shake" food added to data/meals.json.
 **Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
-the phone; check the PBfit numbers against the jar (used 70 kcal / 8 g protein per 2 tbsp) and whether the shake
-uses milk (not counted now).
+the phone. PBfit fixed from Sam's jar (60 kcal, 8 g protein per 2 tbsp); shake is with water. Meal bank redone as a
+list (one line per meal/food, − / + only on the picked one, a closed drawer on the phone by default).
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 

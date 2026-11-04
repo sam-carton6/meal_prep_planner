@@ -63,7 +63,7 @@ export function PlanTab() {
   const [placing, setPlacing] = useState<string | null>(null);
   const [placed, setPlaced] = useState<string[]>([]); // ids placed in this round, for Undo
   const [tweaks, setTweaks] = useState<Record<string, Values>>(() => stored('bankTweaks', {}));
-  const [bankOpen, setBankOpen] = useState(() => stored('bankOpen', true));
+  const [bankOpen, setBankOpen] = useState(() => stored('bankOpen2', false));
   const [adding, setAdding] = useState<{ date: string; slot: Slot } | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const [cookOn, setCookOn] = useState<string | null>(null);
@@ -80,7 +80,7 @@ export function PlanTab() {
   const customFoods = useLiveQuery(() => db.customFoods.toArray(), []) ?? [];
 
   useEffect(() => store('bankTweaks', tweaks), [tweaks]);
-  useEffect(() => store('bankOpen', bankOpen), [bankOpen]);
+  useEffect(() => store('bankOpen2', bankOpen), [bankOpen]);
 
   const cov = useMemo(() => coverage(allEntries ?? [], batches), [allEntries, batches]);
   const live = useMemo(
@@ -319,27 +319,44 @@ function MealBank({ cards, targets, tweaks, onTweak, placing, onPick, onDone, ca
     }
     return new Set([...seen].filter(([, ids]) => ids.size > 1).map(([k]) => k));
   }, [cards]);
+  const groups: [string, MealCard[]][] = [
+    ['Meals', cards.filter((c) => c.group === 'prep')],
+    ['Foods', cards.filter((c) => c.group !== 'prep')],
+  ];
   return (
-    <aside className={`bank ${open || placing ? '' : 'closed'}`}>
+    <aside className={`bank ${open || placing ? '' : 'closed'} ${placing ? 'placing' : ''}`}>
       <div className="bank-head">
-        <span>{placing ? 'Tap slots to place' : 'Meal bank · tap one, then tap slots'}</span>
         {placing ? (
-          <span>
-            {canUndo && <button className="link" onClick={onUndo}>Undo</button>}
-            <button className="primary small" onClick={onDone}>Done</button>
-          </span>
+          <>
+            <span>Tap slots to place it</span>
+            <span>
+              {canUndo && <button className="link" onClick={onUndo}>Undo</button>}
+              <button className="primary small" onClick={onDone}>Done</button>
+            </span>
+          </>
         ) : (
-          <button className="link bank-toggle" onClick={onToggle}>{open ? 'Hide' : 'Show'}</button>
+          <>
+          <span className="bank-title-wide">Meal bank · tap or drag onto the calendar</span>
+          <button className="link-plain bank-toggle" onClick={onToggle}>
+            <span>Meal bank</span> <span className="note">{open ? 'Hide ▾' : 'Show ▴'}</span>
+          </button>
+          </>
         )}
       </div>
-      <div className="cards">
+      <div className="bank-list">
         {cards.length === 0 && (
           <p className="note">No meals yet. Add recipes (Recipes tab) or My foods (More), or import a file (More → Import).</p>
         )}
-        {cards.map((c) => (
-          <BankCard key={c.id} card={c} clash={clash} targets={targets} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
-            onTweak={(t) => onTweak(c.id, t)} onPick={() => onPick(c.id)} />
+        {groups.map(([title, list]) => list.length > 0 && (
+          <div key={title} className="bank-group">
+            <h4>{title}</h4>
+            {list.map((c) => (
+              <BankCard key={c.id} card={c} clash={clash} targets={targets} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
+                onTweak={(t) => onTweak(c.id, t)} onPick={() => onPick(c.id)} />
+            ))}
+          </div>
         ))}
+        {!placing && cards.length > 0 && <p className="note bank-tip">Tap one, adjust it, then tap the slots it goes in.</p>}
       </div>
     </aside>
   );
@@ -372,14 +389,22 @@ function BankCard({ card, clash, targets, tweaks, on, onTweak, onPick }: {
       onClick={onPick}
       onKeyDown={(ev) => (ev.key === 'Enter' || ev.key === ' ') && onPick()}
     >
-      <span className="bc-name">{cardTitle(card, clash)}</span>
-      {card.group === 'food' && card.place && <span className="bc-sub">{card.place}</span>}
-      <span className="bc-n">{r0(e.nutrition.kcal)} kcal · {r0(e.nutrition.protein)} g protein</span>
-      {cardTweaks(card, tweaks).map((t) => (
-        <Stepper key={t.key} t={t} onStep={(dir) => onTweak(stepTweak(card, tweaks, t.key, dir))}
-          onCycle={t.canCycle ? () => onTweak(stepTweak(card, tweaks, 'unit', 1)) : undefined} />
-      ))}
-      <Suggestions list={cardSuggestions(card, tweaks, targets)} onPick={(x) => onTweak(x.tweaks)} />
+      <div className="bc-top">
+        <span className="bc-name">
+          {cardTitle(card, clash)}
+          {card.group === 'food' && card.place && <span className="bc-sub"> · {card.place}</span>}
+        </span>
+        <span className="bc-n">{r0(e.nutrition.kcal)} kcal · {r0(e.nutrition.protein)} g</span>
+      </div>
+      {on && (
+        <div className="bc-tweak" onClick={(ev) => ev.stopPropagation()}>
+          {cardTweaks(card, tweaks).map((t) => (
+            <Stepper key={t.key} t={t} onStep={(dir) => onTweak(stepTweak(card, tweaks, t.key, dir))}
+              onCycle={t.canCycle ? () => onTweak(stepTweak(card, tweaks, 'unit', 1)) : undefined} />
+          ))}
+          <Suggestions list={cardSuggestions(card, tweaks, targets)} onPick={(x) => onTweak(x.tweaks)} />
+        </div>
+      )}
     </div>
   );
 }

@@ -2,6 +2,13 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — meal bank as a list; PBfit from the jar
+- Sam: "the meal bank is still awkward". Was a sideways strip of big cards with cut-off names and − / + on every
+  card. Now a list grouped Meals / Foods, one line each (full name, kcal · protein), − / + and suggestions only on
+  the picked one. Phone: a drawer above the tab bar, closed by default (Weeks is where planning happens); while
+  placing, only the picked meal shows. Wide: the same list as the sidebar.
+- PBfit: 60 kcal, 8 g protein per 2 tbsp (Sam's jar); morning shake 719 kcal, 31 g protein, with water.
+
 ### 2026-11-04 — weeks planner; one bank card per dish; PBfit + morning shake
 - Plan → Weeks (`src/weeks.ts`, tested; `src/ui/Weeks.tsx`): a card per week, lunch and dinner pickers with
   servings, side and side amount, Mon–Fri chips; tap a day to swap (another dish, freezer container, any food or
