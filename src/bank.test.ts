@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { CalendarEntry, CustomFood, Recipe, RecipeItem } from './model';
-import { buildCards, cardEntry, cardTweaks, customUnits, stepTweak, type MealCard } from './bank';
+import { buildCards, cardEntry, cardSuggestions, cardTweaks, customUnits, dishSuggestions, stepTweak, type MealCard } from './bank';
 
 const item = (grams: number, kcal: number, protein: number): RecipeItem => ({
   id: 'i', name: 'x', food: { kind: 'none' }, per100g: { kcal, protein, carbs: 0, fat: 0 },
@@ -75,5 +75,27 @@ describe('meal bank cards', () => {
     const yogurt = cardEntry(cards[1], stepTweak(cards[1], {}, 'amount', 1));
     expect(yogurt.label).toBe('Greek yogurt, plain (1¼ cup)');
     expect(yogurt.nutrition.kcal).toBeCloseTo(187.5);
+  });
+});
+
+describe('target suggestions', () => {
+  it('says how much rice reaches the calories; skips protein when 1 serving already gets there', () => {
+    // chili: 400 kcal, 40 g protein a container; rice: 200 kcal, 4 g protein a cup
+    const card = find(buildCards(base), 'dish:chili+rice');
+    const s = cardSuggestions(card, { servings: 1, cups: 1 }, { protein: 45, kcal: 750 });
+    expect(s.map((x) => x.text)).toEqual(['45 g protein: 1¼ servings', '750 kcal: 1¾ cup white rice']); // (45 − 4) / 40, rounded up
+    expect(cardEntry(card, s[1].tweaks).nutrition.kcal).toBeCloseTo(750);
+    expect(cardSuggestions(card, { servings: 1, cups: 1 }, { protein: 60, kcal: 0 })[0].text).toBe('60 g protein: 1½ servings');
+  });
+
+  it('works without starch, rounds to quarter servings, and leaves out what is already set', () => {
+    const each = { kcal: 600, protein: 32, carbs: 0, fat: 0 };
+    expect(dishSuggestions(each, undefined, 1, 0, { protein: 40, kcal: 750 }).map((x) => x.text))
+      .toEqual(['40 g protein: 1¼ servings', '750 kcal: 1¼ servings']);
+    expect(dishSuggestions({ ...each, protein: 40, kcal: 750 }, undefined, 1, 0, { protein: 40, kcal: 750 })).toEqual([]);
+    // starch protein counts toward the protein target: (40 − 2 cups × 4 g) / 32 = 1 serving
+    expect(dishSuggestions({ ...each, protein: 41 }, undefined, 1, 0, { protein: 40, kcal: 0 })).toEqual([]); // 1 already gets there
+    const rice = { per: { kcal: 200, protein: 4, carbs: 0, fat: 0 }, text: 'cup rice' };
+    expect(dishSuggestions(each, rice, 0.5, 2, { protein: 40, kcal: 0 })[0].servings).toBe(1);
   });
 });

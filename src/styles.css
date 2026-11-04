@@ -317,3 +317,10 @@ table.label caption { caption-side: bottom; text-align: left; padding-top: 4px; 
 .row.date-range { flex-wrap: nowrap; }
 .row.date-range input { width: auto; flex: 1 1 0; min-width: 0; }
 @media (min-width: 900px) { .row.date-range input { flex: 0 1 220px; } }
+/* Target suggestions: on the phone only on the picked card (keeps the strip short); always on the PC. */
+.sugg { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px; }
+.sugg button.link { font-size: 0.74rem; text-align: left; padding: 1px 0; line-height: 1.2; }
+.card .sugg button.link { font-size: 0.9rem; padding: 4px 0; }
+.bank-card .sugg { display: none; }
+.bank-card.on .sugg { display: flex; }
+@media (min-width: 900px) { .bank-card .sugg { display: flex; } }

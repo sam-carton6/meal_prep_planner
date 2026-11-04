@@ -21,7 +21,7 @@ import {
   weekDays,
   weekStart,
 } from '../plan';
-import { baseName, buildCards, cardEntry, cardTweaks, stepTweak, type CardTweak, type EntryDraft, type MealCard, type Values } from '../bank';
+import { baseName, buildCards, cardEntry, cardSuggestions, cardTweaks, dishSuggestions, stepTweak, type CardTweak, type EntryDraft, type MealCard, type Targets, type Values } from '../bank';
 import { coverage, dishLabel, entryPortions, type Coverage, type CookDayInfo, FRIDGE_DAYS, liveEntries } from '../cookdays';
 import { add, batchSummary, perYieldUnit, times } from '../recipe-math';
 import { fmtAmount } from '../units';
@@ -237,6 +237,7 @@ export function PlanTab() {
 
       <MealBank
         cards={cards}
+        targets={{ protein: settings.proteinPerMeal, kcal: settings.mealKcalAim }}
         tweaks={tweaks}
         onTweak={(id, t) => setTweaks({ ...tweaks, [id]: t })}
         placing={placing}
@@ -254,7 +255,8 @@ export function PlanTab() {
 
       {adding && <AddEntry date={adding.date} slot={adding.slot} onClose={() => setAdding(null)} />}
       {openEntry && (
-        <EntrySheet entry={openEntry} cov={cov} batches={batches} recipeById={recipeById} onClose={() => setOpenId(null)}
+        <EntrySheet entry={openEntry} cov={cov} batches={batches} recipeById={recipeById}
+          targets={{ protein: settings.proteinPerMeal, kcal: settings.mealKcalAim }} onClose={() => setOpenId(null)}
           onCook={(d) => { setOpenId(null); setCookOn(d); }} />
       )}
       {cookOn && (
@@ -269,8 +271,9 @@ export function PlanTab() {
 
 // ---- Meal bank ---------------------------------------------------------------------------------------
 
-function MealBank({ cards, tweaks, onTweak, placing, onPick, onDone, canUndo, onUndo, open, onToggle }: {
+function MealBank({ cards, targets, tweaks, onTweak, placing, onPick, onDone, canUndo, onUndo, open, onToggle }: {
   cards: MealCard[];
+  targets: Targets;
   tweaks: Record<string, Values>;
   onTweak: (id: string, t: Values) => void;
   placing: string | null;
@@ -307,7 +310,7 @@ function MealBank({ cards, tweaks, onTweak, placing, onPick, onDone, canUndo, on
           <p className="note">No meals yet. Add recipes (Recipes tab) or My foods (More), or import a file (More → Import).</p>
         )}
         {cards.map((c) => (
-          <BankCard key={c.id} card={c} clash={clash} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
+          <BankCard key={c.id} card={c} clash={clash} targets={targets} tweaks={tweaks[c.id] ?? {}} on={placing === c.id}
             onTweak={(t) => onTweak(c.id, t)} onPick={() => onPick(c.id)} />
         ))}
       </div>
@@ -322,9 +325,10 @@ function cardTitle(c: MealCard, clash: Set<string>) {
   return `${c.name} + ${clash.has(short) ? c.starch.name.toLowerCase() : short}`;
 }
 
-function BankCard({ card, clash, tweaks, on, onTweak, onPick }: {
+function BankCard({ card, clash, targets, tweaks, on, onTweak, onPick }: {
   card: MealCard;
   clash: Set<string>;
+  targets: Targets;
   tweaks: Values;
   on: boolean;
   onTweak: (t: Values) => void;
@@ -347,6 +351,21 @@ function BankCard({ card, clash, tweaks, on, onTweak, onPick }: {
       {cardTweaks(card, tweaks).map((t) => (
         <Stepper key={t.key} t={t} onStep={(dir) => onTweak(stepTweak(card, tweaks, t.key, dir))}
           onCycle={t.canCycle ? () => onTweak(stepTweak(card, tweaks, 'unit', 1)) : undefined} />
+      ))}
+      <Suggestions list={cardSuggestions(card, tweaks, targets)} onPick={(x) => onTweak(x.tweaks)} />
+    </div>
+  );
+}
+
+/** "40 g protein: 1¼ servings" / "750 kcal: 1½ cup rice": tap to use it. */
+function Suggestions<T extends { text: string }>({ list, onPick }: { list: T[]; onPick: (x: T) => void }) {
+  if (!list.length) return null;
+  return (
+    <div className="sugg">
+      {list.map((x) => (
+        <button key={x.text} className="link" onClick={(ev) => { ev.stopPropagation(); onPick(x); }} title="Use this">
+          → {x.text}
+        </button>
       ))}
     </div>
   );
@@ -375,12 +394,8 @@ function EntryChip({ entry, cov, placing, onOpen }: { entry: CalendarEntry; cov:
       draggable={!placing}
       onDragStart={(ev) => ev.dataTransfer.setData('text/plain', `entry:${entry.id}`)}
     >
-      {!placing && (
-        <button className="chip-tick" onClick={() => setEaten(entry, !entry.eaten, cov)} title={entry.eaten ? 'Eaten (tap to undo)' : 'Mark eaten'}>
-          {entry.eaten ? '✓' : '○'}
-        </button>
-      )}
       <button className="chip-main" onClick={(ev) => { if (placing) return; ev.stopPropagation(); onOpen(); }}>
+        {entry.eaten ? '✓ ' : ''}
         {flag}
         {entry.label}
         <span className="chip-n">{r0(entry.nutrition.kcal)} kcal · {r0(entry.nutrition.protein)} g</span>
@@ -421,8 +436,9 @@ async function setEaten(entry: CalendarEntry, eaten: boolean, cov: Coverage) {
   });
 }
 
-function EntrySheet({ entry, cov, batches, recipeById, onClose, onCook }: {
+function EntrySheet({ entry, cov, batches, recipeById, targets, onClose, onCook }: {
   entry: CalendarEntry;
+  targets: Targets;
   cov: Coverage;
   batches: Batch[];
   recipeById: Map<string, Recipe>;
@@ -474,6 +490,18 @@ function EntrySheet({ entry, cov, batches, recipeById, onClose, onCook }: {
             <Stepper t={{ key: 'cups', n: s.starch.cups * s.portions, text: `${(starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${starch.name.split(',')[0].toLowerCase()}`, step: 0.25, min: 0 }}
               onStep={(dir) => setDish(s.portions, Math.max(0, Math.round((s.starch!.cups * s.portions + dir * 0.25) * 4) / 4))} />
           )}
+          {(() => {
+            const starchPer = starch ? perYieldUnit(starch) : undefined;
+            const cups = s.starch ? s.starch.cups * s.portions : 0;
+            const each = times(add(entry.nutrition, times(starchPer ? times(starchPer, cups) : ZERO, -1)), 1 / s.portions);
+            const text = starch ? `${(starch.yieldUnit ?? 'cup').replace(/ cooked$/, '')} ${starch.name.split(',')[0].toLowerCase()}` : '';
+            return (
+              <Suggestions
+                list={dishSuggestions(each, starchPer ? { per: starchPer, text } : undefined, s.portions, cups, { protein: targets.protein, kcal: targets.kcal })}
+                onPick={(x) => setDish(x.servings, x.cups)}
+              />
+            );
+          })()}
           {fed && (
             <p className="note">
               From the 🍳 {fed.recipeName} cook day, {dayLabel(fed.cookDate)} ({fed.status})
@@ -497,7 +525,7 @@ function EntrySheet({ entry, cov, batches, recipeById, onClose, onCook }: {
       )}
 
       <div className="row actions">
-        <button className="primary" onClick={async () => { await setEaten(entry, !entry.eaten, cov); onClose(); }}>
+        <button onClick={async () => { await setEaten(entry, !entry.eaten, cov); onClose(); }}>
           {entry.eaten ? 'Not eaten after all' : 'Mark eaten'}
         </button>
         <button className="danger" onClick={async () => { await db.calendar.delete(entry.id); onClose(); }}>Remove</button>

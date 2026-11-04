@@ -186,7 +186,7 @@ function Targets({ onClose }: { onClose: () => void }) {
       {field('proteinPerMeal', 'Protein per container (g)')}
       {field('mealKcalMin', 'Calories per meal, low')}
       {field('mealKcalMax', 'Calories per meal, high')}
-      {field('mealKcalAim', 'Aim per container when suggesting starch (kcal)')}
+      {field('mealKcalAim', 'Calories to aim for per meal container (used for the suggestions)')}
       {field('dayKcalMin', 'Calories per day, low')}
       {field('dayKcalMax', 'Calories per day, high')}
       <button className="primary" onClick={async () => { await db.settings.put(cur); onClose(); }}>Save</button>

@@ -214,3 +214,64 @@ export function cardEntry(card: MealCard, tweaks: Values = {}): EntryDraft {
     : card.draft.source.kind === 'food' ? card.draft.source.food : { kind: 'none' as const };
   return { label, nutrition: times(u.per, amount), source: { kind: 'food', food, amount, unit: u.unit } };
 }
+
+// ---- "What gets me to my target?" -----------------------------------------------------------------
+
+export interface Targets {
+  /** Protein per meal, g (More → Targets). */
+  protein: number;
+  /** Calories per container the starch is aimed at (More → Targets). */
+  kcal: number;
+}
+
+export interface Suggestion {
+  /** "40 g protein: 1¼ servings" (rounded up to reach it) */
+  text: string;
+  servings: number;
+  cups: number;
+}
+
+const quarter = (n: number) => Math.round(n * 4) / 4;
+
+/**
+ * For a dish container (optionally with starch): how many servings reach the protein target, and how much starch
+ * (or, without starch, how many servings) reaches the calorie target. Suggestions equal to what's set are left out.
+ */
+export function dishSuggestions(
+  each: Nutrition,
+  starch: { per: Nutrition; text: string } | undefined,
+  servings: number,
+  cups: number,
+  t: Targets,
+): Suggestion[] {
+  const out: Suggestion[] = [];
+  const word = (s: number) => (s <= 1 ? 'serving' : 'servings');
+  if (t.protein > 0 && each.protein > 0) {
+    // Round up: the point is to get at least the protein target.
+    const s = Math.max(0.25, Math.ceil(((t.protein - cups * (starch?.per.protein ?? 0)) / each.protein) * 4 - 1e-9) / 4);
+    if (s !== servings) out.push({ text: `${t.protein} g protein: ${fmtAmount(s)} ${word(s)}`, servings: s, cups });
+  }
+  if (t.kcal > 0) {
+    if (starch && starch.per.kcal > 0) {
+      const c = Math.max(0, quarter((t.kcal - servings * each.kcal) / starch.per.kcal));
+      if (c !== cups) out.push({ text: `${t.kcal} kcal: ${fmtAmount(c)} ${starch.text}`, servings, cups: c });
+    } else if (!starch && each.kcal > 0) {
+      const s = Math.max(0.25, quarter(t.kcal / each.kcal));
+      if (s !== servings) out.push({ text: `${t.kcal} kcal: ${fmtAmount(s)} ${word(s)}`, servings: s, cups });
+    }
+  }
+  return out;
+}
+
+/** Suggestions for a meal bank card, as tweaks to apply when tapped. */
+export function cardSuggestions(card: MealCard, tweaks: Values, t: Targets): { text: string; tweaks: Values }[] {
+  if (card.group !== 'prep') return [];
+  const v = cardValues(card, tweaks);
+  const starch = card.starch
+    ? { per: perYieldUnit(card.starch), text: cardTweaks(card, tweaks).find((x) => x.key === 'cups')!.text }
+    : undefined;
+  return dishSuggestions(card.each, starch, v.servings ?? 1, v.cups ?? 0, t).map((s) => ({
+    text: s.text,
+    tweaks: { ...tweaks, servings: s.servings, ...(card.starch ? { cups: s.cups } : {}) },
+  }));
+}
