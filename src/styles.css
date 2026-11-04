@@ -336,3 +336,7 @@ button.warn { color: var(--warn); border-color: var(--warn); }
 .pantry-check .grocery > span:first-child { flex: 1; }
 .pantry-check .grocery .row { flex-wrap: nowrap; gap: 12px; }
 button.link.muted { color: var(--muted); }
+.confirm { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.confirm .note { flex-basis: 100%; }
+button.danger.armed { background: #c0392b; color: #fff; border-color: #c0392b; }
+.size-form { margin: 6px 0; }

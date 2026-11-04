@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Batch, CalendarEntry, Recipe, RecipeItem, Slot } from './model';
-import { coverage, dishLabel, dishNutrition, entryStarch, liveEntries } from './cookdays';
+import { coverage, dishLabel, dishNutrition, entryStarch, liveEntries, recipeRemoval } from './cookdays';
 
 const item = (grams: number, kcalPer100 = 200, proteinPer100 = 20): RecipeItem => ({
   id: 'i', name: 'Beef', food: { kind: 'none' }, per100g: { kcal: kcalPer100, protein: proteinPer100, carbs: 0, fat: 0 },
@@ -104,5 +104,17 @@ describe('container numbers', () => {
     const [p, e] = liveEntries([planned, eaten], cov, [sun], [rice], 40);
     expect(p.nutrition.kcal).toBeCloseTo(400);
     expect(e.nutrition.kcal).toBe(1);
+  });
+});
+
+describe('deleting a recipe', () => {
+  it('takes its planned meals and cook days, keeps history, and drops it as a starch', () => {
+    const planned = meal('2026-11-09');
+    const eaten = meal('2026-11-02', 'lunch', { eaten: true });
+    const withRice = meal('2026-11-10', 'lunch', { source: { kind: 'dish', recipeId: 'beef', portions: 1, starch: { recipeId: 'chili', cups: 1 } } });
+    const r = recipeRemoval('chili', [planned, eaten, withRice], [batch('p', '2026-11-08'), batch('c', '2026-11-01', 5, { status: 'cooked' })]);
+    expect(r.deleteEntries).toEqual([planned.id]);
+    expect(r.deleteBatches).toEqual(['p']);
+    expect(r.updateEntries.map((e) => e.source)).toEqual([{ kind: 'dish', recipeId: 'beef', portions: 1 }]);
   });
 });

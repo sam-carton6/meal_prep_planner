@@ -2,6 +2,13 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — deleting works everywhere (Sam: "deleting recipes and cook items doesn't work")
+- Delete used the browser's confirm pop-up, which is silently blocked inside another page (the claude.ai test
+  copy), so it always answered "no". Now an in-page "Yes, delete it / Cancel" (`ConfirmButton`) for recipes, cook
+  days/batches and My foods; backup restore asks in the page too; "other size…" and "+ Note" are inline forms
+  instead of prompt pop-ups. Deleting a recipe also removes its planned meals and planned cook days (and drops it
+  as the starch on planned meals); eaten meals and cooked batches stay (`recipeRemoval`, tested).
+
 ### 2026-11-04 — repeat a week, shop by week, pantry
 - Plan → *Repeat this week…*: 7 days (from the cook day before the week, e.g. Sunday) of meals and cook days
   copied to the next N weeks; filled slots and existing cook days left alone; Undo. `src/repeat.ts` (tested).

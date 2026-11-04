@@ -179,16 +179,38 @@ export function itemFromPicked(p: PickedFood): RecipeItem {
   };
 }
 
-/** Ask for a size like "can (15 oz)" or "bag" + grams. Rough but enough for odd package sizes. */
-export function askCustomUnit(): UnitOption | null {
-  const label = window.prompt('Name the size, e.g. "can (15 oz)" or "pack (1.5 lb)"');
-  if (!label) return null;
-  let grams = gramsFromLabel(label);
-  if (!grams) {
-    const g = window.prompt(`How many grams is one "${label}"?`);
-    grams = g ? Number(g) : undefined;
-  }
-  return grams && grams > 0 ? { unit: label.trim(), gramsPerUnit: grams } : null;
+/** A size like "can (15 oz)" or "bag" + grams, from what Sam typed. Rough but enough for odd package sizes. */
+export function customUnitFrom(label: string, grams: number | null): UnitOption | null {
+  const g = gramsFromLabel(label) ?? grams ?? undefined;
+  return label.trim() && g && g > 0 ? { unit: label.trim(), gramsPerUnit: g } : null;
+}
+
+/**
+ * A delete (or other risky) button that asks "are you sure" in the page itself: first tap arms it, second tap
+ * does it, Cancel (or 5 seconds) backs out. Browser pop-ups (confirm/prompt) are avoided: they are silently
+ * blocked when the app runs inside another page (e.g. the claude.ai test copy).
+ */
+export function ConfirmButton({ label, confirmLabel, warning, onConfirm, className = 'danger' }: {
+  label: string;
+  confirmLabel: string;
+  warning?: string;
+  onConfirm: () => void | Promise<void>;
+  className?: string;
+}) {
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (!armed) return;
+    const t = setTimeout(() => setArmed(false), 5000);
+    return () => clearTimeout(t);
+  }, [armed]);
+  if (!armed) return <button className={className} onClick={() => setArmed(true)}>{label}</button>;
+  return (
+    <span className="confirm">
+      {warning && <span className="note">{warning}</span>}
+      <button className={`${className} armed`} onClick={() => { setArmed(false); void onConfirm(); }}>{confirmLabel}</button>
+      <button onClick={() => setArmed(false)}>Cancel</button>
+    </span>
+  );
 }
 
 export function FoodPicker({ onPick, onClose, title = 'Add ingredient', inline = false }: {

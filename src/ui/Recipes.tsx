@@ -9,7 +9,8 @@ import { isoDate } from '../plan';
 import { containersFor, mainItem, perPortion, perYieldUnit, portionsForProtein, totals } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { ItemList } from './items';
-import { Macros, Num, Sheet } from './shared';
+import { ConfirmButton, Macros, Num, Sheet } from './shared';
+import { recipeRemoval, type RecipeRemoval } from '../cookdays';
 import { BatchEditor, newBatchFor } from './Cook';
 
 export function RecipesTab() {
@@ -77,6 +78,7 @@ export function RecipesTab() {
 function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
   const [r, setR] = useState(recipe);
   const [planning, setPlanning] = useState(false);
+  const removal = useLiveQuery(async () => recipeRemoval(recipe.id, await db.calendar.toArray(), await db.batches.toArray()), [recipe.id]);
   const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   const t = totals(r.items);
   const portions = containersFor(r, r.items, settings.proteinPerMeal);
@@ -147,21 +149,36 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
         >
           Plan a batch…
         </button>
-        <button
-          className="danger"
-          onClick={async () => {
-            if (confirm(`Delete "${r.name}"? Batches already made from it stay.`)) {
+        <ConfirmButton
+          label="Delete"
+          confirmLabel="Yes, delete it"
+          warning={deleteWarning(r.name, removal)}
+          onConfirm={async () => {
+            const [entries, batches] = await Promise.all([db.calendar.toArray(), db.batches.toArray()]);
+            const x = recipeRemoval(r.id, entries, batches);
+            await db.transaction('rw', db.recipes, db.calendar, db.batches, async () => {
               await db.recipes.delete(r.id);
-              onClose();
-            }
+              await db.calendar.bulkDelete(x.deleteEntries);
+              await db.calendar.bulkPut(x.updateEntries);
+              await db.batches.bulkDelete(x.deleteBatches);
+            });
+            onClose();
           }}
-        >
-          Delete
-        </button>
+        />
       </div>
       {planning && (
         <BatchEditor batch={newBatchFor(r, isoDate(new Date()), settings.proteinPerMeal)} recipe={r} onClose={() => { setPlanning(false); onClose(); }} />
       )}
     </Sheet>
   );
+}
+
+function deleteWarning(name: string, x: RecipeRemoval | undefined): string {
+  const parts: string[] = [];
+  const n = (k: number, word: string) => `${k} ${word}${k === 1 ? '' : 's'}`;
+  if (x?.deleteEntries.length) parts.push(n(x.deleteEntries.length, 'planned meal'));
+  if (x?.deleteBatches.length) parts.push(n(x.deleteBatches.length, 'planned cook day'));
+  const also = parts.length ? ` Its ${parts.join(' and ')} go too.` : '';
+  const starch = x?.updateEntries.length ? ` ${n(x.updateEntries.length, 'planned meal')} keep their main food without it.` : '';
+  return `Delete "${name}"?${also}${starch} Eaten meals and cooked batches stay.`;
 }

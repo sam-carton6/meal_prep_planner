@@ -188,3 +188,29 @@ export function liveEntries(
     return { ...e, nutrition: dishNutrition(each, e.source.portions, starch, e.source.starch?.cups ?? 0) };
   });
 }
+
+// ---- Deleting a recipe ---------------------------------------------------------------------------
+
+export interface RecipeRemoval {
+  /** Planned (not eaten) meals of the recipe: they'd have nothing to come from. */
+  deleteEntries: string[];
+  /** Planned meals that only used it as their starch (e.g. rice): kept, without the starch. */
+  updateEntries: CalendarEntry[];
+  /** Planned cook days of it. Cooked batches stay (they hold what was eaten and what's in the freezer). */
+  deleteBatches: string[];
+}
+
+/** What deleting a recipe takes with it. Eaten meals and cooked batches are history, so they stay. */
+export function recipeRemoval(recipeId: string, entries: CalendarEntry[], batches: Batch[]): RecipeRemoval {
+  const out: RecipeRemoval = { deleteEntries: [], updateEntries: [], deleteBatches: [] };
+  for (const e of entries) {
+    if (e.eaten || e.source.kind !== 'dish') continue;
+    if (e.source.recipeId === recipeId) out.deleteEntries.push(e.id);
+    else if (e.source.starch?.recipeId === recipeId) {
+      const { starch: _s, ...source } = e.source;
+      out.updateEntries.push({ ...e, source });
+    }
+  }
+  for (const b of batches) if (b.recipeId === recipeId && b.status === 'planned') out.deleteBatches.push(b.id);
+  return out;
+}

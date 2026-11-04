@@ -21,7 +21,7 @@ import {
 import { fmtAmount } from '../units';
 import { coverage, entryPortions, entryStarch } from '../cookdays';
 import { ItemList } from './items';
-import { Macros, Num, r0, Sheet } from './shared';
+import { ConfirmButton, Macros, Num, r0, Sheet } from './shared';
 
 export function newBatchFor(recipe: Recipe, date: string, proteinPerMeal = DEFAULT_SETTINGS.proteinPerMeal): Batch {
   const items = recipe.items.map((i) => ({ ...i }));
@@ -306,17 +306,15 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
           </button>
         )}
         {!isNew && (
-          <button
-            className="danger"
-            onClick={async () => {
-              if (confirm('Delete this batch?')) {
-                await db.batches.delete(b.id);
-                onClose();
-              }
+          <ConfirmButton
+            label="Delete"
+            confirmLabel="Yes, delete it"
+            warning={b.status === 'planned' ? 'Delete this cook day? Meals planned from it stay on the calendar.' : 'Delete this batch?'}
+            onConfirm={async () => {
+              await db.batches.delete(b.id);
+              onClose();
             }}
-          >
-            Delete
-          </button>
+          />
         )}
       </div>
     </Sheet>

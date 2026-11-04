@@ -5,7 +5,7 @@ import type { RecipeItem } from '../model';
 import { itemGrams, itemNutrition } from '../recipe-math';
 import { fmtWeight } from '../units';
 import { setDrained, withDrainOptions } from '../cans';
-import { askCustomUnit, FoodPicker, itemFromPicked, Num, r0, useFoods, useUnitsFor } from './shared';
+import { customUnitFrom, FoodPicker, itemFromPicked, Num, r0, useFoods, useUnitsFor } from './shared';
 
 export function ItemRow({
   item,
@@ -27,6 +27,10 @@ export function ItemRow({
   const n = itemNutrition(item);
   const [open, setOpen] = useState(false);
   const [changing, setChanging] = useState(false);
+  const [sizing, setSizing] = useState(false);
+  const [sizeName, setSizeName] = useState('');
+  const [sizeGrams, setSizeGrams] = useState<number | null>(null);
+  const newSize = customUnitFrom(sizeName, sizeGrams);
   // Cans of beans etc.: offer whole can vs drained when USDA has both.
   const canItem = item.drain ? item : foods && /^can/i.test(item.unit) ? withDrainOptions(item, foods) : item;
   return (
@@ -52,11 +56,7 @@ export function ItemRow({
             <select
               value={item.unit}
               onChange={(e) => {
-                if (e.target.value === '__custom') {
-                  const u = askCustomUnit();
-                  if (u) onChange({ ...item, unit: u.unit, gramsPerUnit: u.gramsPerUnit });
-                  return;
-                }
+                if (e.target.value === '__custom') return setSizing(true);
                 const u = units.find((o) => o.unit === e.target.value)!;
                 onChange({ ...item, unit: u.unit, gramsPerUnit: u.gramsPerUnit });
               }}
@@ -82,6 +82,31 @@ export function ItemRow({
           </>
         )}
       </div>
+      {sizing && (
+        <div className="fields size-form">
+          <label>
+            Size name
+            <input autoFocus value={sizeName} onChange={(e) => setSizeName(e.target.value)} placeholder='e.g. can (15 oz), pack (1.5 lb)' />
+          </label>
+          <label>
+            Grams in one
+            <Num value={newSize && sizeGrams === null ? newSize.gramsPerUnit : sizeGrams} onChange={setSizeGrams} placeholder="g" />
+          </label>
+          <button
+            className="primary"
+            disabled={!newSize}
+            onClick={() => {
+              if (newSize) onChange({ ...item, unit: newSize.unit, gramsPerUnit: newSize.gramsPerUnit });
+              setSizing(false);
+              setSizeName('');
+              setSizeGrams(null);
+            }}
+          >
+            Use it
+          </button>
+          <button onClick={() => setSizing(false)}>Cancel</button>
+        </div>
+      )}
       {open && (
         <div className="item-more">
           {showScaling && onMakeMain && !isMain && item.amount !== null && (
@@ -152,6 +177,8 @@ export function ItemList({
   showScaling?: boolean;
 }) {
   const [picking, setPicking] = useState(false);
+  const [noting, setNoting] = useState(false);
+  const [note, setNote] = useState('');
   return (
     <div>
       {items.map((it) => (
@@ -167,19 +194,23 @@ export function ItemList({
       ))}
       <div className="row">
         <button onClick={() => setPicking(true)}>+ Ingredient</button>
-        <button
-          onClick={() => {
-            const text = window.prompt('Note line (no calories), e.g. "Seasonings, to taste"');
-            if (text)
-              onChange([
-                ...items,
-                { ...itemFromNote(text) },
-              ]);
+        <button onClick={() => setNoting(true)}>+ Note</button>
+      </div>
+      {noting && (
+        <form
+          className="row"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (note.trim()) onChange([...items, { ...itemFromNote(note.trim()) }]);
+            setNote('');
+            setNoting(false);
           }}
         >
-          + Note
-        </button>
-      </div>
+          <input autoFocus value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note line (no calories), e.g. Seasonings, to taste" />
+          <button className="primary" disabled={!note.trim()}>Add</button>
+          <button type="button" onClick={() => setNoting(false)}>Cancel</button>
+        </form>
+      )}
       {picking && (
         <FoodPicker
           onClose={() => setPicking(false)}

@@ -10,7 +10,7 @@ import { isoDate } from '../plan';
 import { search, buildIndex } from '../search';
 import { forGrams, SOURCE_NAMES, type Food } from '../usda';
 import oldRecipes from '../../recipes.json';
-import { Macros, Num, r0, r1, Sheet, useFoods } from './shared';
+import { ConfirmButton, Macros, Num, r0, r1, Sheet, useFoods } from './shared';
 import { ImportFilePage } from './ImportFile';
 import { FoodLookup } from './FoodLookup';
 import { PantryPage } from './Pantry';
@@ -169,7 +169,8 @@ function CustomFoodEditor({ food, onClose }: { food: CustomFood; onClose: () => 
       <button className="small" onClick={() => setF({ ...f, units: [...(f.units ?? []), { unit: '', grams: 0 }] })}>+ Add a unit</button>
       <div className="row actions">
         <button className="primary" disabled={!f.name.trim()} onClick={async () => { await db.customFoods.put(clean(f)); onClose(); }}>Save</button>
-        <button className="danger" onClick={async () => { if (confirm(`Delete "${f.name}"?`)) { await db.customFoods.delete(f.id); onClose(); } }}>Delete</button>
+        <ConfirmButton label="Delete" confirmLabel="Yes, delete it" warning={`Delete "${f.name}"?`}
+          onConfirm={async () => { await db.customFoods.delete(f.id); onClose(); }} />
       </div>
     </Sheet>
   );
@@ -199,6 +200,7 @@ function Targets({ onClose }: { onClose: () => void }) {
 
 function Backup({ onClose }: { onClose: () => void }) {
   const [msg, setMsg] = useState('');
+  const [pending, setPending] = useState<Record<string, unknown> | null>(null);
   const save = async () => {
     const data = JSON.stringify(await exportAll(), null, 1);
     const name = `meal-prep-backup-${isoDate(new Date())}.json`;
@@ -232,15 +234,30 @@ function Backup({ onClose }: { onClose: () => void }) {
           const f = e.target.files?.[0];
           if (!f) return;
           try {
-            const data = JSON.parse(await f.text());
-            if (!confirm('Replace everything in the app with this backup?')) return;
-            await importAll(data);
-            setMsg('Restored.');
+            setPending(JSON.parse(await f.text()));
+            setMsg('');
           } catch (err) {
             setMsg(`Couldn't restore: ${(err as Error).message}`);
           }
         }}
       />
+      {pending && (
+        <div className="card">
+          <b>Replace everything in the app with this backup?</b>
+          <div className="row">
+            <button className="danger" onClick={async () => {
+              try {
+                await importAll(pending);
+                setMsg('Restored.');
+              } catch (err) {
+                setMsg(`Couldn't restore: ${(err as Error).message}`);
+              }
+              setPending(null);
+            }}>Yes, replace everything</button>
+            <button onClick={() => setPending(null)}>Cancel</button>
+          </div>
+        </div>
+      )}
       {msg && <p className="note">{msg}</p>}
     </Sheet>
   );
