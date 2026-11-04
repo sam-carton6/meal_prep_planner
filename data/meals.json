@@ -382,7 +382,7 @@
         },
         {
           "name": "Vegetable oil",
-          "amount": 6,
+          "amount": 2,
           "unit": "tbsp"
         },
         {
@@ -391,7 +391,7 @@
           "unit": "tbsp"
         },
         {
-          "name": "Soy sauce, gluten-free, low sodium",
+          "name": "Soy sauce, gluten-free (Kikkoman)",
           "amount": 6,
           "unit": "tbsp"
         },
@@ -401,22 +401,17 @@
           "unit": "tbsp"
         },
         {
-          "name": "Oyster sauce, gluten-free",
+          "name": "Mushroom oyster sauce",
           "amount": 2,
           "unit": "tbsp"
         },
         {
-          "name": "Chicken bouillon powder, gluten-free",
+          "name": "Better Than Bouillon, roasted chicken base",
           "amount": 2,
           "unit": "tsp"
         },
         {
-          "name": "Dark soy sauce, gluten-free",
-          "amount": 1,
-          "unit": "tsp"
-        },
-        {
-          "name": "Dry sherry",
+          "name": "Chinese cooking wine",
           "amount": 4,
           "unit": "tbsp"
         },
@@ -438,7 +433,7 @@
           "optional": true
         }
       ],
-      "notes": "Sam's recipe, doubled to 2 lb (beef comes in 1 lb packs). Sauce: tamari, sugar, oyster sauce, bouillon, dark soy, sherry, black pepper and 10 tbsp water. Fry the green onion whites, garlic and ginger in part of the oil, brown the beef in the rest, add the sauce and cook it down; sesame oil and green onion tops at the end. Gluten-free swaps: tamari for soy sauce, gluten-free oyster sauce (e.g. Lee Kum Kee green label, Wok Mei), dry sherry or mirin for Shaoxing wine (wheat), gluten-free bouillon; dark soy: a gluten-free one, or 1 tsp more tamari + 1/4 tsp molasses. Red chili or bell pepper to garnish."
+      "notes": "Sam's recipe, doubled to 2 lb (beef comes in 1 lb packs). Sauce: gluten-free Kikkoman soy sauce, sugar, mushroom oyster sauce (Whole Foods), Better Than Bouillon chicken base, Chinese cooking wine (Whole Foods), black pepper and 10 tbsp water. Fry the green onion whites, garlic and ginger in a little oil, brown the beef, add the sauce and cook it down; sesame oil and green onion tops at the end. Red chili or bell pepper to garnish. Gluten: check the mushroom oyster sauce and the cooking wine labels for wheat."
     },
     {
       "name": "White rice",
@@ -596,6 +591,23 @@
       "carbs_g": 127,
       "fat_g": 9,
       "units": []
+    },
+    {
+      "name": "Better Than Bouillon, roasted chicken base",
+      "brand": "Better Than Bouillon",
+      "place": null,
+      "serving": "1 tsp (6 g)",
+      "serving_grams": 6,
+      "kcal": 15,
+      "protein_g": 1,
+      "carbs_g": 1,
+      "fat_g": 0.5,
+      "units": [
+        {
+          "unit": "tsp",
+          "grams": 6
+        }
+      ]
     }
   ]
 }

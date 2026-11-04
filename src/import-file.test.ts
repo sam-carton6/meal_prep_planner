@@ -118,12 +118,16 @@ describe('sizes and My foods in imports', () => {
       { name: 'Green onions, raw', amount: 10, unit: 'medium' },
       { name: 'Dry sherry', amount: 4, unit: 'tbsp' },
       { name: 'Chicken bouillon powder, gluten-free', amount: 2, unit: 'tsp' },
+      { name: 'Soy sauce, gluten-free (Kikkoman)', amount: 6, unit: 'tbsp' },
+      { name: 'Mushroom oyster sauce', amount: 2, unit: 'tbsp' },
+      { name: 'Chinese cooking wine', amount: 4, unit: 'tbsp' },
     ] }, index, byId, foods);
     expect(rv.lines.map((l) => l.matched)).toEqual(['Vinegar, distilled', 'Vinegar, cider',
       'Squash, summer, zucchini, includes skin, raw', 'Yogurt, Greek, plain, nonfat',
       'Onions, spring or scallions (includes tops and bulb), raw', 'Alcoholic beverage, wine, dessert, dry',
-      'Soup, chicken broth or bouillon, dry']);
-    expect(rv.lines.map((l) => Math.round(l.item.amount! * l.item.gramsPerUnit))).toEqual([30, 30, 392, 245, 150, 59, 4]);
+      'Soup, chicken broth or bouillon, dry', 'Soy sauce made from soy (tamari)', 'Sauce, oyster, ready-to-serve',
+      'Alcoholic beverage, wine, table, white']);
+    expect(rv.lines.map((l) => Math.round(l.item.amount! * l.item.gramsPerUnit))).toEqual([30, 30, 392, 245, 150, 59, 4, 108, 36, 59]);
   });
 
   it('uses a typical size when the USDA entry has none, and says so', () => {

@@ -60,6 +60,10 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Green onions, raw': 170005, // SR scallions, 32 kcal/100 g with sizes (the Foundation entry says 2.7 kcal)
   'Dark soy sauce, gluten-free': 174278, // tamari
   'Dry sherry': 175112, // dessert wine, dry
+  'Soy sauce, gluten-free (Kikkoman)': 174278, // tamari
+  'Soy sauce, gluten-free': 174278,
+  'Mushroom oyster sauce': 174529, // USDA oyster sauce: about the same calories
+  'Chinese cooking wine': 174837, // white table wine
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,
   'Sweet potatoes, orange': 168482,
