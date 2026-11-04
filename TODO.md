@@ -12,7 +12,9 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 Tested in the PC browser at phone size: import, scaling a batch, starch suggestion, calendar, grocery list.
 Plus (21 Oct): calendar week/month toggle, wide PC layout; Drained/whole-can switch on cans; saved pots for
 weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPhone 17 width (402 px).
-**Next up:** Sam tries https://staging-meal-prep-planner.samcarton6.workers.dev on his phone and answers *Check with Sam* below; then polish.
+**Next up (3 Nov):** Sam tried it: works but fiddly. Rework around a *meal bank* dragged onto the calendar, with
+cooking and shopping worked out from the plan. Waiting on Sam's OK to the plan in chat. Recipes/foods come in via
+[RECIPE-IMPORT.md](RECIPE-IMPORT.md) (claude.ai prompt → JSON → import).
 
 ## Check with Sam (decisions made during the rough pass)
 
@@ -36,7 +38,7 @@ weigh-the-pot; recent breakfasts/snacks as one-tap repeats; tidier fields at iPh
 - Later, maybe: find out why Cloudflare's automatic staging builds never ran (settings look right), so
   `npm run staging` isn't needed.
 - Start "My foods" with Sam's usual takeout (ask him which places). Breakfast: Naked Mass chocolate shake, ~150 g
-  per breakfast. Label: 333 g (about 7 scoops) = 1,360 kcal, 50 g protein, 251 g carbs, 15 g fat; 150 g ≈ 613 kcal,
+  per breakfast; his scoop = 55 g (so ~3 scoops; label says 333 g ≈ 7 scoops). Label: 333 g (about 7 scoops) = 1,360 kcal, 50 g protein, 251 g carbs, 15 g fat; 150 g ≈ 613 kcal,
   22.5 g protein. Sam adds it in My foods and will send his old scoop's weight.
 - Only the calendar uses the PC's width so far; the other screens are still a phone-width column on the PC.
 
