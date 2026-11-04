@@ -26,6 +26,13 @@ export function pinnedBatch(e: CalendarEntry): string | undefined {
   return undefined;
 }
 
+/** A copy of an entry's source for a new planned meal: a dish no longer tied to any batch (fresh, not freezer). */
+export function unpinned(source: CalendarEntry['source']): CalendarEntry['source'] {
+  if (source.kind !== 'dish') return source;
+  const { batchId: _b, fromStock: _f, ...rest } = source;
+  return rest;
+}
+
 /** Containers (portions) an entry uses: 0 for plain foods. */
 export const entryPortions = (e: CalendarEntry) =>
   e.source.kind === 'batch' || e.source.kind === 'dish' ? e.source.portions : 0;

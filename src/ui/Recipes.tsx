@@ -11,6 +11,7 @@ import { fmtAmount } from '../units';
 import { ItemList } from './items';
 import { ConfirmButton, Macros, Num, Sheet } from './shared';
 import { recipeRemoval, type RecipeRemoval } from '../cookdays';
+import { sizedBatch } from '../weeks';
 import { BatchEditor, newBatchFor } from './Cook';
 
 export function RecipesTab() {
@@ -85,8 +86,15 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
   const byProtein = portionsForProtein(t, settings.proteinPerMeal);
   const main = mainItem(r);
 
+  const sides = useLiveQuery(() => db.recipes.where('kind').equals('starch').toArray(), []) ?? [];
   const save = async () => {
-    await db.recipes.put({ ...r, name: r.name.trim() || 'Untitled', updatedAt: new Date().toISOString() });
+    const saved = { ...r, name: r.name.trim() || 'Untitled', updatedAt: new Date().toISOString() };
+    await db.transaction('rw', db.recipes, db.batches, async () => {
+      await db.recipes.put(saved);
+      // Cook days the weeks planner set up keep their servings, re-worked from the changed recipe.
+      const auto = (await db.batches.where('recipeId').equals(saved.id).toArray()).filter((b) => b.auto && b.status === 'planned');
+      await db.batches.bulkPut(auto.map((b) => ({ ...sizedBatch(saved, b.portions, b.cookDate, settings.proteinPerMeal, b.id, b.createdAt), notes: b.notes })));
+    });
     onClose();
   };
 
@@ -101,12 +109,24 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
         {r.kind === 'dish' ? (
           <>
             <div className="row">
-              Containers you make: <Num value={r.servings ?? null} placeholder={String(byProtein)} onChange={(n) => setR({ ...r, servings: n && n > 0 ? Math.round(n) : undefined })} />
+              Servings it makes: <Num value={r.servings ?? null} placeholder={String(byProtein)} onChange={(n) => setR({ ...r, servings: n && n > 0 ? Math.round(n) : undefined })} />
               <span className="note">{r.servings ? `(${byProtein} at ${settings.proteinPerMeal} g protein each)` : `blank = split by ${settings.proteinPerMeal} g protein`}</span>
             </div>
             <div>
-              <b>{portions} containers</b> of <Macros short n={perPortion(t, portions)} />
+              <b>{portions} servings</b> of <Macros short n={perPortion(t, portions)} />
             </div>
+            <div className="note">
+              A serving is one container. Cook days in the weeks planner are scaled to the servings planned, so fewer
+              servings here = bigger containers.
+            </div>
+            <label className="block">
+              Usually with{' '}
+              <select value={sides.find((x) => x.name.toLowerCase() === r.serveWith?.toLowerCase())?.name ?? ''}
+                onChange={(e) => setR({ ...r, serveWith: e.target.value || undefined })}>
+                <option value="">Nothing</option>
+                {sides.map((x) => <option key={x.id} value={x.name}>{x.name}</option>)}
+              </select>
+            </label>
           </>
         ) : (
           <div className="row">

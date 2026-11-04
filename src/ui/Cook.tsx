@@ -184,7 +184,8 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
   const yieldNow = (recipe?.yieldAmount ?? 1) * factor;
 
   const save = async (patch: Partial<Batch> = {}) => {
-    await db.batches.put({ ...b, ...patch });
+    // Saved by hand: the weeks planner stops resizing it (auto off).
+    await db.batches.put({ ...b, ...patch, auto: false });
     onClose();
   };
 

@@ -39,9 +39,13 @@ Then: deleting fixed (pop-ups were blocked in the test copy; now in-page "Yes, d
 **more than 5 days** (Sam), and the **prep sheet** (Cook → 📋 Prep sheet, or 📋 prep on a cook day in Plan): per
 dish what to cook, containers grouped by servings + rice, grams each after weighing the pot, kcal/protein, which
 day each is for, ❄️ freezer ones, spare; then total rice to cook. "Mark cooked" right there.
-**Waiting on Sam:** importing meals.json into the app (paste works: no upload needed); trying these on the phone;
-Mexican chicken's recipe says 8 containers but he plans 5 (3 spare each week): change to 5, or are they for his
-girlfriend?
+Then the **weeks planner** (Plan → Weeks, now the first view): lunch + dinner per week, Mon–Fri, cook day the
+Sunday before sized to what's planned (the "8 vs 5 Mexican chicken" spare problem is gone); tap a day to swap it
+(another dish, freezer, takeout/any food, leftovers). Meal bank down to one card per dish. PBfit + a "Morning
+shake" food added to data/meals.json.
+**Waiting on Sam:** re-import meals.json (Replace) so recipes get their usual sides and the new foods; try Weeks on
+the phone; check the PBfit numbers against the jar (used 70 kcal / 8 g protein per 2 tbsp) and whether the shake
+uses milk (not counted now).
 
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 
@@ -49,8 +53,10 @@ girlfriend?
   ❄️ ones in the freezer). Change them on the batch if they're wrong.
 - (4 Nov) Spare containers (e.g. for your girlfriend) are just shown as "spare"; there's no way to plan them for
   someone else. Fine, or do you want a "not me" slot that doesn't count in your calories?
-- (4 Nov) Repeat a week copies cook days at the size of the original (e.g. Mexican chicken makes 8, he plans 5:
-  3 spare every week). Fine, or should copies shrink to what's planned?
+- (4 Nov) Weeks planner: a day swapped to "another dish" gets cooked that Sunday at just that size (e.g. 1 serving
+  of chili). To cook a full batch and freeze the rest, open the cook day and enter the bigger amount.
+- (4 Nov) "Clear this day" leaves it empty; the next change to that row fills it again. "Leftovers" keeps it.
+- (4 Nov) Sized cook days aren't rounded (e.g. ¾ can of beans); the shopping list rounds up to whole cans.
 - (4 Nov) Pantry suggestions come from recipe ingredients (spices, oils, spoon amounts, rice/oats). Chicken broth,
   canned tomatoes etc. are left on the list unless he taps "in pantry".
 - (4 Nov) Weekends / eating out: leave them empty (the averages only count days with something planned) or add a

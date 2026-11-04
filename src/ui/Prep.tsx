@@ -19,7 +19,7 @@ const amountText = (n: number, unit: string, name: string) => {
   const exact = /^(lb|oz|g|kg)$/.test(unit) || Math.round(n * 4) === 0;
   return `${fmtAmount(exact ? Math.round(n * 100) / 100 : Math.round(n * 4) / 4)} ${unit} ${name}`;
 };
-const servings = (n: number) => (n === 1 ? '' : ` ×${fmtAmount(n)}`);
+const servings = (n: number) => `${fmtAmount(n)} serving${n === 1 ? '' : 's'}`;
 
 export function PrepSheetPage({ date, onClose }: { date?: string; onClose: () => void }) {
   const today = isoDate(new Date());
@@ -91,7 +91,7 @@ function PrepDishCard({ d, onEdit }: { d: PrepDish; onEdit: () => void }) {
       </h3>
       <div>
         {main?.amount ? <>Cook <b>{amountText(main.amount, main.unit, main.name.split(',')[0].toLowerCase())}</b> → </> : null}
-        <b>{b.portions} servings</b> ({d.gramsEach ? <><b>{r0(d.gramsEach)} g</b>, </> : null}<Macros short n={d.each} /> each)
+        <b>{servings(b.portions)}</b> ({d.gramsEach ? <><b>{r0(d.gramsEach)} g</b>, </> : null}<Macros short n={d.each} /> each)
       </div>
       <button className="link small" onClick={() => setAll(!all)}>{all ? 'Hide' : 'Show'} all amounts</button>
       {all && (
@@ -150,7 +150,7 @@ function GroupRow({ g }: { g: PrepGroup }) {
   return (
     <div className="prep-group">
       <div>
-        <b>{g.count} container{g.count === 1 ? '' : 's'}</b>: {g.grams ? `${r0(g.grams)} g` : `1 serving${servings(g.portions)}`}
+        <b>{g.count} container{g.count === 1 ? '' : 's'}</b>: {g.grams ? `${r0(g.grams)} g` : servings(g.portions)}
         {g.grams && g.portions !== 1 ? ` (${fmtAmount(g.portions)} servings)` : ''}
         {rice}
       </div>

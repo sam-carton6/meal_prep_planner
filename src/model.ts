@@ -80,6 +80,11 @@ export interface Recipe {
    * Unset = split by the protein target (Settings.proteinPerMeal). Added 4 Nov 2026; optional, so no db change.
    */
   servings?: number;
+  /**
+   * Dishes: the side it's usually eaten with, by the side recipe's name (e.g. "White rice"); the weeks planner and
+   * meal bank add it by default. Added Nov 2026; optional, so no db change.
+   */
+  serveWith?: string;
   /** For starches: what the base amounts make, e.g. 12 (cups cooked). */
   yieldAmount?: number;
   yieldUnit?: string; // e.g. "cup cooked"
@@ -105,6 +110,11 @@ export interface Batch {
   freezer: number;
   notes?: string;
   createdAt: string;
+  /**
+   * Set up by the weeks planner (Nov 2026): sized to that week's planned containers and kept in step with the plan
+   * while it's still planned and not edited by hand. Saving it in the batch editor clears this. Optional field.
+   */
+  auto?: boolean;
 }
 
 export interface CustomFood {
@@ -146,7 +156,11 @@ export interface CalendarEntry {
      * A dish container from whichever cook day covers it (version 2). `batchId` is set once eaten.
      * `portions` can be 1.5 etc. (eating more or less); `cups` of starch is per portion.
      */
-    | { kind: 'dish'; recipeId: string; portions: number; starch?: { recipeId: string; cups: number }; batchId?: string }
+    | {
+        kind: 'dish'; recipeId: string; portions: number; starch?: { recipeId: string; cups: number }; batchId?: string;
+        /** A container taken from stock (the freezer) of batch `batchId`, chosen by Sam (Nov 2026); stays pinned. */
+        fromStock?: boolean;
+      }
     | { kind: 'food'; food: FoodRef; amount: number; unit: string }
     | { kind: 'quick' };
   /** Nutrition copied in when the entry is made, so the log never changes afterwards. */

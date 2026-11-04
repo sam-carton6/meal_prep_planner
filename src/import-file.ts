@@ -217,6 +217,7 @@ export function toRecipe(rv: ReviewRecipe, now: string, keepId?: { id: string; c
     items,
     mainItemId: main?.item.id,
     ...(r.kind !== 'starch' && r.servings && r.servings > 0 ? { servings: Math.round(r.servings) } : {}),
+    ...(r.kind !== 'starch' && r.serve_with?.trim() ? { serveWith: r.serve_with.trim() } : {}),
     ...(r.kind === 'starch'
       ? { yieldAmount: r.yield?.amount ?? 1, yieldUnit: r.yield?.unit ?? 'cup cooked' }
       : {}),

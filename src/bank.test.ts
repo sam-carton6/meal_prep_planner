@@ -6,7 +6,7 @@ const item = (grams: number, kcal: number, protein: number): RecipeItem => ({
   id: 'i', name: 'x', food: { kind: 'none' }, per100g: { kcal, protein, carbs: 0, fat: 0 },
   amount: grams, unit: 'g', gramsPerUnit: 1, scaling: 'scale',
 });
-const chili: Recipe = { id: 'chili', name: 'Chili', kind: 'dish', items: [item(1600, 200, 20)], createdAt: '', updatedAt: '' };
+const chili: Recipe = { id: 'chili', name: 'Chili', kind: 'dish', serveWith: 'White rice', items: [item(1600, 200, 20)], createdAt: '', updatedAt: '' };
 const rice: Recipe = { id: 'rice', name: 'White rice', kind: 'starch', yieldAmount: 12, yieldUnit: 'cup cooked',
   items: [item(1200, 200, 4)], createdAt: '', updatedAt: '' }; // 200 kcal per cup cooked
 const shake: CustomFood = {
@@ -18,9 +18,16 @@ const base = { recipes: [chili, rice], batches: [], customFoods: [shake], entrie
 const find = (cards: MealCard[], id: string) => cards.find((c) => c.id === id)!;
 
 describe('meal bank cards', () => {
-  it('makes a card per dish, per dish + starch, and per My foods entry', () => {
-    const cards = buildCards(base);
-    expect(cards.map((c) => c.id)).toEqual(['dish:chili', 'dish:chili+rice', 'food:nm']);
+  it('makes one card per dish (with its usual side) and per My foods entry', () => {
+    expect(buildCards(base).map((c) => c.id)).toEqual(['dish:chili+rice', 'food:nm']);
+    const plain = { ...chili, serveWith: undefined };
+    expect(buildCards({ ...base, recipes: [plain, rice] }).map((c) => c.id)).toEqual(['dish:chili', 'food:nm']);
+  });
+
+  it('also shows a combination once it has been used', () => {
+    const entries: CalendarEntry[] = [{ id: '1', date: '2026-11-03', slot: 'lunch', label: 'Chili', eaten: false,
+      nutrition: { kcal: 400, protein: 40, carbs: 0, fat: 0 }, source: { kind: 'dish', recipeId: 'chili', portions: 1 } }];
+    expect(buildCards({ ...base, entries }).map((c) => c.id)).toEqual(['dish:chili', 'dish:chili+rice', 'food:nm']);
   });
 
   it('leaves out My foods that are only recipe ingredients', () => {
@@ -70,7 +77,7 @@ describe('meal bank cards', () => {
         nutrition: { kcal: 150, protein: 20, carbs: 0, fat: 0 }, source: { kind: 'food', food: { kind: 'usda', id: 5 }, amount: 1, unit: 'cup' } },
     ];
     const cards = buildCards({ ...base, entries });
-    expect(cards.map((c) => c.id)).toEqual(['food:nm', 'recent:greek yogurt, plain', 'dish:chili', 'dish:chili+rice']);
+    expect(cards.map((c) => c.id)).toEqual(['food:nm', 'recent:greek yogurt, plain', 'dish:chili+rice']);
     expect(cardEntry(cards[0]).label).toBe('Naked Mass, chocolate (3 scoop)');
     const yogurt = cardEntry(cards[1], stepTweak(cards[1], {}, 'amount', 1));
     expect(yogurt.label).toBe('Greek yogurt, plain (1¼ cup)');

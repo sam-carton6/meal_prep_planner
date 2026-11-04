@@ -21,7 +21,7 @@ const inBlock = (d: string, start: string) => d >= start && d <= addDays(start, 
 function freshSource(e: CalendarEntry, batchById: Map<string, Batch>): CalendarEntry['source'] {
   const s = e.source;
   if (s.kind === 'dish') {
-    const { batchId: _pin, ...rest } = s;
+    const { batchId: _pin, fromStock: _stock, ...rest } = s;
     return rest;
   }
   if (s.kind === 'batch') {

@@ -1,8 +1,9 @@
-// The meal bank: ready-made cards for the calendar, built from the real data. One card per dish, per dish +
-// starch, per My foods entry, and per recent other food. Each card can be tweaked (servings, cups of starch,
+// The meal bank: ready-made cards for the calendar, built from the real data. One card per dish (with its usual
+// side, Recipe.serveWith), per My foods entry, and per recent other food. Each card can be tweaked (servings, cups of starch,
 // scoops...) before it's placed; recent use sets the starting amounts.
 
 import type { Batch, CalendarEntry, CustomFood, Nutrition, Recipe } from './model';
+import { sideOf } from './weeks';
 import { ZERO } from './model';
 import { dishEach, dishLabel, dishNutrition, typicalBatch } from './cookdays';
 import { perYieldUnit, starchToReach, times } from './recipe-math';
@@ -95,10 +96,16 @@ export function buildCards(input: BankInput): MealCard[] {
   for (const d of recipes.filter((r) => r.kind === 'dish')) {
     const each = dishEach(typicalBatch(batches, d.id), d, proteinPerMeal);
     const prev = last.get(`dish:${d.id}`);
-    cards.push({ id: `dish:${d.id}`, group: 'prep', name: d.name, recipeId: d.id, each,
-      defaults: { servings: prevPortions(prev) ?? 1 } });
+    // One card per dish (Sam, 4 Nov 2026: a card for every dish × side was too many): with its usual side if it
+    // has one, else plain; other combinations only once they've been used.
+    const usual = sideOf(d, recipes);
+    if (!usual || last.has(`dish:${d.id}`)) {
+      cards.push({ id: `dish:${d.id}`, group: 'prep', name: d.name, recipeId: d.id, each,
+        defaults: { servings: prevPortions(prev) ?? 1 } });
+    }
     for (const s of starches) {
       const id = `dish:${d.id}+${s.id}`;
+      if (s !== usual && !last.has(id)) continue;
       const p = last.get(id);
       const prevCups = p && (p.source.kind === 'dish' || p.source.kind === 'batch') && p.source.starch
         ? p.source.starch.cups * p.source.portions : undefined;

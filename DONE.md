@@ -2,6 +2,15 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-04 — weeks planner; one bank card per dish; PBfit + morning shake
+- Plan → Weeks (`src/weeks.ts`, tested; `src/ui/Weeks.tsx`): a card per week, lunch and dinner pickers with
+  servings, side and side amount, Mon–Fri chips; tap a day to swap (another dish, freezer container, any food or
+  quick add, leftovers, back to the week's dish). The Sunday-before cook day is created/resized/removed with the
+  plan (Batch.auto) until edited by hand or cooked; exact scaling. Lunch + dinner kcal/protein per day.
+- Recipe.serveWith (from the import's serve_with, or Recipes → "Usually with"); meal bank shows one card per dish
+  with that side (other combos once used). Recipe editor: "Servings it makes"; saving resizes auto cook days.
+- `data/meals.json`: PBfit (tbsp = 8 g) and "Morning shake" (3 scoops Naked Mass + 1½ tbsp PBfit, 726 kcal).
+
 ### 2026-11-04 — prep sheet; freeze after 5 days
 - Prep sheet (`src/prep.ts`, tested; `src/ui/Prep.tsx`): Cook → 📋 Prep sheet or 📋 prep on a Plan cook day. For
   each dish cooked that day: amount of the main ingredient → servings; containers grouped by servings + cups of

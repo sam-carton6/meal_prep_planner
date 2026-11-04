@@ -22,18 +22,19 @@ import {
   weekStart,
 } from '../plan';
 import { baseName, buildCards, cardEntry, cardSuggestions, cardTweaks, dishSuggestions, stepTweak, type CardTweak, type EntryDraft, type MealCard, type Targets, type Values } from '../bank';
-import { coverage, dishLabel, entryPortions, type Coverage, type CookDayInfo, FRIDGE_DAYS, liveEntries } from '../cookdays';
+import { coverage, dishLabel, entryPortions, unpinned, type Coverage, type CookDayInfo, FRIDGE_DAYS, liveEntries } from '../cookdays';
 import { add, batchSummary, perYieldUnit, times } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { repeatStart, repeatWeek } from '../repeat';
 import { BatchEditor, newBatchFor } from './Cook';
 import { PrepSheetPage } from './Prep';
+import { WeeksView } from './Weeks';
 import { customAsPicked, FoodPicker, Macros, Num, r0, Sheet, useUnitsFor, type PickedFood } from './shared';
 
 const SLOT_NAMES: Record<Slot, string> = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snacks' };
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-type View = 'week' | 'month';
+type View = 'weeks' | 'week' | 'month';
 
 function stored<T>(key: string, fallback: T): T {
   try {
@@ -53,7 +54,10 @@ function store(key: string, value: unknown) {
 
 export function PlanTab() {
   const today = isoDate(new Date());
-  const [view, setView] = useState<View>(() => (stored<string>('planView2', 'week') === 'month' ? 'month' : 'week'));
+  const [view, setView] = useState<View>(() => {
+    const v = stored<string>('planView3', 'weeks');
+    return v === 'month' || v === 'week' ? v : 'weeks';
+  });
   const [start, setStart] = useState(weekStart(today)); // week view: its Monday
   const [month, setMonth] = useState(monthStart(today)); // month view: its 1st
   const [placing, setPlacing] = useState<string | null>(null);
@@ -97,7 +101,7 @@ export function PlanTab() {
   const switchView = (v: View) => {
     setView(v);
     if (v === 'month') setMonth(monthStart(start));
-    store('planView2', v);
+    store('planView3', v);
   };
   const openWeek = (d: string) => {
     setStart(weekStart(d));
@@ -127,7 +131,7 @@ export function PlanTab() {
       // Shift-drag (or Alt/Ctrl) copies; a plain drag moves.
       if (ev.shiftKey || ev.altKey || ev.ctrlKey) {
         const e = await db.calendar.get(id);
-        if (e) await db.calendar.add({ ...e, id: newId(), date, slot, eaten: false, ...(e.source.kind === 'dish' ? { source: { ...e.source, batchId: undefined } } : {}) });
+        if (e) await db.calendar.add({ ...e, id: newId(), date, slot, eaten: false, source: unpinned(e.source) });
       } else await db.calendar.update(id, { date, slot });
     }
   };
@@ -141,13 +145,15 @@ export function PlanTab() {
   const openEntry = live.find((e) => e.id === openId);
 
   return (
-    <div className={`plan-layout ${bankOpen ? '' : 'bank-closed'}`}>
+    <div className={`plan-layout ${view === 'weeks' ? 'no-bank' : bankOpen ? '' : 'bank-closed'}`}>
       <main className={`wide plan-main ${placing ? 'placing' : ''}`}>
         <header className="plan-head">
           <div className="seg">
-            <button className={view === 'week' ? 'on' : ''} onClick={() => switchView('week')}>Week</button>
+            <button className={view === 'weeks' ? 'on' : ''} onClick={() => switchView('weeks')}>Weeks</button>
+            <button className={view === 'week' ? 'on' : ''} onClick={() => switchView('week')}>Calendar</button>
             <button className={view === 'month' ? 'on' : ''} onClick={() => switchView('month')}>Month</button>
           </div>
+          {view !== 'weeks' && <>
           <div className="row spread">
             <button className="link" onClick={() => step(-1)}>‹ Prev</button>
             <h1 className="week-title">{view === 'week' ? `${dayLabel(days[0])} – ${dayLabel(days[6])}` : monthLabel(month)}</h1>
@@ -165,12 +171,18 @@ export function PlanTab() {
               'Nothing planned yet'
             )}
           </div>
+          </>}
           {card && (
             <div className="hint">
               Placing <b>{cardEntry(card, tweaks[card.id]).label}</b>: tap slots (as many as you like), then Done.
             </div>
           )}
         </header>
+
+        {view === 'weeks' && (
+          <WeeksView today={today} entries={live} batches={batches} recipes={recipes} settings={settings}
+            onOpenWeek={(m) => { setStart(m); switchView('week'); }} onPrep={setPrepFor} />
+        )}
 
         {view === 'month' && (
           <MonthGrid weeks={weeks} month={month} today={today} entries={entries} batches={batches} settings={settings} onPickDay={openWeek} />
@@ -234,8 +246,8 @@ export function PlanTab() {
           </div>
         )}
 
-        <CookPanel from={view === 'week' ? days[0] : month} to={view === 'week' ? days[6] : addDays(addMonths(month, 1), -1)}
-          cov={cov} live={live} recipes={recipes} onOpen={setEditBatch} onCook={setCookOn} />
+        {view !== 'weeks' && <CookPanel from={view === 'week' ? days[0] : month} to={view === 'week' ? days[6] : addDays(addMonths(month, 1), -1)}
+          cov={cov} live={live} recipes={recipes} onOpen={setEditBatch} onCook={setCookOn} />}
 
         {view === 'week' && (
           <div className="row">
@@ -245,7 +257,7 @@ export function PlanTab() {
         )}
       </main>
 
-      <MealBank
+      {view !== 'weeks' && <MealBank
         cards={cards}
         targets={{ protein: settings.proteinPerMeal, kcal: settings.mealKcalAim }}
         tweaks={tweaks}
@@ -261,7 +273,7 @@ export function PlanTab() {
         }}
         open={bankOpen}
         onToggle={() => setBankOpen(!bankOpen)}
-      />
+      />}
 
       {adding && <AddEntry date={adding.date} slot={adding.slot} onClose={() => setAdding(null)} />}
       {openEntry && (
@@ -386,7 +398,7 @@ function Suggestions<T extends { text: string }>({ list, onPick }: { list: T[]; 
   );
 }
 
-function Stepper({ t, onStep, onCycle }: { t: CardTweak; onStep: (dir: 1 | -1) => void; onCycle?: () => void }) {
+export function Stepper({ t, onStep, onCycle }: { t: CardTweak; onStep: (dir: 1 | -1) => void; onCycle?: () => void }) {
   return (
     <div className="stepper">
       <button onClick={(ev) => { ev.stopPropagation(); onStep(-1); }} disabled={t.n <= t.min} aria-label="less">−</button>
@@ -430,7 +442,8 @@ async function setEaten(entry: CalendarEntry, eaten: boolean, cov: Coverage) {
     if (entry.source.kind === 'dish') {
       batchId = eaten ? cov.feeds.get(entry.id) : entry.source.batchId;
       const { batchId: _old, ...rest } = entry.source;
-      patch.source = eaten && batchId ? { ...rest, batchId } : rest;
+      // A freezer container Sam picked stays tied to its batch when un-ticked; others go back to "whichever feeds it".
+      patch.source = (eaten || entry.source.fromStock) && batchId ? { ...rest, batchId } : rest;
       if (eaten) patch.nutrition = entry.nutrition; // the live numbers shown right now
     } else if (entry.source.kind === 'batch') {
       batchId = entry.source.batchId;
@@ -712,15 +725,26 @@ function MonthGrid({ weeks, month, today, entries, batches, settings, onPickDay 
 
 type Mode = 'food' | 'quick';
 
-function AddEntry({ date, slot, onClose }: { date: string; slot: Slot; onClose: () => void }) {
+/** Add anything to a slot. `replace`: entries it takes the place of (a swapped day in the weeks planner). */
+export function AddEntry({ date, slot, onClose, replace, onSaved }: {
+  date: string;
+  slot: Slot;
+  onClose: () => void;
+  replace?: string[];
+  onSaved?: () => Promise<void>;
+}) {
   const [mode, setMode] = useState<Mode>('food');
   const save = async (e: EntryDraft) => {
-    await db.calendar.add({ id: newId(), date, slot, eaten: false, ...e });
+    await db.transaction('rw', db.calendar, async () => {
+      if (replace?.length) await db.calendar.bulkDelete(replace);
+      await db.calendar.add({ id: newId(), date, slot, eaten: false, ...e });
+    });
+    await onSaved?.();
     onClose();
   };
   return (
     <Sheet title={`${SLOT_NAMES[slot]} · ${dayLabel(date)}`} onClose={onClose}>
-      <p className="note">Meal prep containers and your usual foods are in the meal bank. Here: anything else.</p>
+      {!replace && <p className="note">Meal prep containers and your usual foods are in the meal bank. Here: anything else.</p>}
       <Recent slot={slot} onSave={save} />
       <div className="seg">
         {(['food', 'quick'] as Mode[]).map((m) => (
@@ -752,8 +776,7 @@ function Recent({ slot, onSave }: { slot: Slot; onSave: SaveFn }) {
         <button
           key={e.id}
           onClick={() => {
-            const source = e.source.kind === 'dish' ? (({ batchId: _b, ...rest }) => rest)(e.source) : e.source;
-            onSave({ label: e.label, nutrition: e.nutrition, source });
+            onSave({ label: e.label, nutrition: e.nutrition, source: unpinned(e.source) });
           }}
         >
           {e.label}
@@ -878,8 +901,7 @@ function CopyRoutine({ days, onClose }: { days: string[]; onClose: () => void })
         className="primary"
         disabled={!source.length}
         onClick={async () => {
-          const fresh = (e: CalendarEntry): CalendarEntry['source'] => (e.source.kind === 'dish' ? (({ batchId: _b, ...rest }) => rest)(e.source) : e.source);
-          const rows = to.filter((d) => d !== from).flatMap((d) => source.map((e) => ({ ...e, id: newId(), date: d, eaten: false, source: fresh(e) })));
+          const rows = to.filter((d) => d !== from).flatMap((d) => source.map((e) => ({ ...e, id: newId(), date: d, eaten: false, source: unpinned(e.source) })));
           await db.calendar.bulkAdd(rows);
           onClose();
         }}

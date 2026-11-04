@@ -1,6 +1,6 @@
 {
   "format": "meal-prep-planner/1",
-  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas are from their label (cassava flour, 28 g each).",
+  "about": "Sam's recipes and foods: the master copy, backed up in git. Import with More → Import recipes & foods (Replace keeps the app in step). Merged 4 Nov 2026 from two claude.ai chats. Chipotle in adobo numbers are from Sam's old recipe (check the can's label); the gluten-free tortillas are from their label (cassava flour, 28 g each). PBfit numbers are the usual PBfit Original label (2 tbsp = 16 g, 70 kcal, 8 g protein): check your jar. The morning shake adds up 3 scoops (165 g) of Naked Mass and 1½ tbsp PBfit with water; 1 vs 2 tbsp is about ±17 kcal.",
   "recipes": [
     {
       "name": "Mexican Chicken & Vegetables",
@@ -480,6 +480,35 @@
           "grams": 28
         }
       ]
+    },
+    {
+      "name": "Peanut butter powder (PBfit)",
+      "brand": "PBfit",
+      "place": null,
+      "serving": "2 tbsp (16 g)",
+      "serving_grams": 16,
+      "kcal": 70,
+      "protein_g": 8,
+      "carbs_g": 6,
+      "fat_g": 2,
+      "units": [
+        {
+          "unit": "tbsp",
+          "grams": 8
+        }
+      ]
+    },
+    {
+      "name": "Morning shake (3 scoops Naked Mass + 1½ tbsp PBfit, water)",
+      "brand": null,
+      "place": null,
+      "serving": "1 shake",
+      "serving_grams": 177,
+      "kcal": 726,
+      "protein_g": 31,
+      "carbs_g": 129,
+      "fat_g": 9,
+      "units": []
     }
   ]
 }
