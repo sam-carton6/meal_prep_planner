@@ -67,7 +67,7 @@ All beef is 85/15. When Sam sends a label or a measurement, fix `data/meals.json
 - Chipotle peppers in adobo: kcal and protein from his old recipe; no carbs or fat.
 - Mushroom oyster sauce (Whole Foods): counted as USDA oyster sauce. Chinese cooking wine: as white wine.
 - Garam masala: counted as USDA curry powder (USDA has none).
-- Mashed potatoes: butter counted as 3 tbsp (he uses 2-4), milk as 0.6 cup of 2% (type?), yield 7 cups (measure once).
+- Mashed potatoes: 4 tbsp butter and whole milk (Sam); 0.6 cup milk and the 7-cup yield are estimates (measure once).
 - Japanese curry: counts 226 g of the ~425 g roux batch; potatoes as USDA medium (213 g), apple small (158 g).
 - Sizes taken as typical: broccoli head 450 g, garlic head 40 g, potatoes (213 g medium, 369 g large), onions.
 - Gluten label checks: taco seasoning, chicken broth, Italian sausage, mushroom oyster sauce, Chinese cooking wine,

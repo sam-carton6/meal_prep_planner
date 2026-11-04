@@ -69,6 +69,7 @@ export const USDA_MATCH: Record<string, number | null> = {
   'Gluten-free flour, 1-to-1 (Bob\'s Red Mill)': 169714, // placeholder: white rice flour until Sam checks the bag
   'Garam masala': 170924, // USDA has none: curry powder, about the same
   'Milk, 2%': 172205,
+  'Milk, whole': 172217,
   'Apple, Fuji, raw': 167793, // SR entry with sizes (small 158 g)
   Garlic: 1104647,
   'Ground beef 85/15, raw': 171796,

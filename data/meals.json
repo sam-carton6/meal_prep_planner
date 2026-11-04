@@ -826,13 +826,13 @@
         },
         {
           "name": "Red wine vinegar",
-          "amount": 7.5,
+          "amount": 5,
           "unit": "tbsp"
         },
         {
           "name": "Balsamic vinegar",
           "amount": 5,
-          "unit": "tsp"
+          "unit": "tbsp"
         },
         {
           "name": "Salt and pepper",
@@ -850,7 +850,7 @@
         "amount": 5,
         "unit": "bowl"
       },
-      "notes": "A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls)."
+      "notes": "A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls). Vinegar per bowl: 1 tbsp balsamic + 1 tbsp red wine vinegar (Sam, 4 Nov 2026)."
     },
     {
       "name": "Mashed potatoes",
@@ -865,11 +865,11 @@
         },
         {
           "name": "Butter, without salt",
-          "amount": 3,
+          "amount": 4,
           "unit": "tbsp"
         },
         {
-          "name": "Milk, 2%",
+          "name": "Milk, whole",
           "amount": 0.6,
           "unit": "cup"
         },
@@ -883,7 +883,7 @@
         "amount": 7,
         "unit": "cup"
       },
-      "notes": "Sam's: 3 lb gold potatoes, 2-4 tbsp butter (counted as 3), 1/2-2/3 cup milk (counted as 0.6 cup of 2%). Yield of 7 cups is an estimate: measure once and fix it."
+      "notes": "Sam's: 3 lb gold potatoes, about 4 tbsp butter, 1/2-2/3 cup whole milk (counted as 0.6 cup). Yield of 7 cups is an estimate: measure once and fix it."
     }
   ],
   "foods": [
