@@ -24,12 +24,13 @@ export function RecipesTab() {
   };
 
   return (
-    <main>
+    <main className="wide">
       <header>
         <h1>Recipes</h1>
       </header>
+      <div className="cols">
       {(['dish', 'starch'] as const).map((kind) => (
-        <section key={kind}>
+        <section key={kind} className="col">
           <h3>{kind === 'dish' ? 'Dishes' : 'Starches & sides'}</h3>
           {recipes.filter((r) => r.kind === kind).length === 0 && (
             <p className="note">
@@ -67,6 +68,7 @@ export function RecipesTab() {
           <button onClick={() => setEditing(blank(kind))}>+ New {kind === 'dish' ? 'dish' : 'starch'}</button>
         </section>
       ))}
+      </div>
       {editing && <RecipeEditor recipe={editing} onClose={() => setEditing(null)} />}
     </main>
   );

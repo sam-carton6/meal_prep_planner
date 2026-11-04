@@ -82,11 +82,13 @@ export function CookTab() {
   );
 
   return (
-    <main>
+    <main className="wide">
       <header>
         <h1>Cook</h1>
       </header>
 
+      <div className="cols">
+      <div className="col">
       <h3>Cook list</h3>
       {planned.length === 0 && <p className="note">Nothing planned. Plan a batch from a recipe.</p>}
       <ul className="results">
@@ -113,7 +115,9 @@ export function CookTab() {
         );
       })}
       <button onClick={() => setChoosing(true)}>+ Plan a batch</button>
+      </div>
 
+      <div className="col">
       <h3>In the fridge & freezer</h3>
       {stock.length === 0 && <p className="note">Nothing in stock. Cooked batches with containers left show here.</p>}
       <ul className="results">
@@ -129,6 +133,8 @@ export function CookTab() {
         {showPast ? 'Hide' : 'Show'} past batches ({past.length})
       </button>
       {showPast && <ul className="results">{past.map((b) => row(b, <>cooked {dayLabel(b.cookDate)} · {b.portions} containers</>))}</ul>}
+      </div>
+      </div>
 
       {choosing && (
         <Sheet title="Plan a batch of…" onClose={() => setChoosing(false)}>

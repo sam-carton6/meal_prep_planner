@@ -28,11 +28,11 @@ export function MoreTab() {
     ['import', 'Your original recipes.json', 'The recipes you had before the app, recalculated from USDA'],
   ];
   return (
-    <main>
+    <main className="wide">
       <header>
         <h1>More</h1>
       </header>
-      <ul className="results">
+      <ul className="results menu-grid">
         {items.map(([p, title, sub]) => (
           <li key={p}>
             <button onClick={() => setPage(p)}>

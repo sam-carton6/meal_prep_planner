@@ -199,7 +199,14 @@ table.compare td { font-size: 0.8rem; vertical-align: top; }
 
 /* ---- Wide screens (the PC): use the width instead of a phone column ---- */
 @media (min-width: 900px) {
-  main.wide { max-width: 1400px; }
+  main.wide { max-width: 1400px; padding-left: 24px; padding-right: 24px; }
+  /* Other tabs: side-by-side columns instead of one phone column. */
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; align-items: start; }
+  .aisles { columns: 3 280px; column-gap: 32px; }
+  .aisles section { break-inside: avoid; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
+  .menu-grid button { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; height: 100%; }
+  .menu-grid button:hover, .results button:hover { background: var(--field); }
   .week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: start; }
   .week-grid .slot { flex-direction: column; gap: 2px; }
   .week-grid .slot-name { width: auto; padding-top: 4px; }
@@ -307,3 +314,6 @@ table.label { margin: 6px 0 12px; font-size: 0.85rem; }
 table.label caption { caption-side: bottom; text-align: left; padding-top: 4px; }
 .sticky-save { position: sticky; bottom: 0; background: var(--bg); padding: 8px 0; margin: 0; }
 .results.lookup .lookup-row button { border-bottom: none; padding: 0; }
+.row.date-range { flex-wrap: nowrap; }
+.row.date-range input { width: auto; flex: 1 1 0; min-width: 0; }
+@media (min-width: 900px) { .row.date-range input { flex: 0 1 220px; } }

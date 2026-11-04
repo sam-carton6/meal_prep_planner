@@ -59,10 +59,10 @@ export function ShopTab() {
   };
 
   return (
-    <main>
+    <main className="wide">
       <header>
         <h1>Shop</h1>
-        <div className="row">
+        <div className="row date-range">
           <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
           to
           <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
@@ -75,6 +75,7 @@ export function ShopTab() {
       </p>
       {lines.length === 0 && <p className="note">Plan batches in the Cook tab and they'll show up here.</p>}
 
+      <div className="aisles">
       {AISLES.map((aisle) => {
         const inAisle = visible.filter((l) => l.aisle === aisle);
         if (!inAisle.length) return null;
@@ -98,6 +99,7 @@ export function ShopTab() {
           </section>
         );
       })}
+      </div>
       {staples > 0 && (
         <button className="link" onClick={() => setShowStaples(!showStaples)}>
           {showStaples ? 'Hide' : 'Show'} {staples} pantry staple{staples === 1 ? '' : 's'}
