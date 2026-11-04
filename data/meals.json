@@ -7,6 +7,7 @@
       "kind": "dish",
       "servings": 8,
       "main_ingredient": "Chicken thighs, boneless skinless, raw",
+      "serve_with": "White rice",
       "ingredients": [
         {
           "name": "Chicken thighs, boneless skinless, raw",
@@ -152,6 +153,7 @@
       "kind": "dish",
       "servings": 5,
       "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": "White rice",
       "ingredients": [
         {
           "name": "Ground beef 85/15, raw",
@@ -177,6 +179,7 @@
       "kind": "dish",
       "servings": 5,
       "main_ingredient": "Chicken breast, boneless skinless, raw",
+      "serve_with": "Big Batch Salad",
       "ingredients": [
         {
           "name": "Chicken breast, boneless skinless, raw",
@@ -314,6 +317,7 @@
       "kind": "dish",
       "servings": 4,
       "main_ingredient": "Italian sausage, pork, raw",
+      "serve_with": "White rice",
       "ingredients": [
         {
           "name": "Italian sausage, pork, raw",

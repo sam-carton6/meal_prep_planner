@@ -67,6 +67,14 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   it (Sam chose this over pinning each meal to a batch). Eaten meals are pinned to their batch. A new cook day
   starts at the recipe's normal size and Sam enters what he bought; extra containers show as *spare* (e.g. for
   his girlfriend), not as a problem. Starches don't get cook days. Freeze = eaten more than 4 days after cooking.
+- **Low friction beats precision** (Sam, 4 Nov 2026): he tracks his weight and judges by the trend; ±100 kcal a
+  day doesn't matter, weekends are loose, he often skips breakfast and sometimes eats out. Prefer fewer taps and
+  fields over exactness. He plans 1–3 months in one sitting: shopping lists ready, what to prep and freeze ahead.
+- Recipes' master copy is `data/meals.json` (RECIPE-IMPORT format, in git). `npm run book` turns it into
+  `public/recipe-book.html` (served at /recipe-book.html). Workflow: Sam edits with an AI chat → pastes to Claude
+  Code → file + book updated and pushed → More → Import (Replace) in the app.
+- Containers: a dish's own `servings` (e.g. 5) sets how many containers a batch makes, scaled by the main
+  ingredient bought; the 40 g protein split is only the fallback (Sam, 4 Nov 2026).
 - What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
   cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for
   someone else). He knows how to cook most things: amounts and how to divide them matter more than recipe steps.

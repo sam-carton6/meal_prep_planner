@@ -75,6 +75,11 @@ export interface Recipe {
   items: RecipeItem[];
   /** The item whose weight sets the batch size (usually the protein). */
   mainItemId?: string;
+  /**
+   * Dishes: containers Sam makes from these amounts (e.g. 5). A batch scales it with the main ingredient.
+   * Unset = split by the protein target (Settings.proteinPerMeal). Added 4 Nov 2026; optional, so no db change.
+   */
+  servings?: number;
   /** For starches: what the base amounts make, e.g. 12 (cups cooked). */
   yieldAmount?: number;
   yieldUnit?: string; // e.g. "cup cooked"

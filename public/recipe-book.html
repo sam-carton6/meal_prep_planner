@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meal Prep Recipe Book</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f5f7f4;--card:#fff;--fg:#1d2420;--muted:#5f6b64;--line:#dfe5e0;--accent:#2f6f4f;--warn:#a8650a;--warnbg:#fbf1df;--pill:#e8efe9;
+--display:'Young Serif',Georgia,'Times New Roman',serif;--body:'Public Sans',-apple-system,'Segoe UI',Roboto,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111513;--card:#181e1b;--fg:#e6ece8;--muted:#9aa69f;--line:#2b3430;--accent:#7cc4a0;--warn:#e3a94f;--warnbg:#2c2416;--pill:#22302a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111513;--card:#181e1b;--fg:#e6ece8;--muted:#9aa69f;--line:#2b3430;--accent:#7cc4a0;--warn:#e3a94f;--warnbg:#2c2416;--pill:#22302a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(48px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:400 clamp(1.9rem,4vw,2.6rem)/1.1 var(--display);margin:0;text-wrap:balance}
+h2{font:400 1.35rem/1.2 var(--display);margin:2px 0 0;text-wrap:balance}
+h3{font:400 1.1rem var(--display);margin:0 0 6px}
+.lede{color:var(--muted);max-width:65ch;margin:8px 0 0}
+a{color:var(--accent)}
+code{font-size:.9em}
+.tablebox{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:none}
+.num{text-align:right;white-space:nowrap}
+.low,.lowtxt{color:var(--warn);font-weight:700}
+.muted{color:var(--muted)}
+.checks{background:var(--warnbg);border-radius:10px;padding:14px 18px}
+.checks ul,.foods ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:85ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:20px;align-items:start}
+.recipe{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.kind{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:12px 0 10px;padding:10px 0;border-block:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column}
+.big{font:400 1.45rem/1.1 var(--display);font-variant-numeric:tabular-nums}
+.lab{font-size:.75rem;color:var(--muted)}
+.ing-list{list-style:none;margin:0;padding:0}
+.ing-list li{display:grid;grid-template-columns:7.5em minmax(0,1fr) 4.5em;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);align-items:baseline}
+.ing-list li.lh{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+.amt{font-weight:600;font-variant-numeric:tabular-nums}
+.ing small{display:block;color:var(--muted);font-size:.78rem}
+.ing small.w{color:var(--warn)}
+.kc{text-align:right;font-variant-numeric:tabular-nums}
+.kc small{display:block;color:var(--muted);font-size:.78rem}
+li.taste{color:var(--muted)} li.opt{opacity:.7}
+li.warnrow{background:linear-gradient(90deg,var(--warnbg),transparent)}
+.pill{display:inline-block;font-size:.68rem;background:var(--pill);border-radius:999px;padding:0 7px;margin-left:4px;vertical-align:1px}
+.total{margin:10px 0 0;font-variant-numeric:tabular-nums}
+.notes{margin:8px 0 0;color:var(--muted);font-size:.9rem;max-width:65ch}
+.foot{color:var(--muted);font-size:.85rem;max-width:80ch}
+@media (max-width:440px){.ing-list li{grid-template-columns:5.6em minmax(0,1fr) 3.6em;gap:8px}}
+</style></head><body><div class="wrap">
+<div><h1>Meal Prep Recipe Book</h1>
+<p class="lede">Made from <code>data/meals.json</code>: each ingredient matched to USDA the way the app's import does it, per container at your container counts, and what the side adds toward about 750 kcal.</p></div>
+<div class="tablebox"><table><thead><tr><th>Dish</th><th class="num">Containers</th><th class="num">kcal each</th><th class="num">Protein</th><th>With its side</th></tr></thead><tbody><tr><td><a href="#mexican-chicken-and-vegetables">Mexican Chicken &amp; Vegetables</a></td>
+<td class="num">8</td><td class="num"><b>332</b></td>
+<td class="num">41 g</td>
+<td>+ 1¾ cup white rice → <b>726</b> kcal · 48 g</td></tr><tr><td><a href="#sweet-potato-beef-chili">Sweet Potato Beef Chili</a></td>
+<td class="num">8</td><td class="num"><b>604</b></td>
+<td class="num">42 g</td>
+<td><span class="muted">on its own</span></td></tr><tr><td><a href="#taco-beef-and-black-beans">Taco Beef &amp; Black Beans</a></td>
+<td class="num">5</td><td class="num"><b>467</b></td>
+<td class="num low">39 g</td>
+<td>+ 1¼ cup white rice → <b>749</b> kcal · 44 g</td></tr><tr><td><a href="#grilled-chicken-breast">Grilled Chicken Breast</a></td>
+<td class="num">5</td><td class="num"><b>258</b></td>
+<td class="num">52 g</td>
+<td>+ 1 bowl big batch salad → <b>647</b> kcal · 58 g</td></tr><tr><td><a href="#chicken-and-cheddar-quesadillas">Chicken &amp; Cheddar Quesadillas</a></td>
+<td class="num">5</td><td class="num"><b>580</b></td>
+<td class="num">58 g</td>
+<td><span class="muted">on its own</span></td></tr><tr><td><a href="#chicken-fried-rice">Chicken Fried Rice</a></td>
+<td class="num">5</td><td class="num"><b>675</b></td>
+<td class="num">51 g</td>
+<td><span class="muted">on its own</span></td></tr><tr><td><a href="#grilled-sausage-and-black-beans">Grilled Sausage &amp; Black Beans</a></td>
+<td class="num">4</td><td class="num"><b>562</b></td>
+<td class="num low">29 g</td>
+<td>+ ¾ cup white rice → <b>731</b> kcal · 32 g</td></tr></tbody></table></div>
+<section class="checks"><h3>Worth a look</h3><ul><li><b>Mexican Chicken &amp; Vegetables</b>, Garlic, raw: 1 head taken as about 40 g (estimate: about 13 cloves; weigh one to check)</li><li><b>Sweet Potato Beef Chili</b>, Sweet onion, raw: 1 medium taken as about 110 g (USDA medium onion)</li><li><b>Sweet Potato Beef Chili</b>, Garlic, raw: 1 head taken as about 40 g (estimate: about 13 cloves; weigh one to check)</li><li><b>Taco Beef &amp; Black Beans</b> is 39 g protein per container (target 40 g); 44 g with its side.</li><li><b>Chicken &amp; Cheddar Quesadillas</b>, Tortillas, gluten-free, 7 inch: Not in USDA: add it to My foods (e.g. from its label), then import again. Counts as 0 kcal for now.</li><li><b>Chicken Fried Rice</b>, Broccoli, raw: 1 head taken as about 450 g (estimate for a supermarket head; weigh one to check)</li><li><b>Grilled Sausage &amp; Black Beans</b> is 29 g protein per container (target 40 g); 32 g with its side.</li></ul></section>
+<div class="grid"><article class="recipe" id="mexican-chicken-and-vegetables"><header><span class="kind">Dish</span><h2>Mexican Chicken &amp; Vegetables</h2></header>
+<div class="stats"><div><span class="big">332</span><span class="lab">kcal per container</span></div>
+<div><span class="big">41 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">8</span><span class="lab">containers</span></div>
+<div><span class="big">726</span><span class="lab">kcal with 1¾ cup white rice</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">3.15 lb</span>
+<span class="ing">Chicken thighs, boneless skinless, raw<small>→ Chicken, broilers or fryers, dark meat, thigh, meat only, raw · 1,429 g</small></span>
+<span class="kc">1,729<small>281 g</small></span></li><li class=""><span class="amt">1 can (7 oz)</span>
+<span class="ing">Chipotle peppers in adobo<small>→ My foods: Chipotle peppers in adobo (150 kcal per 1 can (7 oz)) · 198 g</small></span>
+<span class="kc">150<small>3 g</small></span></li><li class=""><span class="amt">1 can (15 oz)</span>
+<span class="ing">Black beans, canned <span class="pill">drained</span><small>→ Beans, black, canned, sodium added, drained and rinsed (drained, ~255 g per can) · 255 g</small></span>
+<span class="kc">294<small>18 g</small></span></li><li class=""><span class="amt">1 can (14 oz)</span>
+<span class="ing">Diced tomatoes, canned<small>→ Tomatoes, red, ripe, canned, packed in tomato juice · 397 g</small></span>
+<span class="kc">64<small>3 g</small></span></li><li class=""><span class="amt">5 medium</span>
+<span class="ing">Carrots, raw<small>→ Carrots, raw · 305 g</small></span>
+<span class="kc">125<small>3 g</small></span></li><li class=""><span class="amt">2 medium</span>
+<span class="ing">Bell peppers, raw<small>→ Peppers, sweet, red, raw · 238 g</small></span>
+<span class="kc">62<small>2 g</small></span></li><li class=""><span class="amt">1 medium</span>
+<span class="ing">White onion, raw<small>→ Onions, raw · 110 g</small></span>
+<span class="kc">44<small>1 g</small></span></li><li class=""><span class="amt">5 oz</span>
+<span class="ing">Spinach, raw<small>→ Spinach, raw · 142 g</small></span>
+<span class="kc">33<small>4 g</small></span></li><li class=""><span class="amt">1 cup</span>
+<span class="ing">Peas, frozen<small>→ Peas, green, frozen, unprepared · 134 g</small></span>
+<span class="kc">103<small>7 g</small></span></li><li class=""><span class="amt">2 cup</span>
+<span class="ing">Chicken broth<small>→ Soup, chicken broth cubes, dry, prepared with water · 486 g</small></span>
+<span class="kc">24<small>2 g</small></span></li><li class="warnrow"><span class="amt">½ head</span>
+<span class="ing">Garlic, raw<small>→ Garlic, raw · 20 g</small><small class="w">⚠ 1 head taken as about 40 g (estimate: about 13 cloves; weigh one to check)</small></span>
+<span class="kc">29<small>1 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Seasonings</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>2,656</b> kcal · 326 g protein · 150 g carbs · 66 g fat</p>
+<p class="notes">Serve with white rice (cooked separately).</p></article><article class="recipe" id="sweet-potato-beef-chili"><header><span class="kind">Dish</span><h2>Sweet Potato Beef Chili</h2></header>
+<div class="stats"><div><span class="big">604</span><span class="lab">kcal per container</span></div>
+<div><span class="big">42 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">8</span><span class="lab">containers</span></div>
+</div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">3 lb</span>
+<span class="ing">Ground beef 85/15, raw<small>→ Beef, ground, 85% lean meat / 15% fat, raw · 1,361 g</small></span>
+<span class="kc">2,926<small>253 g</small></span></li><li class=""><span class="amt">1¾ lb</span>
+<span class="ing">Sweet potatoes, raw<small>→ Sweet potato, raw, unprepared · 794 g</small></span>
+<span class="kc">683<small>13 g</small></span></li><li class=""><span class="amt">1 can (15 oz)</span>
+<span class="ing">Dark red kidney beans, canned<small>→ Beans, kidney, red, mature seeds, canned, solids and liquid, low sodium · 425 g</small></span>
+<span class="kc">344<small>22 g</small></span></li><li class=""><span class="amt">1 can (15 oz)</span>
+<span class="ing">Great northern beans, canned<small>→ Beans, great northern, mature seeds, canned · 425 g</small></span>
+<span class="kc">485<small>31 g</small></span></li><li class=""><span class="amt">1 can (20 oz)</span>
+<span class="ing">Crushed tomatoes, canned<small>→ Tomatoes, crushed, canned · 567 g</small></span>
+<span class="kc">183<small>8 g</small></span></li><li class=""><span class="amt">1 can (14 oz)</span>
+<span class="ing">Diced tomatoes, canned<small>→ Tomatoes, red, ripe, canned, packed in tomato juice · 397 g</small></span>
+<span class="kc">64<small>3 g</small></span></li><li class=""><span class="amt">2 medium</span>
+<span class="ing">Bell peppers, raw<small>→ Peppers, sweet, red, raw · 238 g</small></span>
+<span class="kc">62<small>2 g</small></span></li><li class="warnrow"><span class="amt">1 medium</span>
+<span class="ing">Sweet onion, raw<small>→ Onions, sweet, raw · 110 g</small><small class="w">⚠ 1 medium taken as about 110 g (USDA medium onion)</small></span>
+<span class="kc">35<small>1 g</small></span></li><li class="warnrow"><span class="amt">½ head</span>
+<span class="ing">Garlic, raw<small>→ Garlic, raw · 20 g</small><small class="w">⚠ 1 head taken as about 40 g (estimate: about 13 cloves; weigh one to check)</small></span>
+<span class="kc">29<small>1 g</small></span></li><li class=""><span class="amt">2 cup</span>
+<span class="ing">Chicken broth<small>→ Soup, chicken broth cubes, dry, prepared with water · 486 g</small></span>
+<span class="kc">24<small>2 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Seasonings</span><span class="kc"></span></li><li class=" opt"><span class="amt">1 cup</span>
+<span class="ing">Cheddar cheese, shredded <span class="pill">optional, not counted</span><small>→ Cheese, cheddar · 105 g</small></span>
+<span class="kc">428<small>24 g</small></span></li></ul>
+<p class="total">Whole batch: <b>4,834</b> kcal · 337 g protein · 397 g carbs · 213 g fat</p>
+<p class="notes">Beef fat not drained. Eaten on its own, no rice. Cooked batch about 11.2 lb (5,060 g) without the pot, about 630 g per container. Instant Pot insert weighs 836 g.</p></article><article class="recipe" id="taco-beef-and-black-beans"><header><span class="kind">Dish</span><h2>Taco Beef &amp; Black Beans</h2></header>
+<div class="stats"><div><span class="big">467</span><span class="lab">kcal per container</span></div>
+<div><span class="big lowtxt">39 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">5</span><span class="lab">containers</span></div>
+<div><span class="big">749</span><span class="lab">kcal with 1¼ cup white rice</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">2 lb</span>
+<span class="ing">Ground beef 85/15, raw<small>→ Beef, ground, 85% lean meat / 15% fat, raw · 907 g</small></span>
+<span class="kc">1,950<small>169 g</small></span></li><li class=""><span class="amt">1 can (15 oz)</span>
+<span class="ing">Black beans, canned<small>→ Beans, black turtle, mature seeds, canned · 425 g</small></span>
+<span class="kc">387<small>26 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Taco seasoning</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>2,337</b> kcal · 194 g protein · 71 g carbs · 137 g fat</p>
+<p class="notes">Fat not drained; the whole can of beans with its liquid cooks down into a thick sauce. Skillet weighs 1,941 g. Last batch about 1,173 g cooked, about 235 g per container; subtract about 50 g before dividing for what sticks to the skillet. Serve with white rice.</p></article><article class="recipe" id="grilled-chicken-breast"><header><span class="kind">Dish</span><h2>Grilled Chicken Breast</h2></header>
+<div class="stats"><div><span class="big">258</span><span class="lab">kcal per container</span></div>
+<div><span class="big">52 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">5</span><span class="lab">containers</span></div>
+<div><span class="big">647</span><span class="lab">kcal with 1 bowl big batch salad</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">2.53 lb</span>
+<span class="ing">Chicken breast, boneless skinless, raw<small>→ Chicken, breast, boneless, skinless, raw · 1,148 g</small></span>
+<span class="kc">1,288<small>258 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Seasonings</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>1,288</b> kcal · 258 g protein · 0 g carbs · 22 g fat</p>
+<p class="notes">5 breasts, grilled with no oil, one per container. Serve with Big Batch Salad.</p></article><article class="recipe" id="chicken-and-cheddar-quesadillas"><header><span class="kind">Dish</span><h2>Chicken &amp; Cheddar Quesadillas</h2></header>
+<div class="stats"><div><span class="big">580</span><span class="lab">kcal per container</span></div>
+<div><span class="big">58 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">5</span><span class="lab">containers</span></div>
+</div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">27.4 oz</span>
+<span class="ing">Chicken breast, boneless skinless, raw<small>→ Chicken, breast, boneless, skinless, raw · 777 g</small></span>
+<span class="kc">872<small>175 g</small></span></li><li class=""><span class="amt">16 oz</span>
+<span class="ing">Cheddar cheese, extra sharp, white<small>→ Cheese, cheddar, sharp, sliced · 454 g</small></span>
+<span class="kc">1,860<small>110 g</small></span></li><li class="warnrow"><span class="amt">16 tortilla</span>
+<span class="ing">Tortillas, gluten-free, 7 inch<small>→ no match</small><small class="w">⚠ Not in USDA: add it to My foods (e.g. from its label), then import again. Counts as 0 kcal for now.</small></span>
+<span class="kc">0<small>0 g</small></span></li><li class=""><span class="amt">262 g</span>
+<span class="ing">Bell peppers, raw<small>→ Peppers, sweet, red, raw · 262 g</small></span>
+<span class="kc">68<small>3 g</small></span></li><li class=""><span class="amt">319 g</span>
+<span class="ing">Sweet onion, raw<small>→ Onions, sweet, raw · 319 g</small></span>
+<span class="kc">102<small>3 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Taco seasoning</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>2,901</b> kcal · 290 g protein · 49 g carbs · 169 g fat</p>
+<p class="notes">Cook peppers and onion first so they release their water. 3 quesadillas per container (about 101 g cooked chicken, 92 g cooked veg, 80 g cheese each meal); the 16th tortilla was a double-filled one eaten fresh. Store the filling separately and assemble fresh so tortillas don&#39;t go soggy.</p></article><article class="recipe" id="chicken-fried-rice"><header><span class="kind">Dish</span><h2>Chicken Fried Rice</h2></header>
+<div class="stats"><div><span class="big">675</span><span class="lab">kcal per container</span></div>
+<div><span class="big">51 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">5</span><span class="lab">containers</span></div>
+</div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">2 lb</span>
+<span class="ing">Chicken thighs, boneless skinless, raw<small>→ Chicken, broilers or fryers, dark meat, thigh, meat only, raw · 907 g</small></span>
+<span class="kc">1,098<small>179 g</small></span></li><li class=""><span class="amt">1¾ cup</span>
+<span class="ing">Rice, white, long grain, dry<small>→ Rice, white, long-grain, regular, raw, enriched · 324 g</small></span>
+<span class="kc">1,182<small>23 g</small></span></li><li class=""><span class="amt">3 large</span>
+<span class="ing">Eggs, large<small>→ Egg, whole, raw, fresh · 150 g</small></span>
+<span class="kc">215<small>19 g</small></span></li><li class=""><span class="amt">4 cup</span>
+<span class="ing">Cabbage, raw, shredded<small>→ Cabbage, raw · 356 g</small></span>
+<span class="kc">89<small>5 g</small></span></li><li class="warnrow"><span class="amt">1 head</span>
+<span class="ing">Broccoli, raw<small>→ Broccoli, raw · 450 g</small><small class="w">⚠ 1 head taken as about 450 g (estimate for a supermarket head; weigh one to check)</small></span>
+<span class="kc">144<small>12 g</small></span></li><li class=""><span class="amt">1 cup</span>
+<span class="ing">Peas, frozen<small>→ Peas, green, frozen, unprepared · 134 g</small></span>
+<span class="kc">103<small>7 g</small></span></li><li class=""><span class="amt">3 medium</span>
+<span class="ing">Carrots, raw<small>→ Carrots, raw · 183 g</small></span>
+<span class="kc">75<small>2 g</small></span></li><li class=""><span class="amt">1 medium</span>
+<span class="ing">Onion, raw<small>→ Onions, raw · 110 g</small></span>
+<span class="kc">44<small>1 g</small></span></li><li class=""><span class="amt">4 clove</span>
+<span class="ing">Garlic, raw<small>→ Garlic, raw · 12 g</small></span>
+<span class="kc">17<small>1 g</small></span></li><li class=""><span class="amt">100 g</span>
+<span class="ing">Green onions, raw<small>→ Green onion, (scallion), bulb and greens, root removed, raw · 100 g</small></span>
+<span class="kc">3<small>1 g</small></span></li><li class=""><span class="amt">¼ cup</span>
+<span class="ing">Soy sauce, gluten-free, low sodium<small>→ Soy sauce made from soy (tamari) · 72 g</small></span>
+<span class="kc">43<small>8 g</small></span></li><li class=""><span class="amt">2 tbsp</span>
+<span class="ing">Vegetable oil<small>→ Oil, canola · 27 g</small></span>
+<span class="kc">241<small>0 g</small></span></li><li class=""><span class="amt">1 tbsp</span>
+<span class="ing">Sesame oil<small>→ Oil, sesame, salad or cooking · 14 g</small></span>
+<span class="kc">120<small>0 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Salt and pepper</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>3,373</b> kcal · 256 g protein · 362 g carbs · 97 g fat</p>
+<p class="notes">Not cooked yet. Cook the rice a day ahead and chill it. Brown the chicken, scramble the eggs, cook the veg in batches (too much for one skillet), crisp the rice, then combine with soy sauce, sesame oil and green onions. Weigh the batch and divide by 5.</p></article><article class="recipe" id="grilled-sausage-and-black-beans"><header><span class="kind">Dish</span><h2>Grilled Sausage &amp; Black Beans</h2></header>
+<div class="stats"><div><span class="big">562</span><span class="lab">kcal per container</span></div>
+<div><span class="big lowtxt">29 g</span><span class="lab">protein per container</span></div>
+<div><span class="big">4</span><span class="lab">containers</span></div>
+<div><span class="big">731</span><span class="lab">kcal with ¾ cup white rice</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">336 g</span>
+<span class="ing">Italian sausage, pork, raw<small>→ Sausage, Italian, pork, mild, raw · 336 g</small></span>
+<span class="kc">974<small>47 g</small></span></li><li class=""><span class="amt">340 g</span>
+<span class="ing">Pork sausage, raw<small>→ Pork sausage, link/patty, unprepared · 340 g</small></span>
+<span class="kc">979<small>52 g</small></span></li><li class=""><span class="amt">1 can (15 oz)</span>
+<span class="ing">Black beans, canned <span class="pill">drained</span><small>→ Beans, black, canned, sodium added, drained and rinsed (drained, ~255 g per can) · 255 g</small></span>
+<span class="kc">294<small>18 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Garlic powder</span><span class="kc"></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Oregano, dried</span><span class="kc"></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Crushed red pepper</span><span class="kc"></span></li></ul>
+<p class="total">Whole batch: <b>2,248</b> kcal · 117 g protein · 64 g carbs · 169 g fat</p>
+<p class="notes">8 links (4 fennel-and-sherry, 4 plain), grilled whole then sliced: 2 links per container. Serve with about 164 g cooked rice.</p></article><article class="recipe" id="white-rice"><header><span class="kind">Side</span><h2>White rice</h2></header>
+<div class="stats"><div><span class="big">225</span><span class="lab">kcal per cup</span></div>
+<div><span class="big">4 g</span><span class="lab">protein per cup</span></div>
+<div><span class="big">4½</span><span class="lab">cup cooked per batch</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">1½ cup</span>
+<span class="ing">Rice, white, long grain, dry<small>→ Rice, white, long-grain, regular, raw, enriched · 278 g</small></span>
+<span class="kc">1,013<small>20 g</small></span></li></ul>
+<p class="total">Whole batch: <b>1,013</b> kcal · 20 g protein · 222 g carbs · 2 g fat</p>
+<p class="notes">1 cup dry makes about 3 cups cooked (Instant Pot, rinsed). 1½ cups dry made 706 g cooked; 2½ cups made about 1,184 g. About 50 g sticks to the pot: subtract it before dividing.</p></article><article class="recipe" id="big-batch-salad"><header><span class="kind">Side</span><h2>Big Batch Salad</h2></header>
+<div class="stats"><div><span class="big">390</span><span class="lab">kcal per bowl</span></div>
+<div><span class="big">6 g</span><span class="lab">protein per bowl</span></div>
+<div><span class="big">5</span><span class="lab">bowl per batch</span></div></div>
+<ul class="ing-list"><li class="lh"><span class="amt">Amount</span><span class="ing">Ingredient</span><span class="kc">kcal<small>prot.</small></span></li><li class=""><span class="amt">2 lb</span>
+<span class="ing">Spring mix and baby spinach, raw<small>→ Lettuce, green leaf, raw · 907 g</small></span>
+<span class="kc">136<small>13 g</small></span></li><li class=""><span class="amt">610 g</span>
+<span class="ing">Bell peppers, raw<small>→ Peppers, sweet, red, raw · 610 g</small></span>
+<span class="kc">159<small>6 g</small></span></li><li class=""><span class="amt">534 g</span>
+<span class="ing">English cucumber, raw<small>→ Cucumber, with peel, raw · 534 g</small></span>
+<span class="kc">74<small>3 g</small></span></li><li class=""><span class="amt">406 g</span>
+<span class="ing">Carrots, raw<small>→ Carrots, raw · 406 g</small></span>
+<span class="kc">166<small>4 g</small></span></li><li class=""><span class="amt">400 g</span>
+<span class="ing">Red onion, raw<small>→ Onions, red, raw · 400 g</small></span>
+<span class="kc">176<small>4 g</small></span></li><li class=""><span class="amt">10 tbsp</span>
+<span class="ing">Olive oil<small>→ Oil, olive, salad or cooking · 135 g</small></span>
+<span class="kc">1,193<small>0 g</small></span></li><li class=""><span class="amt">7½ tbsp</span>
+<span class="ing">Red wine vinegar<small>→ Vinegar, red wine · 112 g</small></span>
+<span class="kc">21<small>0 g</small></span></li><li class=""><span class="amt">5 tsp</span>
+<span class="ing">Balsamic vinegar<small>→ Vinegar, balsamic · 27 g</small></span>
+<span class="kc">23<small>0 g</small></span></li><li class="taste"><span class="amt">to taste</span><span class="ing">Salt and pepper</span><span class="kc"></span></li><li class=" opt"><span class="amt">8 oz</span>
+<span class="ing">Feta cheese in brine <span class="pill">optional, not counted</span><small>→ Cheese, feta · 227 g</small></span>
+<span class="kc">601<small>32 g</small></span></li></ul>
+<p class="total">Whole batch: <b>1,949</b> kcal · 29 g protein · 162 g carbs · 141 g fat</p>
+<p class="notes">A side, counted per bowl (it has too little protein to be split by the protein target). Vegetable weights are prepped (chopped). About 180 g greens and 390 g vegetables per bowl. Dressing per bowl, added when eating: 2 tbsp olive oil, 1½ tbsp red wine vinegar, 1 tsp balsamic (included above for 5 bowls).</p></article></div>
+<section class="foods"><h3>Foods</h3><ul><li><b>Chipotle peppers in adobo</b>: 150 kcal · 3 g protein per 1 can (7 oz)</li><li><b>Naked Mass, chocolate</b> <span class="muted">Naked Nutrition</span>: 1,360 kcal · 50 g protein per 1 serving (about 7 scoops) <span class="muted">(also by scoop = 55 g)</span></li></ul></section>
+<p class="foot">USDA SR Legacy and Foundation Foods; “to taste” lines count as 0. Made 4 Nov 2026 with <code>npm run book</code>.</p>
+</div></body></html>

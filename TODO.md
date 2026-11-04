@@ -26,6 +26,13 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
   GitHub yet. If `git log origin/staging` on the PC doesn't show "Wide-screen layouts…", they didn't arrive.
 - *For you to decide:* see the 4 Nov items under *Check with Sam* below.
 
+**Later on 4 Nov:** GitHub access fixed, everything pushed. Added: target suggestions ("40 g protein: 1¼ servings",
+"750 kcal: 1½ cup rice"); the eaten circle removed from the calendar; Sam's recipes in `data/meals.json` (7 dishes,
+rice, salad as a side) with a recipe book (`npm run book` → /recipe-book.html); containers start from each recipe's
+own count (e.g. 5); import fixes (typical sizes, My foods by name, better names). **Waiting on Sam:** the
+gluten-free tortilla label numbers (quesadillas count 0 kcal for them until then); importing meals.json into the
+app (he can't upload files on that computer: paste works).
+
 ## Check with Sam (decisions made during the rough pass and the 4 Nov build)
 
 - (4 Nov) Freezer rule: containers eaten **more than 4 days** after the cook day are marked ❄️ freeze. Right number?
@@ -33,6 +40,11 @@ Hosted at https://meal-prep-planner.samcarton6.workers.dev.
   ❄️ ones in the freezer). Change them on the batch if they're wrong.
 - (4 Nov) Spare containers (e.g. for your girlfriend) are just shown as "spare"; there's no way to plan them for
   someone else. Fine, or do you want a "not me" slot that doesn't count in your calories?
+- (4 Nov) For 1–3 month planning: "repeat this week for the next N weeks" would save a lot of tapping. Build it?
+- (4 Nov) Shopping for 1–3 months can't be one trip (fresh veg). Shop already takes a date range per trip; a
+  "split by cook day / by week" view could make it one tap. Wanted?
+- (4 Nov) Weekends / eating out: leave them empty (the averages only count days with something planned) or add a
+  rough quick entry like "Eating out ~1,200". Either works with "trend over precision".
 - (4 Nov) The meal bank makes a card for every dish + every starch. With many recipes the strip gets long; a
   filter (Meals / Foods) or hiding cards could come later. Tell me if it's too much.
 - (4 Nov) Import: a recipe or food with the same name as one in the app defaults to **Replace** (past batches keep

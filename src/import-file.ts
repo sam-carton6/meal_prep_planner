@@ -29,6 +29,8 @@ export interface FileRecipe {
   yield?: { amount: number; unit: string } | null;
   notes?: string | null;
   source?: string | null;
+  /** Dishes: the side it's eaten with, by recipe name (e.g. "White rice"). Used by the recipe book. */
+  serve_with?: string | null;
 }
 export interface FileFood {
   name: string;
@@ -206,7 +208,6 @@ export function toRecipe(rv: ReviewRecipe, now: string, keepId?: { id: string; c
   const main = rv.lines.find((l) => l.ing.name === r.main_ingredient && l.item.amount !== null) ?? rv.lines.find((l) => l.item.amount !== null);
   const notes = [
     r.notes,
-    r.kind === 'dish' && r.servings ? `The recipe says it makes ${r.servings} servings.` : '',
     r.source ? `Source: ${r.source}` : '',
   ].filter(Boolean).join('\n');
   return {
@@ -215,6 +216,7 @@ export function toRecipe(rv: ReviewRecipe, now: string, keepId?: { id: string; c
     kind: r.kind === 'starch' ? 'starch' : 'dish',
     items,
     mainItemId: main?.item.id,
+    ...(r.kind !== 'starch' && r.servings && r.servings > 0 ? { servings: Math.round(r.servings) } : {}),
     ...(r.kind === 'starch'
       ? { yieldAmount: r.yield?.amount ?? 1, yieldUnit: r.yield?.unit ?? 'cup cooked' }
       : {}),
@@ -224,11 +226,11 @@ export function toRecipe(rv: ReviewRecipe, now: string, keepId?: { id: string; c
   };
 }
 
-/** Batch totals and what one container comes to at the protein target (dishes), for the review. */
+/** Batch totals and what one container comes to (the recipe's container count, else the protein target). */
 export function recipePreview(rv: ReviewRecipe, proteinPerMeal: number): { total: Nutrition; containers?: number; each?: Nutrition } {
   const total = totals(rv.lines.map((l) => l.item));
   if (rv.file.kind === 'starch') return { total };
-  const containers = portionsForProtein(total, proteinPerMeal);
+  const containers = rv.file.servings && rv.file.servings > 0 ? Math.round(rv.file.servings) : portionsForProtein(total, proteinPerMeal);
   return { total, containers, each: perPortion(total, containers) };
 }
 

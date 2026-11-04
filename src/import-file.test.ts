@@ -49,11 +49,11 @@ describe('matching ingredients to USDA', () => {
     expect(line('Cheddar').item.optional).toBe(true);
     const recipe = toRecipe(rv, '2026-11-04T00:00:00Z');
     expect(recipe.items.find((i) => i.id === recipe.mainItemId)!.name).toBe('Ground beef 85/15, raw');
-    expect(recipe.notes).toMatch(/makes 8 servings/);
+    expect(recipe.servings).toBe(8); // the recipe's own container count
     const p = recipePreview(rv, 40);
     // 3 lb 85/15 beef alone is ~3,400 kcal and ~240 g protein: the whole pot is in that range and up.
     expect(p.total.kcal).toBeGreaterThan(3500);
-    expect(p.containers).toBeGreaterThanOrEqual(6);
+    expect(p.containers).toBe(8);
   });
 
   it('makes the rice a starch with its yield, and lets a line be matched to something else', () => {

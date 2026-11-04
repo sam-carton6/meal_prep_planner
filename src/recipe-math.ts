@@ -53,6 +53,24 @@ export function portionsForProtein(total: Nutrition, proteinPerMeal: number): nu
   return Math.max(1, Math.round(total.protein / proteinPerMeal));
 }
 
+/**
+ * Containers a batch makes: the recipe's own count scaled by how much main ingredient there is (5 containers from
+ * 2.5 lb chicken → 6 from 3 lb), else split by the protein target.
+ */
+export function containersFor(
+  recipe: Pick<Recipe, 'items' | 'mainItemId' | 'servings'> | undefined,
+  items: RecipeItem[],
+  proteinPerMeal: number,
+): number {
+  if (recipe?.servings && recipe.servings > 0) {
+    const base = mainItem(recipe);
+    const now = base ? items.find((i) => i.id === base.id) : undefined;
+    const k = base && now && itemGrams(base) > 0 ? itemGrams(now) / itemGrams(base) : 1;
+    return Math.max(1, Math.round(recipe.servings * k));
+  }
+  return portionsForProtein(totals(items), proteinPerMeal);
+}
+
 export const perPortion = (total: Nutrition, portions: number): Nutrition => times(total, 1 / Math.max(1, portions));
 
 export const gramsPerPortion = (cookedWeightG: number | undefined, portions: number) =>

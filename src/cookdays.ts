@@ -6,7 +6,7 @@
 import type { Batch, CalendarEntry, Nutrition, Recipe, Slot } from './model';
 import { SLOTS, ZERO } from './model';
 import { parseDate } from './plan';
-import { add, batchSummary, perPortion, perYieldUnit, portionsForProtein, times, totals } from './recipe-math';
+import { add, batchSummary, containersFor, perPortion, perYieldUnit, times, totals } from './recipe-math';
 import { fmtAmount } from './units';
 
 /** Containers eaten more than this many days after cooking should go in the freezer. */
@@ -142,8 +142,7 @@ export function typicalBatch(batches: Batch[], recipeId: string): Batch | undefi
 export function dishEach(batch: Batch | undefined, recipe: Recipe | undefined, proteinPerMeal: number): Nutrition {
   if (batch) return batchSummary(batch).each;
   if (!recipe) return ZERO;
-  const t = totals(recipe.items);
-  return perPortion(t, portionsForProtein(t, proteinPerMeal));
+  return perPortion(totals(recipe.items), containersFor(recipe, recipe.items, proteinPerMeal));
 }
 
 /** A whole entry: `portions` containers, each with `cupsPerPortion` of the starch. */

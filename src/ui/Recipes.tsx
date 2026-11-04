@@ -6,7 +6,7 @@ import { db, getSettings } from '../db';
 import type { Recipe } from '../model';
 import { DEFAULT_SETTINGS, newId } from '../model';
 import { isoDate } from '../plan';
-import { mainItem, perPortion, perYieldUnit, portionsForProtein, totals } from '../recipe-math';
+import { containersFor, mainItem, perPortion, perYieldUnit, portionsForProtein, totals } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { ItemList } from './items';
 import { Macros, Num, Sheet } from './shared';
@@ -51,8 +51,8 @@ export function RecipesTab() {
                       <span className="meta">
                         {kind === 'dish' ? (
                           <>
-                            ~{portionsForProtein(t, settings.proteinPerMeal)} containers ·{' '}
-                            <Macros short n={perPortion(t, portionsForProtein(t, settings.proteinPerMeal))} /> each
+                            {containersFor(r, r.items, settings.proteinPerMeal)} containers ·{' '}
+                            <Macros short n={perPortion(t, containersFor(r, r.items, settings.proteinPerMeal))} /> each
                           </>
                         ) : (
                           <>
@@ -79,7 +79,8 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
   const [planning, setPlanning] = useState(false);
   const settings = useLiveQuery(getSettings, []) ?? DEFAULT_SETTINGS;
   const t = totals(r.items);
-  const portions = portionsForProtein(t, settings.proteinPerMeal);
+  const portions = containersFor(r, r.items, settings.proteinPerMeal);
+  const byProtein = portionsForProtein(t, settings.proteinPerMeal);
   const main = mainItem(r);
 
   const save = async () => {
@@ -96,10 +97,15 @@ function RecipeEditor({ recipe, onClose }: { recipe: Recipe; onClose: () => void
           Batch: <Macros n={t} />
         </div>
         {r.kind === 'dish' ? (
-          <div>
-            At {settings.proteinPerMeal} g protein per container: <b>{portions} containers</b> of{' '}
-            <Macros short n={perPortion(t, portions)} />
-          </div>
+          <>
+            <div className="row">
+              Containers you make: <Num value={r.servings ?? null} placeholder={String(byProtein)} onChange={(n) => setR({ ...r, servings: n && n > 0 ? Math.round(n) : undefined })} />
+              <span className="note">{r.servings ? `(${byProtein} at ${settings.proteinPerMeal} g protein each)` : `blank = split by ${settings.proteinPerMeal} g protein`}</span>
+            </div>
+            <div>
+              <b>{portions} containers</b> of <Macros short n={perPortion(t, portions)} />
+            </div>
+          </>
         ) : (
           <div className="row">
             Makes <Num value={r.yieldAmount} onChange={(n) => setR({ ...r, yieldAmount: n ?? 1 })} />

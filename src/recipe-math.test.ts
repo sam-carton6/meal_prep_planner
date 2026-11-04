@@ -1,3 +1,4 @@
+import { containersFor } from './recipe-math';
 import { describe, expect, it } from 'vitest';
 import type { RecipeItem } from './model';
 import {
@@ -128,5 +129,21 @@ describe('units', () => {
     expect(fmtAmount(2)).toBe('2');
     expect(fmtWeight(1429)).toBe('3.15 lb');
     expect(fmtWeight(142)).toBe('5 oz');
+  });
+});
+
+describe('containers a batch makes', () => {
+  const chicken = (g: number): RecipeItem => ({ id: 'c', name: 'Chicken', food: { kind: 'none' }, per100g: { kcal: 120, protein: 22, carbs: 0, fat: 0 },
+    amount: g, unit: 'g', gramsPerUnit: 1, scaling: 'scale' });
+  const recipe = { items: [chicken(1148)], mainItemId: 'c', servings: 5 };
+
+  it("uses the recipe's own count, scaled by the main ingredient bought", () => {
+    expect(containersFor(recipe, recipe.items, 40)).toBe(5); // 258 g protein would be 6 at 40 g
+    expect(containersFor(recipe, [chicken(1378)], 40)).toBe(6); // 20% more chicken
+    expect(containersFor(recipe, [chicken(574)], 40)).toBe(3); // half (2.5 rounds up)
+  });
+
+  it('splits by the protein target when the recipe has no count', () => {
+    expect(containersFor({ ...recipe, servings: undefined }, recipe.items, 40)).toBe(6);
   });
 });

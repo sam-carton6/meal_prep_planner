@@ -22,6 +22,7 @@ you had to guess.
       "kind": "dish",
       "servings": 8,
       "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": null,
       "ingredients": [
         { "name": "Ground beef 85/15, raw", "amount": 3, "unit": "lb" },
         { "name": "Sweet potatoes, raw", "amount": 1.75, "unit": "lb" },
@@ -75,7 +76,8 @@ Rules:
   in brackets. amount null + unit "to taste" for salt, pepper, seasonings.
 - main_ingredient: the ingredient that sets the batch size (usually the protein), written exactly as in the list.
 - "drained": true/false only for canned beans/vegetables when the recipe says so. "optional": true for toppings.
-- servings: what the recipe says it makes (I'll re-split by protein in the app).
+- servings: how many containers I make from these amounts (the app scales it when I buy more or less).
+- serve_with: for a dish eaten with a side, the side's recipe name exactly (e.g. "White rice"); else null.
 - foods: copy label numbers exactly, per the label's serving; serving_grams from the label; extra "units" only if
   I tell you (e.g. my scoop). Restaurant items: use the restaurant's published nutrition if you know it,
   otherwise say it's an estimate.
@@ -115,6 +117,14 @@ Rules:
 - "units": leave empty unless I tell you one (e.g. my scoop is 55 g → { "unit": "scoop", "grams": 55 }).
 - Don't guess numbers you can't read: say so in the list after the JSON.
 ```
+
+## Editing your recipes with an AI chat
+
+Your recipes live in `data/meals.json` (this format) and are backed up on GitHub. To change one, e.g. swap chicken
+breast for thighs in the quesadillas: paste the file (or just that recipe) into a chat and say what to change, then
+paste the reply to Claude Code. It updates the file, rebuilds the recipe book (`npm run book`, served at
+`/recipe-book.html` on the app's links) and pushes. Then More → Import recipes & foods → Replace brings the change
+into the app (past cook days keep their own amounts).
 
 ## Sending them to Claude Code instead
 

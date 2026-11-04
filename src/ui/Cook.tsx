@@ -12,11 +12,11 @@ import {
   mainItem,
   perYieldUnit,
   portionsForProtein,
+  containersFor,
   scaleItems,
   starchToCook,
   starchToReach,
   times,
-  totals,
 } from '../recipe-math';
 import { fmtAmount } from '../units';
 import { coverage, entryPortions, entryStarch } from '../cookdays';
@@ -32,7 +32,7 @@ export function newBatchFor(recipe: Recipe, date: string, proteinPerMeal = DEFAU
     status: 'planned',
     cookDate: date,
     items,
-    portions: recipe.kind === 'dish' ? portionsForProtein(totals(items), proteinPerMeal) : 1,
+    portions: recipe.kind === 'dish' ? containersFor(recipe, items, proteinPerMeal) : 1,
     fridge: 0,
     freezer: 0,
     createdAt: new Date().toISOString(),
@@ -206,8 +206,7 @@ export function BatchEditor({ batch, recipe, onClose }: { batch: Batch; recipe?:
                 if (a === null || a <= 0) return;
                 const scaled = scaleItems({ ...recipe, items: recipe.items }, a * main.gramsPerUnit);
                 const items = scaled.map((i) => (i.id === main.id ? { ...i, unit: main.unit, gramsPerUnit: main.gramsPerUnit, amount: a } : i));
-                const t = totals(items);
-                setB({ ...b, items, portions: isStarch ? b.portions : portionsForProtein(t, settings.proteinPerMeal) });
+                setB({ ...b, items, portions: isStarch ? b.portions : containersFor(recipe, items, settings.proteinPerMeal) });
               }}
             />
             <span>{main.unit}</span>
