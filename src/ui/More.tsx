@@ -26,7 +26,7 @@ export function MoreTab() {
     ['lookup', 'Look up a packaged food', 'Search Open Food Facts by name or barcode number'],
     ['targets', 'Targets', 'Protein per meal, calories per meal and per day'],
     ['backup', 'Backup', 'Save everything to a file, or restore one'],
-    ['importfile', 'Import recipes & foods', 'A file or pasted reply from claude.ai (see RECIPE-IMPORT.md)'],
+    ['importfile', 'Import recipes & foods', 'Recipes, foods or past meals: a file or pasted reply (see RECIPE-IMPORT.md)'],
     ['import', 'Your original recipes.json', 'The recipes you had before the app, recalculated from USDA'],
   ];
   return (

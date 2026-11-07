@@ -25,7 +25,7 @@ describe('reading an import file', () => {
     expect(() => parseImportFile('hello')).toThrow(/Couldn't find any JSON/);
     expect(() => parseImportFile('{"format": "meal-prep-planner/1", "recipes": [}')).toThrow(/typo/);
     expect(() => parseImportFile('{"format": "other/2", "recipes": []}')).toThrow(/other\/2/);
-    expect(() => parseImportFile('{"recipes": [], "foods": []}')).toThrow(/No recipes or foods/);
+    expect(() => parseImportFile('{"recipes": [], "foods": []}')).toThrow(/No recipes, foods or meals/);
   });
 });
 

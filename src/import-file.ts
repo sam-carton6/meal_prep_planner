@@ -10,6 +10,7 @@ import { unitGrams, USDA_MATCH } from './import-recipes';
 import { perPortion, portionsForProtein, times, totals } from './recipe-math';
 import { search, type IndexedItem } from './search';
 import type { Food } from './usda';
+import { checkMeal, type FileMeal } from './past-meals';
 
 export const FORMAT = 'meal-prep-planner/1';
 
@@ -48,6 +49,8 @@ export interface ImportFile {
   format: string;
   recipes: FileRecipe[];
   foods: FileFood[];
+  /** Meals on days (past ones come in eaten), see past-meals.ts. */
+  meals: FileMeal[];
 }
 
 /** Read pasted text or a file: plain JSON, or JSON inside a ``` code block (as claude.ai replies). */
@@ -67,14 +70,16 @@ export function parseImportFile(text: string): ImportFile {
   if (d.format && d.format !== FORMAT) throw new Error(`This is a "${d.format}" file; the app reads "${FORMAT}".`);
   const recipes = Array.isArray(d.recipes) ? d.recipes : [];
   const foods = Array.isArray(d.foods) ? d.foods : [];
-  if (!recipes.length && !foods.length) throw new Error('No recipes or foods in that file.');
+  const meals = Array.isArray(d.meals) ? d.meals : [];
+  if (!recipes.length && !foods.length && !meals.length) throw new Error('No recipes, foods or meals in that file.');
   recipes.forEach((r, i) => {
     if (!r?.name || !Array.isArray(r.ingredients)) throw new Error(`Recipe ${i + 1} needs a name and a list of ingredients.`);
   });
   foods.forEach((f, i) => {
     if (!f?.name || !Number.isFinite(Number(f.kcal))) throw new Error(`Food ${i + 1} needs a name and kcal.`);
   });
-  return { format: FORMAT, recipes, foods };
+  meals.forEach(checkMeal);
+  return { format: FORMAT, recipes, foods, meals };
 }
 
 // ---- Matching ingredients to USDA ----------------------------------------------------------------

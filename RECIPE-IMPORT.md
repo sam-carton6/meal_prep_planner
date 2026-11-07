@@ -128,6 +128,24 @@ paste the reply to Claude Code. It updates the file, rebuilds the recipe book (`
 `/recipe-book.html` on the app's links) and pushes. Then More → Import recipes & foods → Replace brings the change
 into the app (past cook days keep their own amounts).
 
+## Meals you already ate (or plan)
+
+The same file can carry a `"meals"` list, so whole weeks go onto the calendar in one paste
+(`data/past-meals.json` has Oct 19 – Nov 6 2026). Each line covers a run of days in one slot:
+
+```json
+{ "format": "meal-prep-planner/1", "meals": [
+  { "from": "2026-11-02", "to": "2026-11-06", "slot": "lunch", "dish": "Grilled Sausage & Black Beans" },
+  { "from": "2026-11-02", "to": "2026-11-06", "slot": "breakfast", "food": "Banana", "amount": 1, "unit": "medium" }
+] }
+```
+
+- `slot`: breakfast, lunch, dinner or snack. `dish`: a recipe's name (it comes with its usual side, sized like the
+  weeks planner does). `food`: one of My foods by name (one serving unless `amount`/`unit` say otherwise), else a
+  USDA food. Import the recipes and foods first, or put them in the same file.
+- Days before today come in ticked as eaten, and the Sunday before each week gets a cooked cook day sized to those
+  meals. Importing the same file again adds nothing new.
+
 ## From a YouTube video (how Sam finds most recipes)
 
 AI chats can't watch videos, but almost every cooking video has the full recipe in the description or on the

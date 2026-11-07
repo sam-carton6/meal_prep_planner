@@ -2,6 +2,12 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-07 — past meals in the import file; Windows test fix
+- RECIPE-IMPORT format gains a `"meals"` list (src/past-meals.ts, tested): runs of days per slot, a dish (with its
+  usual side) or a food. Past days come in eaten, pinned to a cooked Sunday batch sized to them; re-importing adds
+  nothing. `data/past-meals.json` = Sam's real Oct 19 – Nov 6 weekdays. Checked in the browser at phone size.
+- Import test read RECIPE-IMPORT.md with Windows line endings (failed on the PC only).
+
 ### 2026-11-04 — recipes: Sam's and suggested, gluten-free
 - data/meals.json now 13 dishes + 3 sides: added Garlic Ginger Beef & Rice, Pasta & Meat Sauce, Greek Chicken &
   Potatoes (suggested, picked), Japanese Chicken Curry, Butter Chicken, Chicken Twice-Baked Potatoes, Mashed

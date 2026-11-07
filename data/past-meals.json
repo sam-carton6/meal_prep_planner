@@ -1,0 +1,20 @@
+{
+  "format": "meal-prep-planner/1",
+  "about": "What Sam actually ate, Oct 19 - Nov 6 2026 (weekdays). Import after meals.json: More -> Import -> paste -> Save.",
+  "meals": [
+    { "from": "2026-10-19", "to": "2026-10-23", "slot": "breakfast", "food": "Morning shake (3 scoops Naked Mass + 1½ tbsp PBfit, water)" },
+    { "from": "2026-10-19", "to": "2026-10-23", "slot": "breakfast", "food": "Banana", "amount": 1, "unit": "medium" },
+    { "from": "2026-10-19", "to": "2026-10-23", "slot": "lunch", "dish": "Mexican Chicken & Vegetables" },
+    { "from": "2026-10-19", "to": "2026-10-23", "slot": "dinner", "dish": "Sweet Potato Beef Chili" },
+
+    { "from": "2026-10-26", "to": "2026-10-30", "slot": "breakfast", "food": "Morning shake (3 scoops Naked Mass + 1½ tbsp PBfit, water)" },
+    { "from": "2026-10-26", "to": "2026-10-30", "slot": "breakfast", "food": "Banana", "amount": 1, "unit": "medium" },
+    { "from": "2026-10-26", "to": "2026-10-30", "slot": "lunch", "dish": "Taco Beef & Black Beans" },
+    { "from": "2026-10-26", "to": "2026-10-30", "slot": "dinner", "dish": "Grilled Chicken Breast" },
+
+    { "from": "2026-11-02", "to": "2026-11-06", "slot": "breakfast", "food": "Morning shake (3 scoops Naked Mass + 1½ tbsp PBfit, water)" },
+    { "from": "2026-11-02", "to": "2026-11-06", "slot": "breakfast", "food": "Banana", "amount": 1, "unit": "medium" },
+    { "from": "2026-11-02", "to": "2026-11-06", "slot": "lunch", "dish": "Grilled Sausage & Black Beans" },
+    { "from": "2026-11-02", "to": "2026-11-06", "slot": "dinner", "dish": "Chicken & Cheddar Quesadillas" }
+  ]
+}

@@ -5,9 +5,10 @@ under *Ideas (later)*; ask before building one.
 
 ## Where things stand (keep this current, a few lines)
 
-**Start here (end of the 4–7 Nov cloud chat):** all work is on `staging` (not merged; `main` untouched). Sam called
-the app "okay for now"; it hasn't been tried on his phone yet. Next for Sam: run `npm run staging` on the PC, then on
-the phone More → Import → paste `data/meals.json` → Replace. Recipes: 14 dishes + 3 sides in `data/meals.json`
+**Start here (7 Nov 2026):** all work is on `staging` (not merged; `main` untouched); staging uploaded 7 Nov. Sam is
+using **staging** on his phone for now (plan + shop this week), live stays as is until he's tested. On the phone:
+More → Import → paste `data/meals.json` → Save, then paste `data/past-meals.json` → Save (his real Oct 19 – Nov 6
+meals, eaten). Moving data between staging and live = More → Backup on one, Restore on the other. Recipes: 14 dishes + 3 sides in `data/meals.json`
 (gluten-free, no corn, 85/15 beef, weighed in grams); 3 unpicked suggestions in `data/suggested.json`; placeholder
 numbers under *Numbers to check*. New recipes arrive as YouTube ingredient lists + his changes (see CLAUDE.md).
 
@@ -143,7 +144,13 @@ separate workout app sharing data with this one.
   turn them into the `recipes.json` format; the existing import then recalculates them from USDA with the
   side-by-side check. Build a proper in-app import only if this happens often.
 
+- **Online sync between live and staging / devices** (Sam asked 7 Nov 2026; parked). Each install keeps its own
+  data on the phone; for now Backup → Restore copies it across. A real sync = Cloudflare D1 + a login, data kept
+  online. Free tier is ample (one person: well under 1% of D1's daily limits, beside Popsicle CAD's D1/KV).
+
 ## What's new at the next merge
+
+- Bring past (or planned) meals in with one paste: whole weeks of breakfasts, lunches and dinners (More → Import).
 
 - Plan your meals on a calendar (breakfast, lunch, dinner, snacks): week or month view, day totals, averages.
   On the PC the week shows as 7 columns.
