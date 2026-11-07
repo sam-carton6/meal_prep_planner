@@ -150,6 +150,12 @@ separate workout app sharing data with this one.
   hide or remove the rest. Plan before coding.
 - **Fill the pantry** (Sam, 7 Nov 2026): he'll dictate what he has (speech to text); turn it into pantry items so
   they stay off the shopping list.
+- **Price out eating / link with Ledger** (Sam, 7 Nov 2026). Thought through 7 Nov, not decided. Ledger already
+  has the real totals (Wegmans, Whole Foods → Groceries; takeout → Eating out) but only per trip, not per item, and
+  it's Tailscale-only on the home server while this app is public on Cloudflare, so a live link is awkward. Steps,
+  cheapest first: (1) read Ledger's Groceries per week/month as it is; (2) here, a "this trip cost $__" box on Shop
+  → cost per meal; (3) prices per item, filled by Claude from a receipt photo/screenshot → cost per container and
+  the breakfast comparison; (4) only if wanted, Ledger pushes weekly grocery totals to this app's `/api`.
 
 ## What's new at the next merge
 
