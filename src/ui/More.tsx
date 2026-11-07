@@ -1,4 +1,4 @@
-// More tab: ingredient lookup, pantry, My foods, targets, backup, and the one-time recipes.json import.
+// More tab: ingredient lookup, pantry, My foods, targets, sync, backup, and the one-time recipes.json import.
 
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -14,17 +14,20 @@ import { ConfirmButton, Macros, Num, r0, r1, Sheet, useFoods } from './shared';
 import { ImportFilePage } from './ImportFile';
 import { FoodLookup } from './FoodLookup';
 import { PantryPage } from './Pantry';
+import { SyncPage, syncLine, useSync } from './Sync';
 
-type Page = 'ingredients' | 'pantry' | 'myfoods' | 'lookup' | 'targets' | 'backup' | 'importfile' | 'import' | null;
+type Page = 'ingredients' | 'pantry' | 'myfoods' | 'lookup' | 'targets' | 'sync' | 'backup' | 'importfile' | 'import' | null;
 
 export function MoreTab() {
   const [page, setPage] = useState<Page>(null);
+  const sync = useSync();
   const items: [Page, string, string][] = [
     ['ingredients', 'Ingredients', 'Look up any USDA ingredient'],
     ['pantry', 'Pantry', 'Spices, sauces, rice, oats: kept off the shopping list until running low'],
     ['myfoods', 'My foods', 'Takeout, treats, and things USDA lacks'],
     ['lookup', 'Look up a packaged food', 'Search Open Food Facts by name or barcode number'],
     ['targets', 'Targets', 'Protein per meal, calories per meal and per day'],
+    ['sync', 'Sync', syncLine(sync)],
     ['backup', 'Backup', 'Save everything to a file, or restore one'],
     ['importfile', 'Import recipes & foods', 'Recipes, foods or past meals: a file or pasted reply (see RECIPE-IMPORT.md)'],
     ['import', 'Your original recipes.json', 'The recipes you had before the app, recalculated from USDA'],
@@ -49,6 +52,7 @@ export function MoreTab() {
       {page === 'myfoods' && <MyFoods onClose={() => setPage(null)} />}
       {page === 'lookup' && <FoodLookup onClose={() => setPage(null)} />}
       {page === 'targets' && <Targets onClose={() => setPage(null)} />}
+      {page === 'sync' && <SyncPage onClose={() => setPage(null)} />}
       {page === 'backup' && <Backup onClose={() => setPage(null)} />}
       {page === 'importfile' && <ImportFilePage onClose={() => setPage(null)} />}
       {page === 'import' && <ImportPage onClose={() => setPage(null)} />}
@@ -223,7 +227,7 @@ function Backup({ onClose }: { onClose: () => void }) {
   };
   return (
     <Sheet title="Backup" onClose={onClose}>
-      <p className="note">Your data lives only on this phone. Save a backup now and then (e.g. to iCloud Drive in Files).</p>
+      <p className="note">Your data lives on this device (and online if you've signed in under Sync). Save a backup now and then (e.g. to iCloud Drive in Files).</p>
       <button className="primary" onClick={save}>Save a backup file</button>
       <h3>Restore</h3>
       <p className="note">Replaces everything in the app with the backup's contents.</p>

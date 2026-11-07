@@ -144,7 +144,10 @@ The same file can carry a `"meals"` list, so whole weeks go onto the calendar in
   weeks planner does). `food`: one of My foods by name (one serving unless `amount`/`unit` say otherwise), else a
   USDA food. Import the recipes and foods first, or put them in the same file.
 - Days before today come in ticked as eaten, and the Sunday before each week gets a cooked cook day sized to those
-  meals. Importing the same file again adds nothing new.
+  meals. Later days come in planned, and their Sunday cook day is set up (sized like the weeks planner does it), so
+  the shopping list is ready. Importing the same file again adds nothing new.
+- Extra cook days (e.g. a second pot for the freezer) go in a `"cooks"` list:
+  `{ "date": "2026-11-08", "dish": "Meat Sauce (freezer)", "servings": 5 }` (see `data/this-week.json`).
 
 ## From a YouTube video (how Sam finds most recipes)
 

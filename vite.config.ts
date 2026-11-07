@@ -28,11 +28,11 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,json}'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Standalone pages (e.g. the rework mockup) must not be swapped for the app's index.html.
-        navigateFallbackDenylist: [/^\/mockup/, /^\/recipe-book/],
+        navigateFallbackDenylist: [/^\/mockup/, /^\/recipe-book/, /^\/api\//],
       },
     }),
   ],
   test: {
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'worker/**/*.test.ts'],
   },
 });

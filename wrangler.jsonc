@@ -1,12 +1,24 @@
-// Cloudflare Workers settings: serves the built app (dist/) as static files, no server code.
+// Cloudflare Workers settings: serves the built app (dist/) as static files, plus the small sync server
+// (worker/index.ts) on /api/*, which keeps the data in the D1 database below (Nov 2026).
 {
   "name": "meal-prep-planner",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-20",
   // Lets `staging` get its own test link: staging-meal-prep-planner.samcarton6.workers.dev
   // (Cloudflare's preview command: npx wrangler versions upload --preview-alias staging)
   "preview_urls": true,
   "assets": {
     "directory": "./dist/",
-    "not_found_handling": "single-page-application"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "meal-prep-planner",
+      "database_id": "d856bae0-0f1f-4a6e-9c40-e9395ce39abd",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

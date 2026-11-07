@@ -12,7 +12,9 @@
     "icons": "node scripts/make-icons.mjs",
     "staging": "npm run build && wrangler versions upload --preview-alias staging",
     "dev:phone": "vite --host",
-    "book": "node scripts/recipe-book.mjs"
+    "book": "node scripts/recipe-book.mjs",
+    "set-pin": "node scripts/set-pin.mjs",
+    "db:migrate": "wrangler d1 migrations apply meal-prep-planner --remote"
   },
   "dependencies": {
     "dexie": "^4.4.6",

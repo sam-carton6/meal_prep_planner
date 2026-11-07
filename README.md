@@ -30,6 +30,8 @@ Rebuilding the ingredient list (only when USDA publishes a new release): see the
 - `main` = the version Sam is happy with: https://meal-prep-planner.samcarton6.workers.dev (Cloudflare; on the
   iPhone: Safari → Share → Add to Home Screen)
 - `staging` = work in progress: https://staging-meal-prep-planner.samcarton6.workers.dev (updated with `npm run staging`)
+- Sync: data saved online in a Cloudflare D1 database, behind a 6-digit PIN (`npm run set-pin`). Only live saves;
+  staging reads live's data. More → Sync in the app.
 
 ## Notes
 

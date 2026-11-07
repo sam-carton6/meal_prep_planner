@@ -5,12 +5,12 @@ under *Ideas (later)*; ask before building one.
 
 ## Where things stand (keep this current, a few lines)
 
-**Start here (7 Nov 2026):** all work is on `staging` (not merged; `main` untouched); staging uploaded 7 Nov. Sam is
-using **staging** on his phone for now (plan + shop this week), live stays as is until he's tested. On the phone:
-More → Import → paste `data/meals.json` → Save, then paste `data/past-meals.json` → Save (his real Oct 19 – Nov 6
-meals, eaten). Moving data between staging and live = More → Backup on one, Restore on the other. Recipes: 14 dishes + 3 sides in `data/meals.json`
-(gluten-free, no corn, 85/15 beef, weighed in grams); 3 unpicked suggestions in `data/suggested.json`; placeholder
-numbers under *Numbers to check*. New recipes arrive as YouTube ingredient lists + his changes (see CLAUDE.md).
+**Start here (7 Nov 2026):** all work on `staging` (uploaded 7 Nov), `main` untouched. Sam plans on staging this
+week (Nov 9–13: fried rice lunch, pasta dinner, freezer meat sauce; `data/this-week.json`). Sync + PIN are built and
+tested locally (D1 tables created online). **To switch on:** Sam runs `npm run set-pin`, says "merge", then on the
+phone: staging More → Backup → live More → Backup → Restore that file → live More → Sync → PIN (his data goes up);
+then sign in on the PC and on staging. Not yet tried on the real servers or his phone. Recipes: `data/meals.json`
+(15 dishes + 3 sides); 3 unpicked suggestions in `data/suggested.json`; placeholder numbers under *Numbers to check*.
 
 **Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
 Hosted at https://meal-prep-planner.samcarton6.workers.dev.
@@ -144,16 +144,15 @@ separate workout app sharing data with this one.
   turn them into the `recipes.json` format; the existing import then recalculates them from USDA with the
   side-by-side check. Build a proper in-app import only if this happens often.
 
-- **Online sync between live and staging / devices** (Sam asked 7 Nov 2026; parked). Each install keeps its own
-  data on the phone; for now Backup → Restore copies it across. A real sync = Cloudflare D1 + a login, data kept
-  online. Free tier is ample (one person: well under 1% of D1's daily limits, beside Popsicle CAD's D1/KV).
-  Sam: "would be A++". Lock: a **PIN checked by the server** (lockout after a few wrong tries), entered once per
-  device, which then stays signed in. Not an email code each time (Sam, 7 Nov 2026).
 
 - **Try different breakfasts** (Sam, 7 Nov 2026): compare options by macros and by price against the usual
   banana + shake. Needs prices per item (none in the app yet).
 
 ## What's new at the next merge
+
+- Sync: sign in once per device with a 6-digit PIN and your data shows up on your phone and PC. The test app only
+  reads your real data, never changes it. (More → Sync)
+- Shopping list: an Extras box for anything that isn't in a recipe.
 
 - Bring past (or planned) meals in with one paste: whole weeks of breakfasts, lunches and dinners (More → Import).
 

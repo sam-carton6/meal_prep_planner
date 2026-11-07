@@ -19,6 +19,13 @@ things stand* every chat), [DONE.md](DONE.md) (the archive).
   branch builds never fired (Oct 2026), so after pushing staging work run `npm run staging` (builds and uploads a
   preview version; doesn't touch `main`'s live app). This PC is already signed in to Cloudflare (wrangler).
   At home, `npm run dev:phone` also serves the dev version on the Wi-Fi (http://<PC's IP>:5173; no offline/install).
+- **Sync (7 Nov 2026):** the same Worker runs `worker/index.ts` on `/api/*`, keeping the whole database as one JSON
+  copy per save in the D1 database `meal-prep-planner` (last 30 kept; tables in `migrations/`, applied with
+  `npm run db:migrate`). Each device signs in once with Sam's **6-digit PIN**, checked by the server (5 wrong → 15-min
+  lock); Sam sets it himself with `npm run set-pin` (never ask for it or put it anywhere). **Diode:** only the live
+  app saves; staging loads live's data when it opens and its test changes stay on that device (enforced by the
+  server, `canSave` in `worker/auth.ts`). Client side: `src/sync.ts`, More → Sync. Test it with the `worker` launch
+  config (`wrangler dev`, local D1; `npm run set-pin -- --local` or a test hash for a local PIN).
 - **Repo:** GitHub `sam-carton6/meal_prep_planner` (public on purpose: no sensitive data; Sam, 20 Oct 2026). Keep it that way unless he says otherwise. Main copy on the tower:
   `D:\Users\Sam\Documents\Projects\Meal Prep Planner`.
 
@@ -31,8 +38,9 @@ Claude may suggest a merge when tested work is ready, but waits for Sam's OK (Sa
 then on the phone via the staging preview link. Maths lives in `src/recipe-math.ts`, `src/plan.ts`, `src/units.ts`,
 `src/cookdays.ts` (what each cook day feeds), `src/bank.ts` (meal bank cards), `src/repeat.ts` (repeat a
 week), `src/pantry.ts`, `src/prep.ts` (the prep sheet), `src/weeks.ts` (the weeks planner), `src/import-file.ts` (RECIPE-IMPORT
-format) and `src/off.ts` (Open Food Facts), all tested; screens in `src/ui/`. Open Food Facts is the only thing that
-goes online (search words or barcode only). Sam's phone is an iPhone 17: check layouts at 402 × 874.
+format), `src/past-meals.ts` (meals and cook days in an import file), `src/off.ts` (Open Food Facts) and
+`worker/auth.ts` (sync's PIN, lockout and diode rules), all tested; screens in `src/ui/`. What goes online: Open Food
+Facts (search words or barcode only) and, once signed in under Sync, the app's data to Sam's own D1 database. Sam's phone is an iPhone 17: check layouts at 402 × 874.
 
 ## Stack
 Web PWA: Vite + React + TypeScript, `vite-plugin-pwa` (offline + install), Dexie (on-phone database in
@@ -44,7 +52,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
 - `recipes.json` = Sam's existing recipes, the import source for version 1.
 - The data model is documented at the top of `src/model.ts`; stored on the phone with Dexie (`src/db.ts`, change
   the layout only by adding a new `db.version(n)`). Backup = More → Backup (whole database as JSON).
-- Storage is local on the device, with export to a file so data is never locked in (brief). Keep the data model
+- Storage is on the device (plus Sam's own online copy once he signs in under Sync), with export to a file so data
+  is never locked in (brief). Keep the data model
   (ingredients, recipes, recipe items, portions, sides, log entries) clean and documented: the later food log and a
   separate workout app build on it.
 - `.gitignore` ignores `*.sqlite` / `*.db`; if the bundled USDA file is SQLite, add an exception for it.

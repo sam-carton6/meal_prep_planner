@@ -2,6 +2,16 @@
 
 Finished work, moved out of TODO.md so a new chat reads less. Nothing here needs doing. Newest first.
 
+### 2026-11-07 — sync with a PIN, this week's plan, shop extras
+- Sync: worker/index.ts on /api/* + D1 `meal-prep-planner` (snapshots, tokens, PIN hash + lockout). 6-digit PIN set
+  by `npm run set-pin`, entered once per device; 5 wrong → 15-min lock. Diode: only live saves, staging reads.
+  Client src/sync.ts (save 2 s after a change, check on open/return, "changed on another device" choice), More →
+  Sync. Tested: worker/auth.test.ts; end to end on wrangler dev with two browser origins (first copy up, second
+  device loads it, changes both ways, conflict, staging host refused, lockout).
+- Recipes: avocado oil, never vegetable oil; fried rice ~800 kcal (555 g rice, no broccoli/cabbage); pasta with
+  carrots + spinach; Meat Sauce (freezer). Import: planned weeks get their Sunday cook day; `cooks` list.
+  data/this-week.json. Shop: Extras box. scripts/macros.mjs.
+
 ### 2026-11-07 — past meals in the import file; Windows test fix
 - RECIPE-IMPORT format gains a `"meals"` list (src/past-meals.ts, tested): runs of days per slot, a dish (with its
   usual side) or a food. Past days come in eaten, pinned to a cooked Sunday batch sized to them; re-importing adds
