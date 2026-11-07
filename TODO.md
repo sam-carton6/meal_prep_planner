@@ -5,16 +5,13 @@ under *Ideas (later)*; ask before building one.
 
 ## Where things stand (keep this current, a few lines)
 
-**Start here (7 Nov 2026):** all work on `staging` (uploaded 7 Nov), `main` untouched. Sam plans on staging this
-week (Nov 9–13: fried rice lunch, pasta dinner, freezer meat sauce; `data/this-week.json`). Sync + PIN are built and
-tested locally (D1 tables created online). **To switch on:** Sam runs `npm run set-pin`, says "merge", then on the
-phone: staging More → Backup → live More → Backup → Restore that file → live More → Sync → PIN (his data goes up);
-then sign in on the PC and on staging. Not yet tried on the real servers or his phone. Recipes: `data/meals.json`
+**Start here (7 Nov 2026):** everything merged to `main` and live 7 Nov (version 1, the weeks planner, sync with
+PIN). Sam's PIN is set online. **Next for Sam (phone):** staging More → Backup → live More → Backup → Restore → live
+More → Sync → PIN (his data goes up), then sign in on the PC to check it shows up. Not yet tried on his phone.
+This week: fried rice lunch, pasta dinner, freezer meat sauce (`data/this-week.json`). Recipes: `data/meals.json`
 (15 dishes + 3 sides); 3 unpicked suggestions in `data/suggested.json`; placeholder numbers under *Numbers to check*.
 
-**Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
-Hosted at https://meal-prep-planner.samcarton6.workers.dev.
-**On `staging`, not live yet:** version 1 (Oct 2026) plus the *hybrid* built 4 Nov 2026 (night, cloud session).
+**Live on `main`:** everything up to 7 Nov 2026 (merged 7 Nov). https://meal-prep-planner.samcarton6.workers.dev
 
 **4 Nov summary, in plain words.**
 - *Done:* (1) Plan tab: meal bank of cards from your real recipes and foods, tweak − / + on a card, tap a card then
@@ -150,19 +147,4 @@ separate workout app sharing data with this one.
 
 ## What's new at the next merge
 
-- Sync: sign in once per device with a 6-digit PIN and your data shows up on your phone and PC. The test app only
-  reads your real data, never changes it. (More → Sync)
-- Shopping list: an Extras box for anything that isn't in a recipe.
-
-- Bring past (or planned) meals in with one paste: whole weeks of breakfasts, lunches and dinners (More → Import).
-
-- Plan your meals on a calendar (breakfast, lunch, dinner, snacks): week or month view, day totals, averages.
-  On the PC the week shows as 7 columns.
-- A meal bank: tap a meal, then tap the days you'll eat it (drag on the PC); tweak servings, rice and scoops on the
-  card. Set cook days and see what each one makes, what's spare, what to freeze and what's missing.
-- Import recipes and foods from a claude.ai chat (More → Import); look up packaged foods by name or barcode.
-- My foods in your own units (scoops...). Every tab uses the PC's width.
-- Recipes that scale from what you bought, containers from your protein target, weight per container.
-- Rice/pasta per container, and how much to cook for the containers you've planned.
-- Fridge/freezer counts, a cook list, and one grocery list by aisle with tick boxes.
-- My foods (takeout, treats), targets, backup to a file, and your recipes.json imported.
+(Nothing yet: all merged 7 Nov 2026.)
