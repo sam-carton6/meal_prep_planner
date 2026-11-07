@@ -147,6 +147,8 @@ separate workout app sharing data with this one.
 - **Online sync between live and staging / devices** (Sam asked 7 Nov 2026; parked). Each install keeps its own
   data on the phone; for now Backup → Restore copies it across. A real sync = Cloudflare D1 + a login, data kept
   online. Free tier is ample (one person: well under 1% of D1's daily limits, beside Popsicle CAD's D1/KV).
+  Sam: "would be A++". Lock: a **PIN checked by the server** (lockout after a few wrong tries), entered once per
+  device, which then stays signed in. Not an email code each time (Sam, 7 Nov 2026).
 
 ## What's new at the next merge
 
