@@ -145,6 +145,13 @@ separate workout app sharing data with this one.
 - **Try different breakfasts** (Sam, 7 Nov 2026): compare options by macros and by price against the usual
   banana + shake. Needs prices per item (none in the app yet).
 
+- **Make the app feel calmer** (Sam, 7 Nov 2026: "still feels a little intense, almost too many settings and
+  options"). A simplification pass: list every screen, button and setting, agree with Sam what he actually uses, then
+  hide or remove the rest. Plan before coding.
+- **Fill the pantry** (Sam, 7 Nov 2026): he'll dictate what he has (speech to text); turn it into pantry items so
+  they stay off the shopping list.
+
 ## What's new at the next merge
 
-(Nothing yet: all merged 7 Nov 2026.)
+- Shopping list in pounds and ounces (no grams), rice in cups; pantry things folded into one line at the bottom.
+- Plan opens on Month (tabs: Month, Calendar, Weeks).

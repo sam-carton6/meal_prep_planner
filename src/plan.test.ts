@@ -54,6 +54,20 @@ describe('grocery list', () => {
     expect(line('Ground beef').amountText).toBe('3 lb');
   });
 
+  it('shops in US units: grams become oz or lb, rice becomes cups (rounded up to ¼)', () => {
+    const list = groceryList([batch('Fried rice', [
+      it_('Rice, white, long-grain, regular, raw, enriched', 555, 'g', 1),
+      it_('Carrots, raw', 400, 'g', 1),
+      it_('Onions, spring or scallions', 100, 'g', 1),
+      it_('Chicken thigh', 1200, 'g', 1),
+    ]), batch('Pasta', [it_('Rice, white, long-grain, regular, raw, enriched', 0.5, 'cup', 185)])]);
+    const line = (n: string) => list.find((l) => l.name.startsWith(n))!.amountText;
+    expect(line('Rice')).toBe('3½ cup'); // 555 g + ½ cup = 3.5 cups
+    expect(line('Carrots')).toBe('14.1 oz');
+    expect(line('Onions, spring')).toBe('3.5 oz');
+    expect(line('Chicken')).toBe('2.65 lb');
+  });
+
   it('groups by aisle and marks pantry staples', () => {
     const list = groceryList([chicken], [`usda:${idOf('Diced tomatoes, canned')}`]);
     expect(list.map((l) => l.aisle)).toEqual(['Produce', 'Meat & seafood', 'Canned & jarred']);

@@ -1,7 +1,7 @@
 // Shop tab: the grocery list one shopping week at a time (from the shopping day, Saturday by default, so a
 // Sunday cook day is in it): what the week's cook days need, starch for the week's containers, grouped by aisle
-// with tick boxes. Pantry things (spices, sauces, rice...) are listed apart as "check you have enough", and
-// pantry items marked running low go under Restock. ‹ › moves a week; "Pick dates" gives any range.
+// with tick boxes. Pantry things (spices, sauces, rice...) stay off the list, folded into one line that opens to
+// mark one running low or put it back on the list; pantry items marked running low go under Restock. ‹ › moves a week; "Pick dates" gives any range.
 
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -21,6 +21,7 @@ export function ShopTab() {
   const [week, setWeek] = useState(0); // weeks from this one
   const [custom, setCustom] = useState<[string, string] | null>(null);
   const [pantryOpen, setPantryOpen] = useState(false);
+  const [showPantry, setShowPantry] = useState(false);
   const [thisFrom] = shopWeek(today, shopDay);
   const weekFrom = addDays(thisFrom, 7 * week);
   const [from, to] = custom ?? [weekFrom, addDays(weekFrom, 6)];
@@ -202,8 +203,11 @@ export function ShopTab() {
 
         {fromPantry.length > 0 && (
           <section className="pantry-check">
-            <h3>From the pantry: check you have enough</h3>
-            {fromPantry.map((l) => {
+            {/* Off the list (Sam, 7 Nov 2026): folded to one line, opened only to mark something low or buy it. */}
+            <button className="link small muted" onClick={() => setShowPantry(!showPantry)}>
+              {showPantry ? '▾' : '▸'} {fromPantry.length} thing{fromPantry.length === 1 ? '' : 's'} from your pantry (not on the list)
+            </button>
+            {showPantry && fromPantry.map((l) => {
               const low = pantry.find((p) => p.key === l.key)?.low;
               return (
                 <div key={l.key} className="grocery">

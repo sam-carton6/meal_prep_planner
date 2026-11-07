@@ -127,6 +127,15 @@ export interface GroceryLine {
   staple: boolean;
 }
 
+/** Dry goods Sam buys by the cup (Sam, 7 Nov 2026: "rice is in cups"): grams in one cup, uncooked. */
+const BY_CUP: [RegExp, number][] = [[/^rice\b/i, 185]];
+
+/** Shopping is in US units (Sam, 7 Nov 2026): lb and oz, never grams; small amounts to a tenth of an ounce. */
+export function shopWeight(grams: number): string {
+  if (grams >= 454) return fmtWeight(grams);
+  return `${Math.max(0.1, Math.round((grams / 28.3495) * 10) / 10)} oz`;
+}
+
 /**
  * One combined list for the given batches. Same food + same unit adds up in that unit (cans round up to whole
  * cans); mixed units add up by weight.
@@ -147,14 +156,16 @@ export function groceryList(batches: Batch[], staples: string[] = []): GroceryLi
     const grams = items.reduce((g, i) => g + itemGrams(i), 0);
     const units = new Set(items.map((i) => i.unit));
     let amountText: string;
-    if (units.size === 1) {
+    const cupGrams = BY_CUP.find(([re]) => re.test(items[0].name))?.[1];
+    if (cupGrams && items.every((i) => i.unit === 'g' || i.unit === 'cup')) {
+      amountText = `${fmtAmount(Math.ceil(grams / cupGrams / 0.25 - 1e-9) * 0.25)} cup`;
+    } else if (units.size === 1 && stepFor(items[0].unit)) {
       const unit = items[0].unit;
-      let amount = items.reduce((a, i) => a + (i.amount ?? 0), 0);
       const step = stepFor(unit);
-      if (step) amount = Math.ceil(amount / step - 1e-9) * step;
-      amountText = step || unit === 'g' ? `${fmtAmount(amount)} ${unit}` : fmtWeight(grams);
+      const amount = Math.ceil(items.reduce((a, i) => a + (i.amount ?? 0), 0) / step - 1e-9) * step;
+      amountText = `${fmtAmount(amount)} ${unit}`;
     } else {
-      amountText = fmtWeight(grams);
+      amountText = shopWeight(grams);
     }
     out.push({
       key,

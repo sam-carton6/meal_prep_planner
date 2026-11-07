@@ -186,8 +186,8 @@ export interface Settings {
   /** Import: ingredient name (lower case) → USDA id Sam picked by hand, used first on later imports. */
   importMatches?: Record<string, number>;
   /**
-   * The pantry (Nov 2026): sauces, spices, rice, oats... things he keeps on hand. Shown apart from the shopping
-   * list ("check you have enough"); marked low → on the list to restock. Older `pantryStaples` keys still count.
+   * The pantry (Nov 2026): sauces, spices, rice, oats... things he keeps on hand. Kept off the shopping
+   * list (folded into one line on Shop); marked low → on the list to restock. Older `pantryStaples` keys still count.
    */
   pantry?: PantryItem[];
   /** Day of the week he shops, 0 = Sunday … 6 = Saturday (default 6): the Shop tab's weeks start on it. */

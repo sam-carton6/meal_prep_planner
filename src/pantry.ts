@@ -1,5 +1,5 @@
 // The pantry: things Sam keeps on hand (sauces, spices, rice, oats, beans...). They stay off the main shopping
-// list; the Shop tab lists the ones this week's cooking uses ("check you have enough"), and anything marked
+// list; the Shop tab folds the ones this week's cooking uses into one line (open it to mark one low), and anything marked
 // running low goes under Restock. Stored in settings (no database change); older `pantryStaples` keys still count.
 
 import type { PantryItem, Recipe, Settings } from './model';

@@ -89,8 +89,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
 - Sam's week (4 Nov 2026): shop Saturday, prep (cutting, marinades), cook Sunday for 5 weekday meals; weekends
   he's on his own. So: Shop goes week by week from the shopping day (Sat), "repeat a week" starts on the cook
   day, and a simple pantry (spices, sauces, rice, oats, beans) stays off the list until marked running low.
-- **Weeks planner is how Sam plans** (4 Nov 2026, after the meal bank felt like too many options): Plan opens on
-  *Weeks*: per week pick lunch and dinner, Mon–Fri fills in, the Sunday before becomes the cook day sized exactly
+- **Weeks planner is how Sam plans** (4 Nov 2026, after the meal bank felt like too many options): Plan opened on
+  *Weeks* (since 7 Nov it opens on *Month*; tabs Month, Calendar, Weeks, Sam's order): per week pick lunch and dinner, Mon–Fri fills in, the Sunday before becomes the cook day sized exactly
   to the fresh meals planned (Batch.auto, scaled without rounding). Any day can be swapped: another dish (cooked
   that Sunday too: piecewise weeks), a freezer container (dish entry `fromStock`, pinned to its batch), takeout or
   any food, leftovers. Swapped and eaten days survive row changes. Variety week to week is the point, so repeat-a-

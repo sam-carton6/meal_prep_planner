@@ -54,10 +54,7 @@ function store(key: string, value: unknown) {
 
 export function PlanTab() {
   const today = isoDate(new Date());
-  const [view, setView] = useState<View>(() => {
-    const v = stored<string>('planView3', 'weeks');
-    return v === 'month' || v === 'week' ? v : 'weeks';
-  });
+  const [view, setView] = useState<View>('month'); // Plan always opens on Month (Sam, 7 Nov 2026)
   const [start, setStart] = useState(weekStart(today)); // week view: its Monday
   const [month, setMonth] = useState(monthStart(today)); // month view: its 1st
   const [placing, setPlacing] = useState<string | null>(null);
@@ -101,7 +98,6 @@ export function PlanTab() {
   const switchView = (v: View) => {
     setView(v);
     if (v === 'month') setMonth(monthStart(start));
-    store('planView3', v);
   };
   const openWeek = (d: string) => {
     setStart(weekStart(d));
@@ -149,9 +145,9 @@ export function PlanTab() {
       <main className={`wide plan-main ${placing ? 'placing' : ''}`}>
         <header className="plan-head">
           <div className="seg">
-            <button className={view === 'weeks' ? 'on' : ''} onClick={() => switchView('weeks')}>Weeks</button>
-            <button className={view === 'week' ? 'on' : ''} onClick={() => switchView('week')}>Calendar</button>
             <button className={view === 'month' ? 'on' : ''} onClick={() => switchView('month')}>Month</button>
+            <button className={view === 'week' ? 'on' : ''} onClick={() => switchView('week')}>Calendar</button>
+            <button className={view === 'weeks' ? 'on' : ''} onClick={() => switchView('weeks')}>Weeks</button>
           </div>
           {view !== 'weeks' && <>
           <div className="row spread">
