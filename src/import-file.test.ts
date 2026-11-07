@@ -6,7 +6,7 @@ import { buildIndex } from './search';
 import { unpack, type UsdaFile } from './usda';
 
 // The example from RECIPE-IMPORT.md, as claude.ai would send it (in a code block, with chat around it).
-const doc = readFileSync('RECIPE-IMPORT.md', 'utf8');
+const doc = readFileSync('RECIPE-IMPORT.md', 'utf8').replace(/\r\n/g, '\n'); // Windows checkouts have CRLF
 const example = doc.slice(doc.indexOf('{\n  "format"'), doc.indexOf('\nRules:'));
 const reply = `Here's your file:\n\n\`\`\`json\n${example}\n\`\`\`\n\nGuesses: none.`;
 
