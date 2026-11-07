@@ -5,6 +5,12 @@ under *Ideas (later)*; ask before building one.
 
 ## Where things stand (keep this current, a few lines)
 
+**Start here (end of the 4–7 Nov cloud chat):** all work is on `staging` (not merged; `main` untouched). Sam called
+the app "okay for now"; it hasn't been tried on his phone yet. Next for Sam: run `npm run staging` on the PC, then on
+the phone More → Import → paste `data/meals.json` → Replace. Recipes: 14 dishes + 3 sides in `data/meals.json`
+(gluten-free, no corn, 85/15 beef, weighed in grams); 3 unpicked suggestions in `data/suggested.json`; placeholder
+numbers under *Numbers to check*. New recipes arrive as YouTube ingredient lists + his changes (see CLAUDE.md).
+
 **Live on `main`:** step 1 (merged 20 Oct 2026): installable offline app with search over 6,291 USDA ingredients.
 Hosted at https://meal-prep-planner.samcarton6.workers.dev.
 **On `staging`, not live yet:** version 1 (Oct 2026) plus the *hybrid* built 4 Nov 2026 (night, cloud session).
