@@ -97,7 +97,8 @@ restaurant, American Indian/Alaska Native or brand-name items, and duplicates me
   next to everything but spoon amounts. Shopping stays in store units (lb, cans).
 - **Recipes come from YouTube** (Sam, 4 Nov 2026): he follows a video, then changes it his way. He pastes the
   description's ingredient list + his changes; keep the video link as `source`, apply his usual swaps (85/15 beef,
-  GF Kikkoman, Better Than Bouillon, little oil, no corn), and report kcal/protein per container.
+  GF Kikkoman, Better Than Bouillon, little oil and avocado oil, never vegetable oil (7 Nov 2026), no corn), and report kcal/protein per container.
+- **Calories (7 Nov 2026):** 2,400–2,600 a day; meals around 800 kcal (breakfast shake + banana is 824).
 - What the app is for (Sam, 4 Nov 2026): planning meal preps and shopping, seeing what food he'll have when if he
   cooks on a given day, and easy calorie counting while he adjusts his diet (eat more or less, cook extra for
   someone else). He knows how to cook most things: amounts and how to divide them matter more than recipe steps.

@@ -31,6 +31,8 @@ export function ShopTab() {
   const listId = `${from}..${to}`;
   const checks = useLiveQuery(() => db.groceryChecks.get(listId), [listId]);
   const checked = new Set(checks?.checked ?? []);
+  const extras = checks?.extras ?? [];
+  const [extraText, setExtraText] = useState('');
 
   const planned = batches.filter((b) => b.status === 'planned');
 
@@ -62,7 +64,16 @@ export function ShopTab() {
     const next = new Set(checked);
     if (next.has(key)) next.delete(key);
     else next.add(key);
-    await db.groceryChecks.put({ id: listId, checked: [...next] });
+    await db.groceryChecks.put({ id: listId, extras, checked: [...next] });
+  };
+  const addExtra = async () => {
+    const text = extraText.trim();
+    if (!text) return;
+    await db.groceryChecks.put({ id: listId, checked: [...checked], extras: [...extras, { id: newId(), text }] });
+    setExtraText('');
+  };
+  const removeExtra = async (id: string) => {
+    await db.groceryChecks.put({ id: listId, checked: [...checked].filter((k) => k !== `extra:${id}`), extras: extras.filter((x) => x.id !== id) });
   };
   /** Ticking a restock item = bought: no longer low (it stays on this list, ticked). */
   const toggleRestock = async (p: PantryItem) => {
@@ -123,7 +134,7 @@ export function ShopTab() {
           </>
         )}
       </p>
-      {lines.length === 0 && restock.length === 0 && (
+      {lines.length === 0 && restock.length === 0 && extras.length === 0 && (
         <p className="note">Nothing to buy. Cook days on the Plan tab (🍳 “+ cook”) put their ingredients here.</p>
       )}
 
@@ -151,6 +162,26 @@ export function ShopTab() {
             </section>
           );
         })}
+
+        <section>
+          <h3>Extras</h3>
+          {extras.map((x) => {
+            const key = `extra:${x.id}`;
+            return (
+              <div key={x.id} className={`grocery ${checked.has(key) ? 'done' : ''}`}>
+                <label>
+                  <input type="checkbox" checked={checked.has(key)} onChange={() => toggle(key)} />
+                  <span>{x.text}</span>
+                </label>
+                <button className="link small muted" onClick={() => removeExtra(x.id)} title="Take off the list">remove</button>
+              </div>
+            );
+          })}
+          <form className="row" onSubmit={(e) => { e.preventDefault(); void addExtra(); }}>
+            <input placeholder="Add something else (coffee, paper towels…)" value={extraText} onChange={(e) => setExtraText(e.target.value)} />
+            <button type="submit" disabled={!extraText.trim()}>Add</button>
+          </form>
+        </section>
 
         {restock.length > 0 && (
           <section>

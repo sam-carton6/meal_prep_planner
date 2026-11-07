@@ -1,0 +1,13 @@
+{
+  "format": "meal-prep-planner/1",
+  "about": "Week of Mon Nov 9 2026: shop Sat Nov 7, cook Sun Nov 8 (plus a pot of meat sauce for the freezer). Import after meals.json: More -> Import -> paste -> Save.",
+  "meals": [
+    { "from": "2026-11-09", "to": "2026-11-13", "slot": "breakfast", "food": "Morning shake (3 scoops Naked Mass + 1½ tbsp PBfit, water)" },
+    { "from": "2026-11-09", "to": "2026-11-13", "slot": "breakfast", "food": "Banana", "amount": 1, "unit": "medium" },
+    { "from": "2026-11-09", "to": "2026-11-13", "slot": "lunch", "dish": "Chicken Fried Rice" },
+    { "from": "2026-11-09", "to": "2026-11-13", "slot": "dinner", "dish": "Pasta & Meat Sauce" }
+  ],
+  "cooks": [
+    { "date": "2026-11-08", "dish": "Meat Sauce (freezer)", "servings": 5 }
+  ]
+}

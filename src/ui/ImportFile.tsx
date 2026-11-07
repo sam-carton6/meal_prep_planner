@@ -19,7 +19,7 @@ import {
   type FileFood,
   type ReviewRecipe,
 } from '../import-file';
-import { buildMeals, daysOf, type FileMeal } from '../past-meals';
+import { buildMeals, daysOf, type FileCook, type FileMeal } from '../past-meals';
 import { dayLabel, isoDate } from '../plan';
 import { itemNutrition, perPortion, portionsForProtein, totals } from '../recipe-math';
 import { search } from '../search';
@@ -39,6 +39,7 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
   const [reviews, setReviews] = useState<ReviewRecipe[] | null>(null);
   const [fileFoods, setFileFoods] = useState<FileFood[]>([]);
   const [fileMeals, setFileMeals] = useState<FileMeal[]>([]);
+  const [fileCooks, setFileCooks] = useState<FileCook[]>([]);
   // The file's foods as My foods entries, ids fixed up front so recipe lines can point at them.
   const [fileCustoms, setFileCustoms] = useState<CustomFood[]>([]);
   const [choices, setChoices] = useState<Record<string, Choice>>({});
@@ -61,6 +62,7 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
       setReviews(f.recipes.map((r) => reviewRecipe(r, index, byId, foods, learned, all)));
       setFileFoods(f.foods);
       setFileMeals(f.meals);
+      setFileCooks(f.cooks);
       setFileCustoms(customs);
       setChoices({});
     } catch (e) {
@@ -93,7 +95,7 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
       await db.settings.put({ ...s, importMatches: { ...(s.importMatches ?? {}), ...learnedFrom(reviews) } });
     });
     let mealNote = '';
-    if (fileMeals.length) {
+    if (fileMeals.length || fileCooks.length) {
       // After the recipes and foods, so meals can name ones from this same file.
       const s = await getSettings();
       const learned = s.importMatches ?? {};
@@ -108,20 +110,23 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
         today: isoDate(new Date()),
         newId,
         now,
-      });
+      }, fileCooks);
       await db.transaction('rw', db.calendar, db.batches, async () => {
-        await db.batches.bulkPut(made.batches);
+        await db.batches.bulkPut([...made.batches, ...made.updated]);
         await db.calendar.bulkPut(made.entries);
       });
+      const cookDays = made.batches.length + made.updated.length;
       mealNote = ` Added ${made.entries.length} meal${made.entries.length === 1 ? '' : 's'} to the calendar`
+        + `${cookDays ? ` and set up ${cookDays} cook day${cookDays === 1 ? '' : 's'}` : ''}`
         + `${made.already ? ` (${made.already} were already there)` : ''}.${made.problems.length ? ` Skipped: ${made.problems.join(' ')}` : ''}`;
     }
-    const kept = recipes.length || customs.length || !fileMeals.length
+    const kept = recipes.length || customs.length || !(fileMeals.length || fileCooks.length)
       ? `Saved ${recipes.length} recipe${recipes.length === 1 ? '' : 's'} and ${customs.length} food${customs.length === 1 ? '' : 's'}.` : '';
     setSaved(`${kept}${mealNote}`.trim());
     setReviews(null);
     setFileFoods([]);
     setFileMeals([]);
+    setFileCooks([]);
     setText('');
   };
 
@@ -190,7 +195,7 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
           {fileMeals.length > 0 && (
             <>
               <h3>Meals → calendar</h3>
-              <p className="note">Days before today come in as eaten, with their Sunday cook day marked cooked. Days that already have the same meal are left alone.</p>
+              <p className="note">Days before today come in as eaten, with their Sunday cook day marked cooked; later days are planned and their Sunday cook day is set up for shopping. Days that already have the same meal are left alone.</p>
               {fileMeals.map((m, i) => {
                 const days = daysOf(m);
                 return (
@@ -204,6 +209,13 @@ export function ImportFilePage({ onClose }: { onClose: () => void }) {
               })}
             </>
           )}
+          {fileCooks.length > 0 && <h3>Extra cook days</h3>}
+          {fileCooks.map((k, i) => (
+            <div className="card" key={`k${i}`}>
+              <b>{k.dish}</b>
+              <div className="meta">🍳 {dayLabel(k.date)} · {fmtAmount(k.servings)} servings</div>
+            </div>
+          ))}
           {fileFoods.length > 0 && <h3>Foods → My foods</h3>}
           {fileFoods.map((f, i) => {
             const old = foodMatch(f);

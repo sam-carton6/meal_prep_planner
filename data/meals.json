@@ -246,8 +246,8 @@
         },
         {
           "name": "Rice, white, long grain, dry",
-          "amount": 1.75,
-          "unit": "cup"
+          "amount": 555,
+          "unit": "g"
         },
         {
           "name": "Eggs, large",
@@ -255,24 +255,14 @@
           "unit": "large"
         },
         {
-          "name": "Cabbage, raw, shredded",
-          "amount": 4,
-          "unit": "cup"
-        },
-        {
-          "name": "Broccoli, raw",
-          "amount": 1,
-          "unit": "head"
-        },
-        {
           "name": "Peas, frozen",
           "amount": 1,
           "unit": "cup"
         },
         {
-          "name": "Carrots, raw",
-          "amount": 3,
-          "unit": "medium"
+          "name": "Carrots, raw, peeled",
+          "amount": 200,
+          "unit": "g"
         },
         {
           "name": "Onion, raw",
@@ -295,7 +285,7 @@
           "unit": "cup"
         },
         {
-          "name": "Vegetable oil",
+          "name": "Avocado oil",
           "amount": 2,
           "unit": "tbsp"
         },
@@ -310,7 +300,7 @@
           "unit": "to taste"
         }
       ],
-      "notes": "Not cooked yet. Cook the rice a day ahead and chill it. Brown the chicken, scramble the eggs, cook the veg in batches (too much for one skillet), crisp the rice, then combine with soy sauce, sesame oil and green onions. Weigh the batch and divide by 5."
+      "notes": "Not cooked yet. Cook the rice a day ahead and chill it. Brown the chicken, scramble the eggs, cook the carrots, peas and onion, crisp the rice, then combine with soy sauce, sesame oil and green onions. Weigh the batch and divide by 5. Sized to about 800 kcal a container (Sam, 7 Nov 2026: 2,400-2,600 a day)."
     },
     {
       "name": "Grilled Sausage & Black Beans",
@@ -381,7 +371,7 @@
           "unit": "tsp"
         },
         {
-          "name": "Vegetable oil",
+          "name": "Avocado oil",
           "amount": 2,
           "unit": "tbsp"
         },
@@ -468,6 +458,16 @@
           "unit": "medium"
         },
         {
+          "name": "Carrots, raw, peeled",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "name": "Spinach, raw",
+          "amount": 5,
+          "unit": "oz"
+        },
+        {
           "name": "Garlic, raw",
           "amount": 6,
           "unit": "clove"
@@ -488,7 +488,57 @@
           "unit": "to taste"
         }
       ],
-      "notes": "Sam's recipe. Fire-roasted diced tomatoes. Brown the beef with the onion and garlic in the olive oil, add both cans of tomatoes, the sugar (1 tbsp at most) and the dried herbs, simmer. Cook the Trader Joe's gluten-free brown rice pasta a minute short so it doesn't go mushy when reheated, then toss with the sauce (or keep it separate). Pasta numbers are the dry weight from the bag: check the label."
+      "notes": "Sam's recipe. Fire-roasted diced tomatoes. Brown the beef with the onion and garlic in the olive oil, add both cans of tomatoes, the sugar (1 tbsp at most) and the dried herbs, simmer. Cook the Trader Joe's gluten-free brown rice pasta a minute short so it doesn't go mushy when reheated, then toss with the sauce (or keep it separate). Pasta numbers are the dry weight from the bag: check the label. Carrots (diced or grated) go in with the onion; stir the spinach in at the end until it wilts."
+    },
+    {
+      "name": "Meat Sauce (freezer)",
+      "kind": "dish",
+      "servings": 5,
+      "main_ingredient": "Ground beef 85/15, raw",
+      "serve_with": null,
+      "ingredients": [
+        {
+          "name": "Ground beef 85/15, raw",
+          "amount": 2,
+          "unit": "lb"
+        },
+        {
+          "name": "Crushed tomatoes, canned",
+          "amount": 1,
+          "unit": "can (28 oz)"
+        },
+        {
+          "name": "Diced tomatoes, canned",
+          "amount": 1,
+          "unit": "can (14 oz)"
+        },
+        {
+          "name": "Sweet onion, raw",
+          "amount": 1,
+          "unit": "medium"
+        },
+        {
+          "name": "Garlic, raw",
+          "amount": 6,
+          "unit": "clove"
+        },
+        {
+          "name": "Olive oil",
+          "amount": 2,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Sugars, granulated",
+          "amount": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "Salt, pepper, dried parsley, dried oregano, red pepper flakes",
+          "amount": null,
+          "unit": "to taste"
+        }
+      ],
+      "notes": "A second pot of Sam's meat sauce, without pasta, for the freezer (Sam, 7 Nov 2026). Make it alongside Pasta & Meat Sauce, split into 5 containers and freeze. To eat: thaw, and cook about 3 oz (90 g) dry gluten-free pasta per container for a full ~850 kcal dinner."
     },
     {
       "name": "Greek Chicken & Potatoes",
@@ -664,7 +714,7 @@
           "unit": "g"
         },
         {
-          "name": "Vegetable oil",
+          "name": "Avocado oil",
           "amount": 60,
           "unit": "g"
         },

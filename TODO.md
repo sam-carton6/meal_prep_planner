@@ -150,6 +150,9 @@ separate workout app sharing data with this one.
   Sam: "would be A++". Lock: a **PIN checked by the server** (lockout after a few wrong tries), entered once per
   device, which then stays signed in. Not an email code each time (Sam, 7 Nov 2026).
 
+- **Try different breakfasts** (Sam, 7 Nov 2026): compare options by macros and by price against the usual
+  banana + shake. Needs prices per item (none in the app yet).
+
 ## What's new at the next merge
 
 - Bring past (or planned) meals in with one paste: whole weeks of breakfasts, lunches and dinners (More → Import).

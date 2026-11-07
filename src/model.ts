@@ -219,6 +219,8 @@ export const DEFAULT_SETTINGS: Settings = {
 export interface GroceryChecks {
   id: string; // "2026-11-01..2026-11-30"
   checked: string[]; // item keys
+  /** Things to buy that aren't in any recipe ("paper towels"), typed on the Shop tab (Nov 2026; optional, no db change). */
+  extras?: { id: string; text: string }[];
 }
 
 export const newId = () =>

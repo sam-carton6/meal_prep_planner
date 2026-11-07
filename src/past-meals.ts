@@ -1,8 +1,10 @@
 // Meals in an import file (Nov 2026): "Nov 2–6, lunch was Grilled Sausage & Black Beans", so meals Sam already ate
 // (or plans) can be brought in with one paste instead of tapping each day. A dish gets its usual side, sized like
 // the weeks planner does it. Past days come in eaten, pinned to a cooked batch on the Sunday before (made here if
-// there isn't one, sized to the meals), so history and the weekly average add up. Days that already have the same
-// meal in that slot are left alone, so importing the same file twice doesn't double anything.
+// there isn't one, sized to the meals), so history and the weekly average add up. Planned weeks get their Sunday
+// cook day set up and sized just as the weeks planner does it. A `cooks` list adds extra cook days (e.g. a second pot
+// for the freezer). Days that already have the same meal in that slot, and cook days already there, are left alone,
+// so importing the same file twice doesn't double anything.
 
 import type { Batch, CalendarEntry, CustomFood, Nutrition, Recipe, Slot } from './model';
 import { customUnits } from './bank';
@@ -12,7 +14,7 @@ import { addDays, weekStart } from './plan';
 import { times } from './recipe-math';
 import { fmtAmount } from './units';
 import type { Food } from './usda';
-import { choiceDraft, cookDayFor, defaultChoice, sideOf, sizedBatch, type Choice } from './weeks';
+import { choiceDraft, cookDayFor, defaultChoice, sideOf, sizedBatch, syncCookDay, type Choice } from './weeks';
 
 export const SLOTS: Slot[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
@@ -31,6 +33,13 @@ export interface FileMeal {
   unit?: string | null;
 }
 
+/** An extra cook day: `servings` of a dish on `date` (planned; e.g. a pot for the freezer). */
+export interface FileCook {
+  date: string;
+  dish: string;
+  servings: number;
+}
+
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Check one meal line from a file; throws a plain-language error naming it. */
@@ -39,6 +48,12 @@ export function checkMeal(m: FileMeal, i: number) {
   if (!m || !ISO.test(m.from ?? '') || (m.to && !ISO.test(m.to))) throw new Error(`${what} needs dates like "2026-11-02".`);
   if (!SLOTS.includes(m.slot)) throw new Error(`${what}: slot must be breakfast, lunch, dinner or snack.`);
   if (!m.dish === !m.food) throw new Error(`${what} needs a dish or a food (one of them).`);
+}
+
+export function checkCook(c: FileCook, i: number) {
+  if (!c || !ISO.test(c.date ?? '') || !c.dish || !(Number(c.servings) > 0)) {
+    throw new Error(`Cook day ${i + 1} needs a date like "2026-11-08", a dish and how many servings.`);
+  }
 }
 
 export function daysOf(m: FileMeal): string[] {
@@ -68,6 +83,8 @@ export interface MealResult {
   batches: Batch[];
   /** Days left alone because that meal was already there. */
   already: number;
+  /** Planned cook days whose size changed to fit the meals (the weeks planner's own ones). */
+  updated: Batch[];
   /** Lines that couldn't be used, with why. */
   problems: string[];
 }
@@ -76,8 +93,8 @@ const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLow
 const plain = (n: Nutrition): Nutrition => ({ kcal: n.kcal, protein: n.protein, carbs: n.carbs, fat: n.fat });
 
 /** The calendar entries (and cooked batches) for a file's meals. Nothing is saved here. */
-export function buildMeals(meals: FileMeal[], c: MealContext): MealResult {
-  const out: MealResult = { entries: [], batches: [], already: 0, problems: [] };
+export function buildMeals(meals: FileMeal[], c: MealContext, cooks: FileCook[] = []): MealResult {
+  const out: MealResult = { entries: [], batches: [], updated: [], already: 0, problems: [] };
   const cookDateOf = (date: string) => cookDayFor(weekStart(date));
   const taken = (date: string, slot: Slot, label: string) =>
     [...c.entries, ...out.entries].some((e) => e.date === date && e.slot === slot && same(e.label, label));
@@ -149,6 +166,27 @@ export function buildMeals(meals: FileMeal[], c: MealContext): MealResult {
       if (taken(date, m.slot, draft.label)) { out.already++; continue; }
       out.entries.push({ id: c.newId(), date, slot: m.slot, eaten: date < c.today, ...draft });
     }
+  });
+
+  // Planned weeks: the Sunday cook day, as the weeks planner would set it up.
+  const mondays = new Set(out.entries.filter((e) => !e.eaten && e.source.kind === 'dish').map((e) => weekStart(e.date)));
+  for (const monday of mondays) {
+    const all = [...c.batches, ...out.batches];
+    const ch = syncCookDay(monday, [...c.entries, ...out.entries], all, c.recipes, c.proteinPerMeal, c.newId, c.now);
+    out.batches.push(...ch.add);
+    for (const b of ch.update) {
+      const mine = out.batches.findIndex((x) => x.id === b.id);
+      if (mine >= 0) out.batches[mine] = b;
+      else out.updated.push(b);
+    }
+  }
+
+  cooks.forEach((k, i) => {
+    const r = c.recipes.find((x) => same(x.name, k.dish) && x.kind === 'dish');
+    if (!r) return void out.problems.push(`Cook day ${i + 1}: no dish called "${k.dish}" in Recipes.`);
+    if ([...c.batches, ...out.batches].some((b) => b.recipeId === r.id && b.cookDate === k.date)) return void out.already++;
+    // Not auto: it's Sam's own cook day, so the weeks planner never resizes or removes it.
+    out.batches.push({ ...sizedBatch(r, k.servings, k.date, c.proteinPerMeal, c.newId(), c.now), auto: undefined });
   });
   return out;
 }
